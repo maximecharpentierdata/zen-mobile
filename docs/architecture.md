@@ -1,6 +1,6 @@
 # Architecture
 
-Status: draft for review. It assumes the recommended reuse strategy (our own app + selected BrowserKit modules), which is still waiting for a decision. See §3.
+Status: draft for review. Reuse strategy decided on 2026-10-24: our own app plus selected BrowserKit modules, vendored (§3).
 
 ## 1. Platform and toolchain
 

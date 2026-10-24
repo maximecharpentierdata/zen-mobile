@@ -54,4 +54,24 @@ import ZenModel
         state.pageDidChange(tab.id, url: URL(string: "https://example.org"), title: "Example")
         #expect(state.data.tab(tab.id)?.title == "Example")
     }
+
+    @Test func pageIconsAreRecorded() throws {
+        let state = makeState()
+        let tab = try #require(state.data.currentSpace.regular.first)
+        let icon = URL(string: "https://example.com/apple-touch-icon.png")
+        state.faviconDidChange(tab.id, url: icon)
+        #expect(state.data.tab(tab.id)?.faviconURL == icon)
+    }
+
+    @Test func pageIconIsKeptOnTheSameSiteAndClearedOnAnother() throws {
+        let state = makeState()
+        let tab = try #require(state.data.currentSpace.regular.first)
+        let icon = URL(string: "https://example.com/favicon.ico")
+        state.pageDidChange(tab.id, url: URL(string: "https://example.com"), title: "Example")
+        state.faviconDidChange(tab.id, url: icon)
+        state.pageDidChange(tab.id, url: URL(string: "https://example.com/about"), title: "About")
+        #expect(state.data.tab(tab.id)?.faviconURL == icon)
+        state.pageDidChange(tab.id, url: URL(string: "https://example.org"), title: "Other")
+        #expect(state.data.tab(tab.id)?.faviconURL == nil)
+    }
 }

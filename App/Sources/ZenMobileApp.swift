@@ -13,9 +13,10 @@ struct ZenMobileApp: App {
     init() {
         let state = Self.makeState()
         _state = State(initialValue: state)
-        let webViews = WebViewStore { id, url, title in
-            state.pageDidChange(id, url: url, title: title)
-        }
+        let webViews = WebViewStore(
+            onPageChange: { id, url, title in state.pageDidChange(id, url: url, title: title) },
+            onFaviconChange: { id, url in state.faviconDidChange(id, url: url) }
+        )
         _webViews = State(initialValue: webViews)
     }
 

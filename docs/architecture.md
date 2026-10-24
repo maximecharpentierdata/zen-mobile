@@ -26,7 +26,8 @@ zen-mobile/
 │  ├─ ZenStore/            Persistence of ZenModel (Codable JSON, atomic file writes), migrations.
 │  ├─ ZenState/            The live `BrowserState` (@Observable, main actor), user intents, debounced
 │  │                       saving, list presentation helpers. No UIKit/SwiftUI, so tested on Linux.
-│  ├─ ZenWeb/              Our thin WKWebView layer: tab ↔ web view lifecycle, snapshots, unloading.
+│  ├─ ZenWeb/              Our thin WKWebView layer: tab ↔ web view lifecycle, page icons, snapshots,
+│  │                       unloading.
 │  └─ ZenUI/               SwiftUI screens and components: space screen, pager, page + bar,
 │                          gesture controller, transitions.
 ├─ docs/

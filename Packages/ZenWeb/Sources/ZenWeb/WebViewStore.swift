@@ -8,14 +8,19 @@ import ZenModel
 public final class WebViewStore {
     /// Called when a tab's page changes: its id, the URL now shown and the page title.
     public typealias PageChange = @MainActor (ZenModel.Tab.ID, URL?, String) -> Void
+    /// Called when a loaded page's icon is found: the tab's id and where to load the icon from.
+    public typealias FaviconChange = @MainActor (ZenModel.Tab.ID, URL?) -> Void
 
     private var webViews: [ZenModel.Tab.ID: WKWebView] = [:]
     private var observers: [ZenModel.Tab.ID: PageObserver] = [:]
     private let onPageChange: PageChange
+    private let onFaviconChange: FaviconChange
 
-    /// Creates an empty store. `onPageChange` reports navigations so the model stays up to date.
-    public init(onPageChange: @escaping PageChange) {
+    /// Creates an empty store. `onPageChange` reports navigations and `onFaviconChange` page icons, so the
+    /// model stays up to date.
+    public init(onPageChange: @escaping PageChange, onFaviconChange: @escaping FaviconChange) {
         self.onPageChange = onPageChange
+        self.onFaviconChange = onFaviconChange
     }
 
     /// The web view for a tab. A new one loads the tab's URL; an existing one is reused as it is.
@@ -23,7 +28,7 @@ public final class WebViewStore {
         if let existing = webViews[tab.id] { return existing }
         let webView = WKWebView(frame: .zero, configuration: Self.configuration())
         webView.allowsBackForwardNavigationGestures = true
-        let observer = PageObserver(tabID: tab.id, onChange: onPageChange)
+        let observer = PageObserver(tabID: tab.id, onChange: onPageChange, onFavicon: onFaviconChange)
         webView.navigationDelegate = observer
         webViews[tab.id] = webView
         observers[tab.id] = observer
@@ -60,15 +65,21 @@ public final class WebViewStore {
     }
 }
 
-/// Reports a web view's committed and finished navigations.
+/// Reports a web view's committed and finished navigations, and the icon of each finished page.
 @MainActor
 private final class PageObserver: NSObject, WKNavigationDelegate {
     private let tabID: ZenModel.Tab.ID
     private let onChange: WebViewStore.PageChange
+    private let onFavicon: WebViewStore.FaviconChange
 
-    init(tabID: ZenModel.Tab.ID, onChange: @escaping WebViewStore.PageChange) {
+    init(
+        tabID: ZenModel.Tab.ID,
+        onChange: @escaping WebViewStore.PageChange,
+        onFavicon: @escaping WebViewStore.FaviconChange
+    ) {
         self.tabID = tabID
         self.onChange = onChange
+        self.onFavicon = onFavicon
     }
 
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation?) {
@@ -77,5 +88,13 @@ private final class PageObserver: NSObject, WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation?) {
         onChange(tabID, webView.url, webView.title ?? "")
+        let page = webView.url
+        Task { [weak webView] in
+            guard let webView else { return }
+            let favicon = await FaviconFinder.favicon(in: webView)
+            // A newer navigation reports its own icon; this one would belong to the previous page.
+            guard webView.url == page else { return }
+            onFavicon(tabID, favicon)
+        }
     }
 }

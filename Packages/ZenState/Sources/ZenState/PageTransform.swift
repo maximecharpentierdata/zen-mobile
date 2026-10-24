@@ -1,5 +1,9 @@
 import Foundation
 
+#if canImport(CoreGraphics)
+    import CoreGraphics
+#endif
+
 /// Geometry for the page shrinking into its tab row and growing back (spec §3.4, §3.5; design 3A, 4A).
 ///
 /// The page keeps its layout: it is scaled uniformly around its centre to the row's width, moved onto the

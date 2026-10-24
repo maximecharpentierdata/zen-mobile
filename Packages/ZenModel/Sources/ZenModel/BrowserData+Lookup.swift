@@ -12,6 +12,12 @@ extension BrowserData {
         return nil
     }
 
+    /// The ids of every open tab: Essentials, pinned and regular tabs of all spaces. Closed tabs aren't included.
+    public var allTabIDs: Set<Tab.ID> {
+        let pinned = spaces.flatMap { $0.pinned.flatMap(\.allTabs) }
+        return Set((essentials + pinned + spaces.flatMap(\.regular)).map(\.id))
+    }
+
     /// The tab with this id, wherever it is.
     public func tab(_ id: Tab.ID) -> Tab? {
         let pinned = spaces.flatMap { $0.pinned.flatMap(\.allTabs) }

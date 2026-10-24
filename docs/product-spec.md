@@ -110,6 +110,7 @@ The upward drag starts **on the page's bottom bar**, never at the screen edge (t
 ## 4. Web engine requirements
 - WebKit (`WKWebView`) is required by App Store rules outside the EU. The app uses it everywhere.
 - Background tabs can be unloaded to save memory and restored from saved navigation state when opened.
+  - Today: a closed tab's page is freed at once, and on a low-memory warning every page but the open one is freed. A freed page reloads its URL when opened; its back/forward history isn't saved yet.
 - A snapshot image is kept for each tab and used during transitions, so an animation never waits for a page to load.
 
 ## 5. Accessibility

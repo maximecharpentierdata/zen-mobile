@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 import ZenModel
 import ZenState
 import ZenWeb
@@ -35,6 +36,7 @@ public struct RootView: View {
             if let tab = state.openTab {
                 page(for: tab)
                     .id(tab.id)
+                    .transition(.opacity)
             }
             if dragDistance > 0 {
                 StopMarkers(stage: stage, accent: state.data.currentSpace.accentColor)
@@ -43,6 +45,14 @@ public struct RootView: View {
             }
         }
         .environment(\.rowFrames, rowFrames)
+        .onChange(of: state.data.allTabIDs) { _, openTabs in
+            // A closed tab's page is freed at once (spec §4).
+            webViews.unloadAll(except: openTabs)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.didReceiveMemoryWarningNotification)) { _ in
+            // Low memory: keep only the page on screen. Others reload from their URL when opened (spec §4).
+            webViews.unloadAll(except: Set([state.openTabID].compactMap { $0 }))
+        }
         .onGeometryChange(for: CGRect.self) { proxy in
             proxy.frame(in: .global)
         } action: { frame in
@@ -93,13 +103,21 @@ public struct RootView: View {
     }
 
     private func open(_ id: ZenModel.Tab.ID) {
-        collapse = reduceMotion ? 0 : 1
-        state.open(id)
+        present { state.open(id) }
     }
 
     private func startNewTab() {
-        collapse = reduceMotion ? 0 : 1
-        state.startNewTab()
+        present { state.startNewTab() }
+    }
+
+    /// Shows a page: it grows from its row, or crossfades in with Reduce Motion (spec §3.4, §5).
+    private func present(_ change: () -> Void) {
+        guard !reduceMotion else {
+            withAnimation(Motion.crossfade, change)
+            return
+        }
+        collapse = 1
+        change()
     }
 
     private func animateOpen() {
@@ -122,7 +140,7 @@ public struct RootView: View {
     private func closePage() {
         guard !reduceMotion else {
             dragDistance = 0
-            state.showSpace()
+            withAnimation(Motion.crossfade) { state.showSpace() }
             return
         }
         collapse = progress

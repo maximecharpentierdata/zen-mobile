@@ -14,14 +14,17 @@ public struct FileStore: Sendable {
         self.fileURL = fileURL
     }
 
-    /// Reads the stored data, or returns `nil` when nothing has been saved yet.
+    /// Reads the stored data, or returns `nil` when nothing has been saved yet. Pinned tabs and Essentials saved
+    /// without a pinned URL get their current URL as pinned URL.
     public func load() throws -> BrowserData? {
         guard FileManager.default.fileExists(atPath: fileURL.path) else { return nil }
         let bytes = try Data(contentsOf: fileURL)
         let version = try JSONDecoder().decode(VersionProbe.self, from: bytes).schemaVersion
         guard version <= Self.schemaVersion else { throw StoreError.unsupportedSchemaVersion(version) }
-        let data = try JSONDecoder().decode(Envelope.self, from: bytes).data
+        var data = try JSONDecoder().decode(Envelope.self, from: bytes).data
         guard !data.spaces.isEmpty, data.space(data.currentSpaceID) != nil else { throw StoreError.invalidData }
+        // Files saved before pinned URLs existed have pinned tabs and Essentials without one.
+        data.rememberMissingPinnedURLs()
         return data
     }
 

@@ -53,6 +53,24 @@ import ZenModel
         #expect(state.data.tab(tab)?.pinnedURL?.absoluteString == "https://example.com/inbox")
     }
 
+    /// The whole path of a new Essential: typed in a new tab, dropped on Essentials, then browsed from.
+    @Test func essentialKeepsItsPinnedURLWhileBrowsing() throws {
+        let state = makeState()
+        let mail = URL(string: "https://example.com/mail")
+        state.startNewTab()
+        state.submitAddress("https://example.com/mail")
+        let tab = try #require(state.openTabID)
+        state.showSpace()
+        state.moveTab(tab, to: .essentials(index: 0))
+        state.open(tab)
+        state.pageDidChange(tab, url: URL(string: "https://example.com/mail/42"), title: "Message")
+        state.submitAddress("https://example.com/calendar")
+        #expect(state.openTabID != tab)
+        #expect(state.data.tab(tab)?.pinnedURL == mail)
+        state.resetToPinnedURL(tab)
+        #expect(state.data.tab(tab)?.url == mail)
+    }
+
     @Test func movePinnedTabToAnotherFolder() throws {
         let state = makeState()
         let space = state.data.currentSpaceID

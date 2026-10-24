@@ -65,7 +65,7 @@ Actions on a tab row:
   - Move to space is hidden when there is only one space.
   - Duplicate puts the copy right after the original, in the same place. *(proposal)*
 - Long-press on an Essential: Remove from Essentials (the tab goes to the top of the current space's regular tabs), Duplicate, Close. *(proposal)*
-- Long-press on a pinned tab or an Essential also offers "Go back to pinned page" and "Replace pinned URL with current URL"; both are disabled while the tab shows its pinned URL. A tab that leaves the pinned section or Essentials forgets its pinned URL.
+- Long-press on a pinned tab or an Essential also offers "Go back to pinned page" and "Replace pinned URL with current URL"; both are disabled while the tab shows its pinned URL. A tab that leaves the pinned section or Essentials forgets its pinned URL. Pinned tabs and Essentials saved before pinned URLs existed have none; on launch they take the URL they show as their pinned URL.
 - Long-press on a folder: Rename, Delete folder (its tabs and folders take its place). *(proposal)*
 - Long-press then drag: reorder, including into or out of folders and across the divider. Dragging across the divider pins or unpins the tab.
   - Dropping a tab on a row puts it right before that row, in the same list (Essentials, a folder, the pinned section or the regular tabs). Dropping it on a folder puts it at the end of that folder; on the divider, or anywhere else in the pinned section, at the end of the pinned section; anywhere else in the Essentials grid, at the end of Essentials; below the last regular tab, at the end of the regular tabs. *(proposal)*

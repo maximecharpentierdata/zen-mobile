@@ -8,6 +8,7 @@ struct SpaceScreen: View {
     let state: BrowserState
     let onOpen: @MainActor (ZenModel.Tab.ID) -> Void
     let onNewTab: @MainActor () -> Void
+    let onUnload: @MainActor (ZenModel.Tab.ID) -> Void
 
     @State private var paging = SpacePaging(offset: 0, pageWidth: 0, pageCount: 0)
     @State private var editor: SpaceEditor.Target?
@@ -21,7 +22,7 @@ struct SpaceScreen: View {
                 state: state,
                 onOpen: onOpen,
                 onAction: handle,
-                menus: RowMenus(state: state) { namePrompt = $0 },
+                menus: RowMenus(state: state, onPrompt: { namePrompt = $0 }, onUnload: onUnload),
                 paging: $paging
             )
             Group {

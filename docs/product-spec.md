@@ -78,6 +78,7 @@ Automatic clean-up of regular tabs:
 - Scrolling direction locks after the first few points of movement, so a vertical scroll never changes space by accident.
 - These three behaviours come from the system's paging scroll view, so their thresholds are the system's, not ours. If testing on a device shows they need tuning, we will replace it with our own gesture. *(tune)*
 - At the first space the swipe resists (rubber band). Swiping past the last space shows a "New space" page. *(proposal)*
+- Settling on the "New space" page opens the new space sheet at once (name, icon, colour). Creating the space shows it; cancelling or swiping the sheet away creates nothing and swipes back to the last space.
 
 ### 3.4 Opening a tab (design 3A + validated change)
 - Tapping a tab row makes the row grow into the full-screen page (zoom transition, about 0.35 s spring). *(tune)*
@@ -108,7 +109,7 @@ The upward drag starts **on the page's bottom bar**, never at the screen edge (t
 - Everything is in the header's options menu: Edit space, New space, Move left, Move right, Delete space. Moving left or right is how spaces are reordered for now. *(proposal)*
 - Edit space and New space open a sheet with the name, the icon (an emoji or a letter) and the colour (system colour picker). A space needs a name. A blank icon becomes the name's first letter. *(proposal)*
 - A new space starts with the next of the mockups' colours (Personal, Work, Research), in turn. It goes after the existing spaces and is shown at once. *(proposal)*
-- The "New space" page after the last space (§3.3) opens the same sheet.
+- The "New space" page after the last space (§3.3) opens the same sheet as soon as the swipe settles on it.
 
 ## 4. Web engine requirements
 - WebKit (`WKWebView`) is required by App Store rules outside the EU. The app uses it everywhere.

@@ -52,8 +52,9 @@ From top to bottom:
 
 Actions on a tab row:
 - Tap: open the tab (3.4).
-- Swipe the row left: close it (regular tabs) or unload it (pinned tabs, which stay in the list).
+- Rows don't swipe: a sideways swipe always changes space (3.3). Closing and unloading are in the long-press menu.
 - Long-press: context menu with Pin/Unpin, Move to folder, Move to space, Add to Essentials, Duplicate, Close.
+  - A pinned tab's menu also has Unload: it frees the page and the tab stays in the list.
   - Move to folder lists every folder of the space, collapsed or not, and "New folder…", which asks for a name, creates the folder at the end of the pinned section and moves the tab into it. A regular tab moved into a folder becomes pinned. *(proposal)*
   - Move to space is hidden when there is only one space.
   - Duplicate puts the copy right after the original, in the same place. *(proposal)*

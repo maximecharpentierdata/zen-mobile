@@ -30,7 +30,7 @@ public struct RootView: View {
     /// The view's content.
     public var body: some View {
         ZStack {
-            SpaceScreen(state: state, onOpen: open, onNewTab: startNewTab)
+            SpaceScreen(state: state, onOpen: open, onNewTab: startNewTab, onUnload: { webViews.unload($0) })
                 .allowsHitTesting(state.openTab == nil)
                 .accessibilityHidden(state.openTab != nil)
             if let tab = state.openTab {

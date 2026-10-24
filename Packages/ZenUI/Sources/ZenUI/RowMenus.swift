@@ -7,6 +7,7 @@ import ZenState
 struct RowMenus {
     let state: BrowserState
     let onPrompt: @MainActor (NamePrompt) -> Void
+    let onUnload: @MainActor (ZenModel.Tab.ID) -> Void
 
     /// The menu of a tab, which depends on where the tab is.
     @ViewBuilder
@@ -17,6 +18,8 @@ struct RowMenus {
             spaceTabItems(for: tab, in: spaceID)
         case .pinned(let spaceID, _):
             Button("Unpin", systemImage: "pin.slash") { state.unpin(tab.id) }
+            // Rows don't swipe, because swiping changes space, so unloading a pinned tab lives here.
+            Button("Unload", systemImage: "moon.zzz") { onUnload(tab.id) }
             spaceTabItems(for: tab, in: spaceID)
         case .essentials:
             Button("Remove from Essentials", systemImage: "star.slash") { state.removeFromEssentials(tab.id) }

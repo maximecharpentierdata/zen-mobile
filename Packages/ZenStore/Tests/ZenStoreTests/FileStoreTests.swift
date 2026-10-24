@@ -58,3 +58,23 @@ import ZenModel
         try Data(text.utf8).write(to: store.fileURL)
     }
 }
+
+@Suite struct FileStoreRecoveryTests {
+    private let store = FileStore(
+        fileURL: FileManager.default.temporaryDirectory
+            .appendingPathComponent(UUID().uuidString)
+            .appendingPathComponent("browser.json")
+    )
+
+    @Test func moveAsideKeepsTheFileUnderANewName() throws {
+        try store.save(BrowserData.firstLaunch())
+        let moved = try #require(try store.moveAside(now: Date(timeIntervalSince1970: 42)))
+        #expect(moved.lastPathComponent == "browser.unreadable-42.json")
+        #expect(FileManager.default.fileExists(atPath: moved.path))
+        #expect(try store.load() == nil)
+    }
+
+    @Test func moveAsideWithoutFileReturnsNil() throws {
+        #expect(try store.moveAside() == nil)
+    }
+}

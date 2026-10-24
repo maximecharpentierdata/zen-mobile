@@ -12,6 +12,8 @@ packages:
     path: Packages/ZenModel
   ZenStore:
     path: Packages/ZenStore
+  ZenState:
+    path: Packages/ZenState
   ZenUI:
     path: Packages/ZenUI
 targets:
@@ -32,7 +34,7 @@ targets:
         INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
         TARGETED_DEVICE_FAMILY: "1"
     dependencies:
-      - package: ZenModel
       - package: ZenStore
+      - package: ZenState
       - package: ZenUI
     scheme: {}

@@ -44,10 +44,15 @@ extension BrowserState {
         }
     }
 
-    /// Loads what the user typed in the open tab (spec §3.6). Blank text changes nothing.
+    /// Loads what the user typed (spec §3.6). Blank text changes nothing. A regular tab loads it in place; a
+    /// pinned tab or an Essential keeps its page, and the address opens in a new tab.
     public func submitAddress(_ text: String) {
         guard let url = AddressInput.url(for: text, engine: searchEngine), let tab = openTab else { return }
-        perform { try $0.updatePage(tab.id, url: url, title: "", faviconURL: nil) }
+        if case .regular = data.location(of: tab.id) {
+            perform { try $0.updatePage(tab.id, url: url, title: "", faviconURL: nil) }
+        } else if let id = newTab(url: url) {
+            openTabID = id
+        }
         isEditingAddress = false
     }
 

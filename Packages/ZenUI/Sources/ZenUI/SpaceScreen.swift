@@ -10,14 +10,16 @@ struct SpaceScreen: View {
     let onNewTab: @MainActor () -> Void
 
     @State private var paging = SpacePaging(offset: 0, pageWidth: 0, pageCount: 0)
+    @State private var editor: SpaceEditor.Target?
+    @State private var deleting: Space?
 
     var body: some View {
         VStack(spacing: Theme.Spacing.section) {
-            SpacePager(state: state, onOpen: onOpen, paging: $paging)
+            SpacePager(state: state, onOpen: onOpen, onAction: handle, paging: $paging)
             Group {
                 SpaceDots(
                     count: state.data.spaces.count,
-                    currentIndex: paging.nearestIndex,
+                    currentIndex: min(paging.nearestIndex, state.data.spaces.count - 1),
                     accent: accent,
                     onStep: { state.selectSpace(step: $0) }
                 )
@@ -27,14 +29,20 @@ struct SpaceScreen: View {
         }
         .padding(.vertical, Theme.Spacing.grid)
         .background(Theme.spaceBackground(accent: accent).ignoresSafeArea())
+        .modifier(SpaceManagement(state: state, editor: $editor, deleting: $deleting))
     }
 
-    /// The accent colour, blended between the two spaces while swiping.
+    private func handle(_ action: SpaceAction) {
+        SpaceManagement.handle(action, state: state, editor: &editor, deleting: &deleting)
+    }
+
+    /// The accent colour, blended between the two spaces while swiping. The "New space" page keeps the last
+    /// space's colour.
     private var accent: UInt32 {
         let spaces = state.data.spaces
-        guard spaces.indices.contains(paging.from), spaces.indices.contains(paging.to) else {
-            return state.data.currentSpace.accentColor
-        }
-        return Color.mix(spaces[paging.from].accentColor, spaces[paging.to].accentColor, amount: paging.fraction)
+        let lastIndex = spaces.count - 1
+        let from = spaces[min(paging.from, lastIndex)].accentColor
+        let to = spaces[min(paging.to, lastIndex)].accentColor
+        return Color.mix(from, to, amount: paging.fraction)
     }
 }

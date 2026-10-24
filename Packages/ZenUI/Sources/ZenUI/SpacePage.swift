@@ -7,12 +7,13 @@ import ZenState
 struct SpacePage: View {
     let space: Space
     let essentials: [ZenModel.Tab]
+    let header: SpaceHeader
     let onToggleFolder: @MainActor (Folder.ID) -> Void
     let onOpen: @MainActor (ZenModel.Tab.ID) -> Void
 
     var body: some View {
         VStack(spacing: Theme.Spacing.section) {
-            SpaceHeader(space: space)
+            header
             ScrollView {
                 VStack(alignment: .leading, spacing: Theme.Spacing.section) {
                     EssentialsGrid(tabs: essentials, accent: space.accentColor) { onOpen($0) }

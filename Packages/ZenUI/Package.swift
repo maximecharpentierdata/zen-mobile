@@ -10,8 +10,9 @@ let package = Package(
     dependencies: [
         .package(path: "../ZenModel"),
         .package(path: "../ZenState"),
+        .package(path: "../ZenWeb"),
     ],
     targets: [
-        .target(name: "ZenUI", dependencies: ["ZenModel", "ZenState"])
+        .target(name: "ZenUI", dependencies: ["ZenModel", "ZenState", "ZenWeb"])
     ]
 )

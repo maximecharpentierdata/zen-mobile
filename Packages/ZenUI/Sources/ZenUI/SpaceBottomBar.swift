@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// The search field and new-tab button at the bottom of the space screen (spec §3.2, §3.6).
-/// Until address editing lands (M3), both open a new empty tab.
+/// Both open a new tab with the address field ready.
 struct SpaceBottomBar: View {
     let accent: UInt32
     let onNewTab: @MainActor () -> Void

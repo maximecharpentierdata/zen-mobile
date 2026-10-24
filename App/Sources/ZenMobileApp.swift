@@ -2,15 +2,25 @@ import SwiftUI
 import ZenState
 import ZenStore
 import ZenUI
+import ZenWeb
 
 @main
 struct ZenMobileApp: App {
     @Environment(\.scenePhase) private var scenePhase
-    @State private var state = Self.makeState()
+    @State private var state: BrowserState
+    @State private var webViews: WebViewStore
+
+    init() {
+        let state = Self.makeState()
+        _state = State(initialValue: state)
+        _webViews = State(initialValue: WebViewStore { id, url, title in
+            state.pageDidChange(id, url: url, title: title)
+        })
+    }
 
     var body: some Scene {
         WindowGroup {
-            RootView(state: state)
+            RootView(state: state, webViews: webViews)
         }
         .onChange(of: scenePhase) { _, phase in
             switch phase {

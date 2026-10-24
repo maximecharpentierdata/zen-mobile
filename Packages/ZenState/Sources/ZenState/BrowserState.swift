@@ -12,6 +12,13 @@ public final class BrowserState {
     public private(set) var data: BrowserData
     /// The last error from a refused change or a failed save, for logging or display.
     public private(set) var lastError: (any Error)?
+    /// The tab shown full screen, or `nil` on the space screen. Not saved: the app always opens on the
+    /// space screen (spec §3.1).
+    public internal(set) var openTabID: Tab.ID?
+    /// Whether the address field is being edited (spec §3.4, §3.6).
+    public internal(set) var isEditingAddress = false
+    /// The engine for typed text that isn't an address. A setting will come later (spec §3.6).
+    public let searchEngine: SearchEngine = .duckDuckGo
 
     @ObservationIgnored private let store: FileStore?
     @ObservationIgnored private let saveDelay: Duration

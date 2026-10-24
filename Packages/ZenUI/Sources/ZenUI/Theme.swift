@@ -12,6 +12,7 @@ enum Theme {
         static var fieldFill: Color { .white.opacity(0.10) }
         static var divider: Color { .white.opacity(0.12) }
         static var inactiveDot: Color { .white.opacity(0.30) }
+        static var pageBarFill: Color { Color(hex: 0x1D1A2B) }
         /// The near-black that space backgrounds are tinted from.
         static var backgroundBase: UInt32 { 0x121216 }
     }
@@ -40,6 +41,7 @@ enum Theme {
         static let tabRowHeight: CGFloat = 44
         static let essentialTileHeight: CGFloat = 60
         static let bottomBarHeight: CGFloat = 50
+        static let pageBarHeight: CGFloat = 56
         static let headerIcon: CGFloat = 32
         static let favicon: CGFloat = 20
         static let essentialIcon: CGFloat = 28

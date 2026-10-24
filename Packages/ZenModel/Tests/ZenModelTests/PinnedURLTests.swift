@@ -47,4 +47,31 @@ import Testing
         #expect(throws: ModelError.invalidTabLocation(tab)) { try data.resetToPinnedURL(tab) }
         #expect(throws: ModelError.invalidTabLocation(tab)) { try data.replacePinnedURL(tab) }
     }
+
+    @Test func tabsSavedWithoutAPinnedURLGetTheirCurrentURL() throws {
+        var data = BrowserData.firstLaunch()
+        let space = data.currentSpaceID
+        let folder = try data.createFolder(named: "Docs", in: space)
+        let pinned = try data.newTab(url: Fixtures.url("docs"), in: space, now: Fixtures.now)
+        try data.pin(pinned, into: folder)
+        let essential = try data.newTab(url: Fixtures.url("mail"), in: space, now: Fixtures.now)
+        try data.addToEssentials(essential)
+        for tab in [pinned, essential] {
+            try data.updateTab(tab) { $0.pinnedURL = nil }
+        }
+        let regular = try data.newTab(url: Fixtures.url("news"), in: space, now: Fixtures.now)
+        data.rememberMissingPinnedURLs()
+        #expect(data.tab(pinned)?.pinnedURL == Fixtures.url("docs"))
+        #expect(data.tab(essential)?.pinnedURL == Fixtures.url("mail"))
+        #expect(data.tab(regular)?.pinnedURL == nil)
+    }
+
+    @Test func rememberingMissingPinnedURLsKeepsExistingOnes() throws {
+        var data = BrowserData.firstLaunch()
+        let tab = try data.newTab(url: Fixtures.url("mail"), in: data.currentSpaceID, now: Fixtures.now)
+        try data.addToEssentials(tab)
+        try data.updatePage(tab, url: Fixtures.url("mail/inbox/42"), title: "Message", faviconURL: nil)
+        data.rememberMissingPinnedURLs()
+        #expect(data.tab(tab)?.pinnedURL == Fixtures.url("mail"))
+    }
 }

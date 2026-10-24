@@ -25,6 +25,7 @@ struct PageScreen: View {
         WebPage(webView: webViews.webView(for: tab), onSwipe: handleSwipe, onScroll: handleScroll)
             .offset(x: swipeOffset)
             .id(tab.id)
+            .overlay { if state.isEditingAddress { dismissArea } }
             .ignoresSafeArea(.container, edges: isBarMinimized ? .vertical : .top)
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 bottomControl
@@ -88,8 +89,7 @@ struct PageScreen: View {
         if state.isEditingAddress {
             AddressEditor(
                 initialText: tab.url?.absoluteString ?? "",
-                onSubmit: { state.submitAddress($0) },
-                onCancel: { state.cancelAddressEditing() }
+                onSubmit: { state.submitAddress($0) }
             )
         } else {
             HStack(spacing: Theme.Spacing.grid) {
@@ -108,6 +108,14 @@ struct PageScreen: View {
                 }
             }
         }
+    }
+
+    /// While the address field is open, a tap on the page closes it without loading anything (spec §3.4).
+    private var dismissArea: some View {
+        Color.clear
+            .contentShape(.rect)
+            .onTapGesture { state.cancelAddressEditing() }
+            .accessibilityHidden(true)
     }
 
     /// Only pinned tabs and Essentials go back to a pinned URL on a double tap (spec §3.4).

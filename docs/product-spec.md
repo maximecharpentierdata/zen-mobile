@@ -65,7 +65,7 @@ Actions on a tab row:
   - Move to space is hidden when there is only one space.
   - Duplicate puts the copy right after the original, in the same place. *(proposal)*
 - Long-press on an Essential: Remove from Essentials (the tab goes to the top of the current space's regular tabs), Duplicate, Close. *(proposal)*
-- Long-press on a pinned tab or an Essential also offers "Go back to pinned page" and "Replace pinned URL with current URL"; both are disabled while the tab shows its pinned URL. A tab that leaves the pinned section or Essentials forgets its pinned URL.
+- Long-press on a pinned tab or an Essential also offers "Go back to pinned page" and "Replace pinned URL with current URL"; both are disabled while the tab shows its pinned URL. A tab that leaves the pinned section or Essentials forgets its pinned URL. Pinned tabs and Essentials saved before pinned URLs existed have none; on launch they take the URL they show as their pinned URL.
 - Long-press on a folder: Rename, Delete folder (its tabs and folders take its place). *(proposal)*
 - Long-press then drag: reorder, including into or out of folders and across the divider. Dragging across the divider pins or unpins the tab.
   - Dropping a tab on a row puts it right before that row, in the same list (Essentials, a folder, the pinned section or the regular tabs). Dropping it on a folder puts it at the end of that folder; on the divider, or anywhere else in the pinned section, at the end of the pinned section; anywhere else in the Essentials grid, at the end of Essentials; below the last regular tab, at the end of the regular tabs. *(proposal)*
@@ -90,13 +90,14 @@ Automatic clean-up of regular tabs:
 ### 3.4 Opening a tab (design 3A + validated change)
 - Tapping a tab row makes the row grow into the full-screen page (zoom transition, about 0.35 s spring). *(tune)*
 - The opened page is **full screen**. The only controls are a **bottom bar** that shows the **tab title** with the **domain** under it, and a **"…" button** to its right. *(position: proposal)*
-- Tapping the bar opens address editing (full URL, keyboard, suggestions).
+- Tapping the bar opens address editing (full URL, keyboard, suggestions). There is no Cancel button: tapping the page closes the field without loading anything (asked for on 2026-10-24).
   - On a regular tab, the new address loads in the same tab. On a pinned tab or an Essential, it opens in a new tab at the top of the current space's regular tabs, and the pinned tab or Essential keeps its page.
 - On a pinned tab or an Essential, double-tapping the bar goes back to the pinned URL.
 - The "…" button opens the page menu (decided 2026-10-24): **Back**, **Forward**, **Reload**, **Share**, **Copy link**, **Find on page** and **Request desktop site**.
   - Back and Forward are greyed out when the page has nothing to go back or forward to. A new tab with no address shows only Back, Forward and Reload, greyed out.
   - Find on page opens the system find bar. *(proposal)*
   - Request desktop site reloads the page as the desktop version; the item then reads **Request mobile site** and switches back. The choice holds for this tab's page until the page is freed (§4); it isn't saved. *(proposal)*
+- Pulling the page down when it is already at the top reloads it, with the system's refresh spinner, as in Safari (asked for on 2026-10-24). How far to pull is the system's.
 - The page uses the whole screen, as in Safari (asked for on 2026-10-24):
   - It runs up under the status bar, which is blurred over it.
   - The expanded bar sits below the page, so it never hides part of it. There is no other band at the bottom.
@@ -114,7 +115,7 @@ The upward drag starts **on the page's bottom bar**, never at the screen edge (t
 |---|---|---|
 | < stop 1 (≈ 120 pt) *(tune)* | The page shrinks and follows the finger | Snaps back to the page |
 | stop 1 → stop 2 | Light haptic at stop 1; the "Space" marker lights up | **Back to the space**: the page shrinks into its tab row (3A in reverse) |
-| ≥ stop 2 (≈ 420 pt) *(tune)* | Haptic at stop 2; the "New tab" marker lights up | **New tab**: an empty tab is created and the address field opens with the keyboard |
+| ≥ stop 2 (≈ 420 pt) *(tune)* | Haptic at stop 2; the "New tab" marker lights up | **New tab**: an empty tab is created and the new tab overlay opens with the keyboard (§3.6) |
 
 - The animation is interruptible and follows the finger the whole time.
 - A fast upward flick counts as "back to the space", however far it goes: a quick swipe easily passes stop 2, so a new tab needs the finger to slow down past stop 2 before letting go. *(tune)*
@@ -122,7 +123,10 @@ The upward drag starts **on the page's bottom bar**, never at the screen edge (t
 
 ### 3.6 New tab
 - It is reachable from the search field on the space screen and from stop 2 of the bar gesture.
-- It shows an address field with focus, then suggestions from history, open tabs and a search engine.
+- Until an address is entered, it shows only the address field, with focus, centred on the screen as an overlay over the dimmed space screen (asked for on 2026-10-24). There is no blank page and no bottom bar. How much the space is dimmed is *(tune)*.
+- There is no Cancel button: tapping anywhere outside the field closes the new tab, which leaves nothing behind, and shows the space again.
+- Entering an address loads it, and the page grows from the space screen's search field into the full-screen page (§3.4).
+- It will also show suggestions from history, open tabs and a search engine.
 - Text that isn't a web address is searched with **Google** (decided 2026-10-24). A setting to change the engine will come later.
 
 ### 3.7 Space management
@@ -153,6 +157,7 @@ Sync (including with Zen desktop), private browsing, extensions, split view, Gla
 - **Private browsing:** not in v1.
 - **Licence:** MPL-2.0 for our own code (see `LICENSE`).
 - **Name:** "Zen" stays the working name for now. Before any App Store release, we need to check with the Zen project.
+- **Icon:** the app uses Zen desktop's icon for now. Its repository is MPL-2.0 and publishes no separate trademark or logo policy that we found (2026-10-24). Before any App Store release, the icon needs the same check with the Zen project as the name.
 
 ## 8. Open questions
 None at the moment.

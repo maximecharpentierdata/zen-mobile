@@ -50,6 +50,38 @@ import ZenModel
         #expect(throws: (any Error).self) { try store.load() }
     }
 
+    /// Files saved before pinned URLs existed: an Essential opened, navigated, then double-tapped stayed on the
+    /// page it had navigated to, as if its URL had been replaced.
+    @Test func essentialsSavedWithoutAPinnedURLGoBackToTheirURL() throws {
+        let mail = URL(string: "https://example.com/mail")
+        var data = BrowserData.firstLaunch()
+        let tab = try data.newTab(url: mail, in: data.currentSpaceID, now: Date())
+        try data.addToEssentials(tab)
+        try store.save(data)
+        try removePinnedURLs()
+        var loaded = try #require(try store.load())
+        try loaded.updatePage(tab, url: URL(string: "https://example.com/mail/42"), title: "Message", faviconURL: nil)
+        try loaded.resetToPinnedURL(tab)
+        #expect(loaded.tab(tab)?.url == mail)
+    }
+
+    /// Rewrites the saved file as an older version wrote it, without the `pinnedURL` of any tab.
+    private func removePinnedURLs() throws {
+        let json = try JSONSerialization.jsonObject(with: Data(contentsOf: store.fileURL))
+        let stripped = Self.removingKey("pinnedURL", from: json)
+        try JSONSerialization.data(withJSONObject: stripped).write(to: store.fileURL)
+    }
+
+    private static func removingKey(_ key: String, from json: Any) -> Any {
+        if let object = json as? [String: Any] {
+            return object.filter { $0.key != key }.mapValues { removingKey(key, from: $0) }
+        }
+        if let array = json as? [Any] {
+            return array.map { removingKey(key, from: $0) }
+        }
+        return json
+    }
+
     private func write(_ text: String) throws {
         try FileManager.default.createDirectory(
             at: store.fileURL.deletingLastPathComponent(),

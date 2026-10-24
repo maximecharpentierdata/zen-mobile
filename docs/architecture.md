@@ -67,6 +67,7 @@ How we copy pieces:
 - **Open/close transition (3A):** it animates from the tab row's frame to full screen using the tab's snapshot image, then swaps in the live web view at the end. Closing does the reverse into the row's current frame.
 - **Bar gesture (4A):** a UIKit pan recognizer on the bar, bridged into SwiftUI. It produces a single `progress` value (0 to stop 2). The page scale, the stop markers and the haptics are all driven from that one value, so the animation is interruptible and stays in sync with the finger. Release logic uses distance plus velocity (spec §3.5).
 - **Page swipe (§3.4):** a UIKit pan recognizer that `ZenWeb`'s `WebPage` adds once to each web view. It reports the sideways translation to SwiftUI; `ZenState`'s `PageSwipe` decides between staying, back and forward, with thresholds from `GestureMetrics`.
+- **Pull to refresh (§3.4):** the system `UIRefreshControl` on each web view's scroll view, added by `WebViewStore` when it creates the page. It reloads the page and stops its spinner when the web view's `isLoading` turns false.
 
 ## 6. Testing
 - `ZenModel`, `ZenStore` and `ZenState`: unit tests with `swift test`, which run on Linux and macOS.

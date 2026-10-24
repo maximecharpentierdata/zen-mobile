@@ -9,7 +9,7 @@ The mockups are on the design canvas: https://claude.ai/artifact/CU3FytabM5HGKnF
 | Space screen | **1A**: Zen-style sidebar, full screen. From top: header, Essentials grid, pinned tabs and folders, divider, regular tabs, space dots, search field | 1A |
 | Changing space | **2A**: paged horizontal swipe; the list follows the finger and the colour blends between spaces | 2A |
 | Opening a tab | **3A**: the tab row zooms into the page | 3A |
-| Opened page | Full screen, with a single bottom bar showing the tab title and the domain | 5 |
+| Opened page | Full screen, with a single bottom bar showing the tab title and the domain. The page runs under the blurred status bar, and the bar minimizes to a translucent strip while the page scrolls down (spec §3.4) | 5 |
 | Back to the space / new tab | **4A**: drag the bottom bar up. Stop 1 goes back to the space, stop 2 opens a new tab | 4A |
 
 The B and C options stay on the canvas for reference only.

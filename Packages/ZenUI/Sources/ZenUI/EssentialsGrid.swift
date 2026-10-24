@@ -26,6 +26,7 @@ struct EssentialsGrid: View {
                 }
                 .buttonStyle(.plain)
                 .contextMenu { menus.tabMenu(for: tab) }
+                .reorderableTab(tab.id, state: menus.state)
                 .accessibilityLabel(tab.title.isEmpty ? (tab.url?.host() ?? "") : tab.title)
             }
         }

@@ -19,23 +19,34 @@ struct SpacePage: View {
                 VStack(alignment: .leading, spacing: Theme.Spacing.section) {
                     EssentialsGrid(tabs: essentials, accent: space.accentColor, menus: menus) { onOpen($0) }
                     PinnedSection(
+                        spaceID: space.id,
                         items: space.pinned,
                         accent: space.accentColor,
                         menus: menus,
                         onToggleFolder: { onToggleFolder($0) },
                         onOpen: { onOpen($0) }
                     )
-                    Rectangle()
-                        .fill(Theme.Palette.divider)
-                        .frame(height: 1)
-                        .padding(.horizontal, Theme.Spacing.rowPadding)
-                        .accessibilityHidden(true)
+                    divider
                     regularTabs
                 }
             }
             .scrollIndicators(.hidden)
         }
         .padding(.horizontal, Theme.Spacing.screenMargin)
+    }
+
+    /// Dropping a tab on the divider pins it at the end of the pinned section. The drop area is taller than
+    /// the line, without changing the layout.
+    private var divider: some View {
+        Rectangle()
+            .fill(Theme.Palette.divider)
+            .frame(height: 1)
+            .padding(.horizontal, Theme.Spacing.rowPadding)
+            .padding(.vertical, Theme.Spacing.dropMargin)
+            .contentShape(.rect)
+            .dropsTab(state: menus.state) { .pinned(space.id, folder: nil, index: .max) }
+            .padding(.vertical, -Theme.Spacing.dropMargin)
+            .accessibilityHidden(true)
     }
 
     private var regularTabs: some View {
@@ -48,7 +59,13 @@ struct SpacePage: View {
                 }
                 .buttonStyle(.plain)
                 .contextMenu { menus.tabMenu(for: tab) }
+                .reorderableTab(tab.id, state: menus.state)
             }
+            Color.clear
+                .frame(height: Theme.Size.tabRowHeight)
+                .contentShape(.rect)
+                .dropsTab(state: menus.state) { .regular(space.id, index: .max) }
+                .accessibilityHidden(true)
         }
     }
 }

@@ -63,4 +63,13 @@ import ZenModel
         state.deleteFolder(folder)
         #expect(state.data.currentSpace.pinned.first?.tab?.id == tab)
     }
+
+    @Test func dragAndDropMovesTheTab() throws {
+        let state = makeState()
+        let first = try #require(state.newTab())
+        let second = try #require(state.newTab())
+        state.moveTab(second, to: .pinned(state.data.currentSpaceID, folder: nil, index: 0))
+        #expect(state.data.currentSpace.pinned.first?.tab?.id == second)
+        #expect(state.data.currentSpace.regular.map(\.id) == [first])
+    }
 }

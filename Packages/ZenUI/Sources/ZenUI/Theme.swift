@@ -35,6 +35,8 @@ enum Theme {
         static let grid: CGFloat = 10
         static let indentPerLevel: CGFloat = 32
         static let dots: CGFloat = 8
+        /// Extra height around the divider that accepts a dropped tab.
+        static let dropMargin: CGFloat = 9
     }
 
     /// Corner radii in points.

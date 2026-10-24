@@ -60,6 +60,8 @@ Actions on a tab row:
 - Long-press on an Essential: Remove from Essentials (the tab goes to the top of the current space's regular tabs), Duplicate, Close. *(proposal)*
 - Long-press on a folder: Rename, Delete folder (its tabs and folders take its place). *(proposal)*
 - Long-press then drag: reorder, including into or out of folders and across the divider. Dragging across the divider pins or unpins the tab.
+  - Dropping a tab on a row puts it right before that row, in the same list (Essentials, a folder, the pinned section or the regular tabs). Dropping it on a folder puts it at the end of that folder; on the divider, at the end of the pinned section; below the last regular tab, at the end of the regular tabs. *(proposal)*
+  - Folders can't be dragged yet. *(open)*
 
 Automatic clean-up of regular tabs:
 - A regular tab that hasn't been opened for a set time is closed automatically. Pinned tabs, tabs in folders and Essentials are never closed this way.

@@ -103,6 +103,18 @@ enum PinnedTree {
         return false
     }
 
+    /// The items directly inside the folder with this id, or the root items when `folderID` is `nil`.
+    /// Returns `nil` if the folder isn't in the tree.
+    static func children(of folderID: Folder.ID?, in items: [PinnedItem]) -> [PinnedItem]? {
+        guard let folderID else { return items }
+        for item in items {
+            guard let folder = item.folder else { continue }
+            if folder.id == folderID { return folder.children }
+            if let found = children(of: folderID, in: folder.children) { return found }
+        }
+        return nil
+    }
+
     /// Whether a folder with this id exists in the tree.
     static func containsFolder(_ id: Folder.ID, in items: [PinnedItem]) -> Bool {
         items.contains { item in

@@ -22,8 +22,6 @@ An iOS browser that brings Zen Browser's vertical tabs, Spaces, folders and Esse
 - `swiftlint lint --strict`: safety and size limits.
 - `xcodegen generate`, then `xcodebuild build -project ZenMobile.xcodeproj -scheme ZenMobile -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO`: macOS only.
 
-CI also takes simulator screenshots of PR branches (`scripts/screenshots.sh`, launched with demo data) and commits them to the `ci-screenshots` branch, in a folder named after the PR branch. Check them for UI changes.
-
 Without a Swift toolchain (for example on a Linux sandbox), you can't run these. Rely on CI and say so in the PR; never claim a check passed that you didn't run.
 
 ## How Claude works in this repo

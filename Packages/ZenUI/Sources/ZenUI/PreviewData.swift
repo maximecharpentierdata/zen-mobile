@@ -28,7 +28,11 @@ enum PreviewData {
     }
 
     @discardableResult
-    private static func addTab(_ title: String, in space: Space.ID, to data: inout BrowserData) -> Tab.ID? {
+    private static func addTab(
+        _ title: String,
+        in space: Space.ID,
+        to data: inout BrowserData
+    ) -> ZenModel.Tab.ID? {
         guard let id = try? data.newTab(in: space, now: Date()) else { return nil }
         try? data.updatePage(id, url: URL(string: "https://example.com"), title: title, faviconURL: nil)
         return id

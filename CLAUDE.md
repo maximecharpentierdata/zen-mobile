@@ -35,6 +35,7 @@ Without a Swift toolchain (for example on a Linux sandbox), you can't run these.
    - No duplication. Extract a shared function or view on the second copy.
    - Every `public` declaration has a `///` doc comment. Comments explain *why*, not *what*.
    - Name things with the spec's vocabulary (`Space`, `Essentials`, `PinnedItem`, `Folder`, `Tab`).
+   - In files that import SwiftUI, write `ZenModel.Tab`: SwiftUI has its own `Tab` type.
    - Dependencies only point downward: App may use every package; ZenUI may use ZenState and ZenModel; ZenState may use ZenStore and ZenModel; ZenStore may use ZenModel; ZenModel imports only Foundation.
 5. **Keep the docs true.** If a change alters behaviour, update `docs/product-spec.md` in the same PR. If it alters structure, update `docs/architecture.md`. Tick off roadmap items as they land.
 6. **Before pushing:** run every check above that the environment allows, re-read the diff, and remove debugging leftovers.

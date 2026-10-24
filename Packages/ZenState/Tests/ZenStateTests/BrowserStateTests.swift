@@ -12,7 +12,7 @@ import ZenStore
             .appendingPathComponent(UUID().uuidString)
             .appendingPathComponent("browser.json")
     )
-    private static let fixedNow = Date(timeIntervalSince1970: 1_000_000)
+    nonisolated private static let fixedNow = Date(timeIntervalSince1970: 1_000_000)
 
     private func makeState(store: FileStore? = nil) -> BrowserState {
         BrowserState(data: .firstLaunch(), store: store, saveDelay: .seconds(3600), clock: { Self.fixedNow })

@@ -3,7 +3,7 @@ import ZenModel
 
 /// A tab in the space list (spec §3.2).
 struct TabRow: View {
-    let tab: Tab
+    let tab: ZenModel.Tab
     let accent: UInt32
     var depth = 0
 

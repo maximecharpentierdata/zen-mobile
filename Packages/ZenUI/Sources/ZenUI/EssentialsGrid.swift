@@ -3,7 +3,7 @@ import ZenModel
 
 /// Favourite sites shared by all spaces, as a 4-column grid of icons (spec §3.2).
 struct EssentialsGrid: View {
-    let tabs: [Tab]
+    let tabs: [ZenModel.Tab]
     let accent: UInt32
 
     private let columns = Array(

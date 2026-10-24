@@ -3,7 +3,7 @@ import ZenModel
 
 /// A tab's icon. Until favicons load (M3), it shows the first letter of the title or host on the accent colour.
 struct FaviconBadge: View {
-    let tab: Tab
+    let tab: ZenModel.Tab
     let accent: UInt32
     let size: CGFloat
 

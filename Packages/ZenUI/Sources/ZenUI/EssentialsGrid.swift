@@ -13,7 +13,23 @@ struct EssentialsGrid: View {
         count: Theme.essentialsColumns
     )
 
+    /// The whole grid accepts drops, at the end, so a tab can join Essentials even when the grid is empty or full.
     var body: some View {
+        Group {
+            if tabs.isEmpty {
+                DropPlaceholder(
+                    text: "Drag a tab here to add it to Essentials",
+                    height: Theme.Size.essentialTileHeight,
+                    cornerRadius: Theme.Radius.essentialTile
+                )
+            } else {
+                grid
+            }
+        }
+        .dropsTab(state: menus.state) { .essentials(index: .max) }
+    }
+
+    private var grid: some View {
         LazyVGrid(columns: columns, spacing: Theme.Spacing.grid) {
             ForEach(tabs) { tab in
                 Button {

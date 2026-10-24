@@ -11,7 +11,23 @@ struct PinnedSection: View {
     let onToggleFolder: @MainActor (Folder.ID) -> Void
     let onOpen: @MainActor (ZenModel.Tab.ID) -> Void
 
+    /// The whole section accepts drops, at its end, so a tab can be pinned even when nothing is pinned yet.
     var body: some View {
+        Group {
+            if items.isEmpty {
+                DropPlaceholder(
+                    text: "Drag a tab here to pin it",
+                    height: Theme.Size.tabRowHeight,
+                    cornerRadius: Theme.Radius.tabRow
+                )
+            } else {
+                rows
+            }
+        }
+        .dropsTab(state: menus.state) { .pinned(spaceID, folder: nil, index: .max) }
+    }
+
+    private var rows: some View {
         VStack(alignment: .leading, spacing: Theme.Spacing.rowGap) {
             ForEach(PinnedRow.rows(for: items)) { row in
                 switch row {

@@ -8,6 +8,7 @@ struct SpacePage: View {
     let space: Space
     let essentials: [ZenModel.Tab]
     let header: SpaceHeader
+    let menus: RowMenus
     let onToggleFolder: @MainActor (Folder.ID) -> Void
     let onOpen: @MainActor (ZenModel.Tab.ID) -> Void
 
@@ -16,10 +17,11 @@ struct SpacePage: View {
             header
             ScrollView {
                 VStack(alignment: .leading, spacing: Theme.Spacing.section) {
-                    EssentialsGrid(tabs: essentials, accent: space.accentColor) { onOpen($0) }
+                    EssentialsGrid(tabs: essentials, accent: space.accentColor, menus: menus) { onOpen($0) }
                     PinnedSection(
                         items: space.pinned,
                         accent: space.accentColor,
+                        menus: menus,
                         onToggleFolder: { onToggleFolder($0) },
                         onOpen: { onOpen($0) }
                     )
@@ -45,6 +47,7 @@ struct SpacePage: View {
                     TabRow(tab: tab, accent: space.accentColor)
                 }
                 .buttonStyle(.plain)
+                .contextMenu { menus.tabMenu(for: tab) }
             }
         }
     }

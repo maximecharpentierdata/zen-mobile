@@ -54,6 +54,11 @@ Actions on a tab row:
 - Tap: open the tab (3.4).
 - Swipe the row left: close it (regular tabs) or unload it (pinned tabs, which stay in the list).
 - Long-press: context menu with Pin/Unpin, Move to folder, Move to space, Add to Essentials, Duplicate, Close.
+  - Move to folder lists every folder of the space, collapsed or not, and "New folder…", which asks for a name, creates the folder at the end of the pinned section and moves the tab into it. A regular tab moved into a folder becomes pinned. *(proposal)*
+  - Move to space is hidden when there is only one space.
+  - Duplicate puts the copy right after the original, in the same place. *(proposal)*
+- Long-press on an Essential: Remove from Essentials (the tab goes to the top of the current space's regular tabs), Duplicate, Close. *(proposal)*
+- Long-press on a folder: Rename, Delete folder (its tabs and folders take its place). *(proposal)*
 - Long-press then drag: reorder, including into or out of folders and across the divider. Dragging across the divider pins or unpins the tab.
 
 Automatic clean-up of regular tabs:

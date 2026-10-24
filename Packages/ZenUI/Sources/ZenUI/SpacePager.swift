@@ -11,6 +11,7 @@ struct SpacePager: View {
     let state: BrowserState
     let onOpen: @MainActor (ZenModel.Tab.ID) -> Void
     let onAction: @MainActor (SpaceAction) -> Void
+    let menus: RowMenus
     /// Where the pager is between two spaces, for blending their colours.
     @Binding var paging: SpacePaging
 
@@ -24,6 +25,7 @@ struct SpacePager: View {
                         space: space,
                         essentials: state.data.essentials,
                         header: header(for: space),
+                        menus: menus,
                         onToggleFolder: { state.toggleFolder($0) },
                         onOpen: { onOpen($0) }
                     )

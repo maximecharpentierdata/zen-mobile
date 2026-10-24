@@ -12,10 +12,17 @@ struct SpaceScreen: View {
     @State private var paging = SpacePaging(offset: 0, pageWidth: 0, pageCount: 0)
     @State private var editor: SpaceEditor.Target?
     @State private var deleting: Space?
+    @State private var namePrompt: NamePrompt?
 
     var body: some View {
         VStack(spacing: Theme.Spacing.section) {
-            SpacePager(state: state, onOpen: onOpen, onAction: handle, paging: $paging)
+            SpacePager(
+                state: state,
+                onOpen: onOpen,
+                onAction: handle,
+                menus: RowMenus(state: state) { namePrompt = $0 },
+                paging: $paging
+            )
             Group {
                 SpaceDots(
                     count: state.data.spaces.count,
@@ -30,6 +37,7 @@ struct SpaceScreen: View {
         .padding(.vertical, Theme.Spacing.grid)
         .background(Theme.spaceBackground(accent: accent).ignoresSafeArea())
         .modifier(SpaceManagement(state: state, editor: $editor, deleting: $deleting))
+        .modifier(NamePromptAlert(state: state, prompt: $namePrompt))
     }
 
     private func handle(_ action: SpaceAction) {

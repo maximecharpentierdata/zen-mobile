@@ -6,6 +6,7 @@ import ZenState
 struct PinnedSection: View {
     let items: [PinnedItem]
     let accent: UInt32
+    let menus: RowMenus
     let onToggleFolder: @MainActor (Folder.ID) -> Void
     let onOpen: @MainActor (ZenModel.Tab.ID) -> Void
 
@@ -17,6 +18,7 @@ struct PinnedSection: View {
                     FolderRow(folder: folder, tabCount: tabCount, accent: accent, depth: depth) {
                         onToggleFolder(folder.id)
                     }
+                    .contextMenu { menus.folderMenu(for: folder) }
                 case .tab(let tab, let depth):
                     Button {
                         onOpen(tab.id)
@@ -24,6 +26,7 @@ struct PinnedSection: View {
                         TabRow(tab: tab, accent: accent, depth: depth)
                     }
                     .buttonStyle(.plain)
+                    .contextMenu { menus.tabMenu(for: tab) }
                 }
             }
         }

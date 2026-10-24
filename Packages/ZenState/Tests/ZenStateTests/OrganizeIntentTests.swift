@@ -41,6 +41,18 @@ import ZenModel
         #expect(state.data.location(of: tab) == .regular(state.data.currentSpaceID))
     }
 
+    @Test func pinnedURLResetAndReplace() throws {
+        let state = makeState()
+        let tab = try #require(state.newTab(url: URL(string: "https://example.com/mail")))
+        state.pin(tab)
+        state.pageDidChange(tab, url: URL(string: "https://example.com/mail/42"), title: "Message")
+        state.resetToPinnedURL(tab)
+        #expect(state.data.tab(tab)?.url?.absoluteString == "https://example.com/mail")
+        state.pageDidChange(tab, url: URL(string: "https://example.com/inbox"), title: "Inbox")
+        state.replacePinnedURL(tab)
+        #expect(state.data.tab(tab)?.pinnedURL?.absoluteString == "https://example.com/inbox")
+    }
+
     @Test func movePinnedTabToAnotherFolder() throws {
         let state = makeState()
         let space = state.data.currentSpaceID

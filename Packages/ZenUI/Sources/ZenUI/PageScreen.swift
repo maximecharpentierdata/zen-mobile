@@ -64,11 +64,20 @@ struct PageScreen: View {
             PageBar(
                 tab: tab,
                 onTap: { state.editAddress() },
+                onDoubleTap: resetToPinnedURL,
                 onShowSpace: onShowSpace,
                 onNewTab: { state.startNewTab() },
                 onDrag: onDrag,
                 onRelease: onRelease
             )
         }
+    }
+
+    /// Only pinned tabs and Essentials go back to a pinned URL on a double tap (spec §3.4).
+    private var resetToPinnedURL: (@MainActor () -> Void)? {
+        guard tab.pinnedURL != nil else { return nil }
+        let state = state
+        let id = tab.id
+        return { state.resetToPinnedURL(id) }
     }
 }

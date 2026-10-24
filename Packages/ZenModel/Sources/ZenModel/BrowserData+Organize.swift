@@ -22,20 +22,20 @@ extension BrowserData {
         try updateSpace(spaceID) { $0.regular.insert(tab, at: 0) }
     }
 
-    /// Moves a tab from a space into Essentials, at the end.
+    /// Moves a tab from a space into Essentials, at the end. Like a pinned tab, it remembers its URL.
     public mutating func addToEssentials(_ id: Tab.ID) throws {
         guard let location = location(of: id), location != .essentials else {
             throw ModelError.invalidTabLocation(id)
         }
         let removed = try removeTab(id)
-        essentials.append(Self.unpinned(removed))
+        essentials.append(Self.keepingPinnedURL(removed))
     }
 
-    /// Moves a tab out of Essentials, to the top of a space's regular tabs.
+    /// Moves a tab out of Essentials, to the top of a space's regular tabs. It forgets its pinned URL.
     public mutating func removeFromEssentials(_ id: Tab.ID, to spaceID: Space.ID) throws {
         guard location(of: id) == .essentials else { throw ModelError.invalidTabLocation(id) }
         _ = try spaceIndex(spaceID)
-        let tab = try removeTab(id)
+        let tab = Self.unpinned(try removeTab(id))
         try updateSpace(spaceID) { $0.regular.insert(tab, at: 0) }
     }
 

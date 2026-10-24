@@ -6,6 +6,8 @@ import ZenModel
 struct PageBar: View {
     let tab: ZenModel.Tab
     let onTap: @MainActor () -> Void
+    /// Set for pinned tabs and Essentials: a double tap goes back to the pinned URL (spec §3.4).
+    let onDoubleTap: (@MainActor () -> Void)?
     let onShowSpace: @MainActor () -> Void
     let onNewTab: @MainActor () -> Void
     /// The finger moved: upward distance in points.
@@ -14,24 +16,22 @@ struct PageBar: View {
     let onRelease: @MainActor (CGFloat, CGFloat) -> Void
 
     var body: some View {
-        Button(action: onTap) {
-            VStack(spacing: 2) {
-                Text(title)
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(Theme.Palette.primaryText)
+        VStack(spacing: 2) {
+            Text(title)
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(Theme.Palette.primaryText)
+                .lineLimit(1)
+            if let host = tab.url?.host() {
+                Text(host)
+                    .font(.caption)
+                    .foregroundStyle(Theme.Palette.secondaryText)
                     .lineLimit(1)
-                if let host = tab.url?.host() {
-                    Text(host)
-                        .font(.caption)
-                        .foregroundStyle(Theme.Palette.secondaryText)
-                        .lineLimit(1)
-                }
             }
-            .padding(.horizontal, Theme.Spacing.section)
-            .frame(maxWidth: .infinity, minHeight: Theme.Size.pageBarHeight)
-            .background(Theme.Palette.pageBarFill, in: .capsule)
         }
-        .buttonStyle(.plain)
+        .padding(.horizontal, Theme.Spacing.section)
+        .frame(maxWidth: .infinity, minHeight: Theme.Size.pageBarHeight)
+        .background(Theme.Palette.pageBarFill, in: .capsule)
+        .onTap(onTap, doubleTap: onDoubleTap)
         .gesture(
             DragGesture(minimumDistance: GestureMetrics.barDragMinimumDistance, coordinateSpace: .global)
                 .onChanged { value in onDrag(-value.translation.height) }

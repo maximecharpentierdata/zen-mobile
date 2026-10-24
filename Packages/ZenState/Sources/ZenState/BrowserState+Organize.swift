@@ -87,6 +87,16 @@ extension BrowserState {
         perform { try $0.renameFolder(id, to: name) }
     }
 
+    /// Loads a pinned tab's or an Essential's pinned URL again (spec §3.2).
+    public func resetToPinnedURL(_ id: Tab.ID) {
+        perform { try $0.resetToPinnedURL(id) }
+    }
+
+    /// Makes the page a pinned tab or an Essential shows now its pinned URL (spec §3.2).
+    public func replacePinnedURL(_ id: Tab.ID) {
+        perform { try $0.replacePinnedURL(id) }
+    }
+
     /// Deletes a folder. Its tabs and folders take its place.
     public func deleteFolder(_ id: Folder.ID) {
         perform { try $0.deleteFolder(id) }

@@ -7,7 +7,7 @@ log="$(mktemp)"
 "$@" 2>&1 | tee "$log"
 status=${PIPESTATUS[0]}
 if [ "$status" -ne 0 ]; then
-    grep -E "error:|warning:|failed|Failed|✘" "$log" | head -n 40 | while IFS= read -r line; do
+    grep -E "error:|warning:|fatal:|failed|Failed|✘" "$log" | head -n 40 | while IFS= read -r line; do
         echo "::error::${line}"
     done
 fi

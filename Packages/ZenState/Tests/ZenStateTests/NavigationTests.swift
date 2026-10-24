@@ -45,7 +45,7 @@ import ZenModel
         #expect(state.isEditingAddress == false)
         state.editAddress()
         state.submitAddress("knot tying")
-        #expect(state.openTab?.url?.host() == "duckduckgo.com")
+        #expect(state.openTab?.url?.host() == "www.google.com")
     }
 
     @Test func pageChangesAreRecorded() throws {

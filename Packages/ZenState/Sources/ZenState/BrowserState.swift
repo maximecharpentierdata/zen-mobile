@@ -18,7 +18,7 @@ public final class BrowserState {
     /// Whether the address field is being edited (spec §3.4, §3.6).
     public internal(set) var isEditingAddress = false
     /// The engine for typed text that isn't an address. A setting will come later (spec §3.6).
-    public let searchEngine: SearchEngine = .duckDuckGo
+    public let searchEngine: SearchEngine = .google
 
     @ObservationIgnored private let store: FileStore?
     @ObservationIgnored private let saveDelay: Duration

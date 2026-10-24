@@ -5,7 +5,7 @@ import Testing
 
 @Suite struct AddressInputTests {
     private func resolve(_ text: String) -> String? {
-        AddressInput.url(for: text, engine: .duckDuckGo)?.absoluteString
+        AddressInput.url(for: text, engine: .google)?.absoluteString
     }
 
     @Test func fullURLsAreKept() {
@@ -20,9 +20,9 @@ import Testing
     }
 
     @Test func otherTextIsSearched() {
-        #expect(resolve("hiking boots") == "https://duckduckgo.com/?q=hiking%20boots")
-        #expect(resolve("hello") == "https://duckduckgo.com/?q=hello")
-        #expect(resolve("what is 2.5") == "https://duckduckgo.com/?q=what%20is%202.5")
+        #expect(resolve("hiking boots") == "https://www.google.com/search?q=hiking%20boots")
+        #expect(resolve("hello") == "https://www.google.com/search?q=hello")
+        #expect(resolve("what is 2.5") == "https://www.google.com/search?q=what%20is%202.5")
     }
 
     @Test func blankTextGivesNothing() {

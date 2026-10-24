@@ -48,7 +48,7 @@ From top to bottom:
 4. Divider.
 5. Regular tabs. The active tab is highlighted.
 6. Space page indicator (one dot per space, the current one wider).
-7. Bottom bar: a "Search or enter address" field and a **+** (new tab) button.
+7. Bottom bar: a "Search or enter address" field, which opens a new tab. There is no **+** button: the field and the bar gesture already open a new tab.
 
 Actions on a tab row:
 - Tap: open the tab (3.4).
@@ -74,7 +74,7 @@ Automatic clean-up of regular tabs:
 ### 3.3 Changing space (design 2A)
 - Swipe left or right anywhere on the space screen to go to the next or previous space.
 - The list follows the finger 1:1, like pages. Release past about half the width, or with a fast flick, to change space; otherwise it snaps back.
-- The background colour blends between the two spaces' colours during the swipe. The dots and the bottom bar use the blended colour too.
+- The background colour blends between the two spaces' colours during the swipe. The dots use the blended colour too.
 - Scrolling direction locks after the first few points of movement, so a vertical scroll never changes space by accident.
 - These three behaviours come from the system's paging scroll view, so their thresholds are the system's, not ours. If testing on a device shows they need tuning, we will replace it with our own gesture. *(tune)*
 - At the first space the swipe resists (rubber band). Swiping past the last space shows a "New space" page. *(proposal)*
@@ -105,7 +105,7 @@ The upward drag starts **on the page's bottom bar**, never at the screen edge (t
 - New tabs go at the top of the current space's regular tabs. *(proposal)*
 
 ### 3.6 New tab
-- It is reachable from the **+** button on the space screen, from the search field on the space screen, and from stop 2 of the bar gesture.
+- It is reachable from the search field on the space screen and from stop 2 of the bar gesture.
 - It shows an address field with focus, then suggestions from history, open tabs and a search engine.
 - Text that isn't a web address is searched with **Google** (decided 2026-10-24). A setting to change the engine will come later.
 

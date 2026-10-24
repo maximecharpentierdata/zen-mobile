@@ -6,7 +6,7 @@ The mockups are on the design canvas: https://claude.ai/artifact/CU3FytabM5HGKnF
 
 | Area | Choice | Canvas frame |
 |---|---|---|
-| Space screen | **1A**: Zen-style sidebar, full screen. From top: header, Essentials grid, pinned tabs and folders, divider, regular tabs, space dots, search field and + button | 1A |
+| Space screen | **1A**: Zen-style sidebar, full screen. From top: header, Essentials grid, pinned tabs and folders, divider, regular tabs, space dots, search field | 1A |
 | Changing space | **2A**: paged horizontal swipe; the list follows the finger and the colour blends between spaces | 2A |
 | Opening a tab | **3A**: the tab row zooms into the page | 3A |
 | Opened page | Full screen, with a single bottom bar showing the tab title and the domain | 5 |

@@ -44,7 +44,7 @@ What I checked on GitHub (2026-10-24):
 
 Plan:
 - `scripts/vendor-browserkit.sh <commit>` copies only the needed targets (`WebEngine`, `Common`, then `SiteImageView` when favicons come in) into `Vendor/BrowserKit/`, with a cut-down `Package.swift`. It records the source commit in `Vendor/BrowserKit/VENDORED_FROM`.
-- Vendored files keep their MPL-2.0 headers and stay unmodified. Any change we need is a small patch in `Vendor/BrowserKit/patches/`, applied by the script, so updates stay possible.
+- Our own code is MPL-2.0 as well. Vendored files keep their MPL-2.0 headers and stay unmodified. Any change we need is a small patch in `Vendor/BrowserKit/patches/`, applied by the script, so updates stay possible.
 - Mozilla's `SampleBrowser` is the reference for how to use `WebEngine`.
 - Zen desktop (Gecko, MPL-2.0) is used as a reference for behaviour and concepts only; no code is reused from it.
 

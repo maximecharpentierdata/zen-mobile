@@ -12,4 +12,4 @@ Each milestone ends with a PR that builds, passes CI and can be tried.
 | M5 | Spaces | Paged swipe between spaces with colour blending; create/rename/delete spaces | spec §3.3, §3.7 |
 | M6 | Tab management | Swipe to close, context menu, drag to reorder, folders, pin/unpin, Essentials | spec §3.2 |
 | M7 | Polish | Accessibility alternatives, Reduce Motion, memory/unloading, performance on older iPhones | spec §4–5 |
-| M8 | TestFlight | App icon, name, privacy details, first TestFlight build | open questions Q5–Q6 |
+| M8 | TestFlight | App icon, name, privacy details, first TestFlight build | Check the use of the "Zen" name with the Zen project (spec §7) |

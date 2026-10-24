@@ -14,7 +14,7 @@ Zen for iPhone brings the Zen Browser way of working to the phone. Tabs are a ve
 | Concept | Definition |
 |---|---|
 | **Space** | A named group of tabs with its own icon and colour. The user has 1 or more spaces, in an order they choose. |
-| **Essentials** | A grid of favourite sites shown at the top of the space screen as icons, without titles. |
+| **Essentials** | A grid of favourite sites shown at the top of the space screen as icons, without titles. Essentials are **shared by all spaces**, as in Zen desktop. |
 | **Pinned tab** | A tab kept above the divider. It remembers its *pinned URL*, so it can be reset to it. |
 | **Folder** | A named, collapsible group in the pinned section. Folders can be nested. |
 | **Regular tab** | A tab below the divider. |
@@ -26,7 +26,7 @@ Space structure:
 Space
 ├─ pinned: [PinnedItem]       PinnedItem = Tab | Folder(children: [PinnedItem])
 └─ regular: [Tab]
-Essentials: [Tab]             (scope: see open question Q1)
+Essentials: [Tab]             (shared by all spaces)
 ```
 
 Rules:
@@ -55,6 +55,11 @@ Actions on a tab row:
 - Swipe the row left: close it (regular tabs) or unload it (pinned tabs, which stay in the list).
 - Long-press: context menu with Pin/Unpin, Move to folder, Move to space, Add to Essentials, Duplicate, Close.
 - Long-press then drag: reorder, including into or out of folders and across the divider. Dragging across the divider pins or unpins the tab.
+
+Automatic clean-up of regular tabs:
+- A regular tab that hasn't been opened for a set time is closed automatically. Pinned tabs, tabs in folders and Essentials are never closed this way.
+- The delay is a setting: 12 h, 24 h, 7 days or Never. The default is 24 h. *(proposal, tune)*
+- Closed tabs go to a "Recently closed" list, so they can be restored.
 
 ### 3.3 Changing space (design 2A)
 - Swipe left or right anywhere on the space screen to go to the next or previous space.
@@ -93,7 +98,6 @@ The upward drag starts **on the page's bottom bar**, never at the screen edge (t
 - WebKit (`WKWebView`) is required by App Store rules outside the EU. The app uses it everywhere.
 - Background tabs can be unloaded to save memory and restored from saved navigation state when opened.
 - A snapshot image is kept for each tab and used during transitions, so an animation never waits for a page to load.
-- Private browsing per space is out of scope for v1 (see open questions).
 
 ## 5. Accessibility
 - Every gesture has a button or menu alternative: the bar has VoiceOver actions "Back to space" and "New tab"; changing space has previous/next actions.
@@ -101,12 +105,15 @@ The upward drag starts **on the page's bottom bar**, never at the screen edge (t
 - Dynamic Type is supported on the space screen and the bar.
 
 ## 6. Out of scope for v1
-Sync (including with Zen desktop), extensions, split view, Glance, compact mode, iPad layout, themes beyond the space colour, and import from other browsers.
+Sync (including with Zen desktop), private browsing, extensions, split view, Glance, compact mode, iPad layout, themes beyond the space colour, and import from other browsers.
 
-## 7. Open questions
-- **Q1.** Are Essentials shared by all spaces, or does each space have its own? This needs checking against Zen desktop's behaviour, then a decision.
-- **Q2.** Sync with Zen desktop: Zen added Spaces sync through Mozilla accounts in 2026. The data format and whether a third-party app can use it are unknown. To research before v2.
-- **Q3.** Should regular tabs be cleaned up automatically after some time?
-- **Q4.** Should there be a private space or private tabs?
-- **Q5.** What licence do we use for our own code? Vendored Mozilla files stay MPL-2.0 either way.
-- **Q6.** Name and branding: is it fine to use "Zen" in the App Store name? The Zen project would need to agree.
+## 7. Decisions on earlier open questions (2026-10-24)
+- **Essentials:** shared by all spaces, as in Zen desktop (§2).
+- **Sync with Zen desktop:** not in v1. Zen added Spaces sync through Mozilla accounts in 2026; its data format and whether a third-party app can use it are still to research before v2.
+- **Automatic clean-up of regular tabs:** yes (§3.2). The delay values are proposals.
+- **Private browsing:** not in v1.
+- **Licence:** MPL-2.0 for our own code (see `LICENSE`).
+- **Name:** "Zen" stays the working name for now. Before any App Store release, we need to check with the Zen project.
+
+## 8. Open questions
+None at the moment.

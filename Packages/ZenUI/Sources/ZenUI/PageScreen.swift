@@ -8,6 +8,9 @@ struct PageScreen: View {
     let state: BrowserState
     let tab: ZenModel.Tab
     let webViews: WebViewStore
+    let onDrag: @MainActor (CGFloat) -> Void
+    let onRelease: @MainActor (CGFloat, CGFloat) -> Void
+    let onShowSpace: @MainActor () -> Void
 
     var body: some View {
         let accent = state.data.currentSpace.accentColor
@@ -37,8 +40,10 @@ struct PageScreen: View {
             PageBar(
                 tab: tab,
                 onTap: { state.editAddress() },
-                onShowSpace: { state.showSpace() },
-                onNewTab: { state.startNewTab() }
+                onShowSpace: onShowSpace,
+                onNewTab: { state.startNewTab() },
+                onDrag: onDrag,
+                onRelease: onRelease
             )
         }
     }

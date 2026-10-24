@@ -43,6 +43,7 @@ enum Theme {
         static let essentialTileHeight: CGFloat = 60
         static let bottomBarHeight: CGFloat = 50
         static let pageBarHeight: CGFloat = 56
+        static let stopMarkerHeight: CGFloat = 40
         static let headerIcon: CGFloat = 32
         static let favicon: CGFloat = 20
         static let essentialIcon: CGFloat = 28

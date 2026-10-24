@@ -5,6 +5,8 @@ import ZenState
 /// The full-screen space the app opens on (spec §3.1, §3.2; design 1A).
 struct SpaceScreen: View {
     let state: BrowserState
+    let onOpen: @MainActor (ZenModel.Tab.ID) -> Void
+    let onNewTab: @MainActor () -> Void
 
     var body: some View {
         let space = state.data.currentSpace
@@ -12,12 +14,12 @@ struct SpaceScreen: View {
             SpaceHeader(space: space)
             ScrollView {
                 VStack(alignment: .leading, spacing: Theme.Spacing.section) {
-                    EssentialsGrid(tabs: state.data.essentials, accent: space.accentColor) { state.open($0) }
+                    EssentialsGrid(tabs: state.data.essentials, accent: space.accentColor) { onOpen($0) }
                     PinnedSection(
                         items: space.pinned,
                         accent: space.accentColor,
                         onToggleFolder: { state.toggleFolder($0) },
-                        onOpen: { state.open($0) }
+                        onOpen: { onOpen($0) }
                     )
                     Rectangle()
                         .fill(Theme.Palette.divider)
@@ -27,7 +29,7 @@ struct SpaceScreen: View {
                     VStack(spacing: Theme.Spacing.rowGap) {
                         ForEach(space.regular) { tab in
                             Button {
-                                state.open(tab.id)
+                                onOpen(tab.id)
                             } label: {
                                 TabRow(tab: tab, accent: space.accentColor)
                             }
@@ -38,7 +40,7 @@ struct SpaceScreen: View {
             }
             .scrollIndicators(.hidden)
             SpaceDots(count: state.data.spaces.count, currentIndex: currentIndex, accent: space.accentColor)
-            SpaceBottomBar(accent: space.accentColor) { state.startNewTab() }
+            SpaceBottomBar(accent: space.accentColor) { onNewTab() }
         }
         .padding(.horizontal, Theme.Spacing.screenMargin)
         .padding(.vertical, Theme.Spacing.grid)

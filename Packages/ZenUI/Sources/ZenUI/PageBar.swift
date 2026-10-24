@@ -2,12 +2,16 @@ import SwiftUI
 import ZenModel
 
 /// The only control on an open page: the tab's title with its domain underneath (spec §3.4).
-/// Tapping it edits the address; dragging it up is the bar gesture (spec §3.5, M4).
+/// Tapping it edits the address; dragging it up is the bar gesture (spec §3.5).
 struct PageBar: View {
     let tab: ZenModel.Tab
     let onTap: @MainActor () -> Void
     let onShowSpace: @MainActor () -> Void
     let onNewTab: @MainActor () -> Void
+    /// The finger moved: upward distance in points.
+    let onDrag: @MainActor (CGFloat) -> Void
+    /// The finger lifted: upward distance and upward speed in points per second.
+    let onRelease: @MainActor (CGFloat, CGFloat) -> Void
 
     var body: some View {
         Button(action: onTap) {
@@ -28,6 +32,11 @@ struct PageBar: View {
             .background(Theme.Palette.pageBarFill, in: .capsule)
         }
         .buttonStyle(.plain)
+        .gesture(
+            DragGesture(minimumDistance: GestureMetrics.barDragMinimumDistance, coordinateSpace: .global)
+                .onChanged { value in onDrag(-value.translation.height) }
+                .onEnded { value in onRelease(-value.translation.height, -value.velocity.height) }
+        )
         .accessibilityHint(Text("Edits the address"))
         .accessibilityAction(named: Text("Back to space")) { onShowSpace() }
         .accessibilityAction(named: Text("New tab")) { onNewTab() }

@@ -12,9 +12,13 @@ struct AddressEditor: View {
     @State private var text = ""
     @FocusState private var isFocused: Bool
 
+    private var prompt: Text {
+        Text("Search or enter address").foregroundStyle(Theme.Palette.secondaryText)
+    }
+
     var body: some View {
         HStack(spacing: Theme.Spacing.grid) {
-            TextField(text: $text, prompt: Text("Search or enter address")) {
+            TextField(text: $text, prompt: prompt) {
                 Text("Address")
             }
             .focused($isFocused)

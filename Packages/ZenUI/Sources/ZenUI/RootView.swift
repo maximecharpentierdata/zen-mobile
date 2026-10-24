@@ -96,10 +96,16 @@ public struct RootView: View {
         .onAppear(perform: animateOpen)
     }
 
-    /// Where a page without a visible row (a brand-new tab) grows from and shrinks to: the new-tab button.
+    /// Where a page without a visible row (a brand-new tab) grows from and shrinks to: the search field.
     private var fallbackRow: CGRect {
-        let size = Theme.Size.bottomBarHeight
-        return CGRect(x: screenFrame.maxX - size, y: screenFrame.maxY - size, width: size, height: size)
+        let margin = Theme.Spacing.screenMargin
+        let height = Theme.Size.bottomBarHeight
+        return CGRect(
+            x: screenFrame.minX + margin,
+            y: screenFrame.maxY - height,
+            width: screenFrame.width - 2 * margin,
+            height: height
+        )
     }
 
     private func open(_ id: ZenModel.Tab.ID) {

@@ -38,6 +38,26 @@ public final class WebViewStore {
         webView.load(URLRequest(url: url))
     }
 
+    /// Whether the tab's page has an earlier page in its history.
+    public func canGoBack(_ id: ZenModel.Tab.ID) -> Bool {
+        webViews[id]?.canGoBack ?? false
+    }
+
+    /// Whether the tab's page has a later page in its history.
+    public func canGoForward(_ id: ZenModel.Tab.ID) -> Bool {
+        webViews[id]?.canGoForward ?? false
+    }
+
+    /// Goes to the previous page in the tab's history.
+    public func goBack(_ id: ZenModel.Tab.ID) {
+        webViews[id]?.goBack()
+    }
+
+    /// Goes to the next page in the tab's history.
+    public func goForward(_ id: ZenModel.Tab.ID) {
+        webViews[id]?.goForward()
+    }
+
     /// Frees a tab's web view, for example when the tab closes or memory runs low.
     public func unload(_ id: ZenModel.Tab.ID) {
         webViews[id]?.stopLoading()

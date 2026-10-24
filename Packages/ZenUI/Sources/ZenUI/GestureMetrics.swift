@@ -13,11 +13,20 @@ enum GestureMetrics {
     static let barDragMinimumDistance: CGFloat = 10
     /// How far towards its row the page shrinks while dragging, at stop 2 (0 = not at all, 1 = onto the row).
     static let barMaxDragCollapse: CGFloat = 0.6
+    /// Sideways swipe on a page after which releasing goes back or forward (spec §3.4).
+    static let pageSwipeCommitDistance: CGFloat = 100
+    /// Sideways speed, in points per second, from which a shorter swipe on a page still navigates (spec §3.4).
+    static let pageSwipeFlickVelocity: CGFloat = 800
 }
 
 extension GestureMetrics {
     /// The bar gesture's decision logic, with these thresholds.
     static var barGesture: BarGesture {
         BarGesture(stopSpace: barStopSpace, stopNewTab: barStopNewTab, flickVelocity: barFlickVelocity)
+    }
+
+    /// The page swipe's decision logic, with these thresholds.
+    static var pageSwipe: PageSwipe {
+        PageSwipe(commitDistance: pageSwipeCommitDistance, flickVelocity: pageSwipeFlickVelocity)
     }
 }

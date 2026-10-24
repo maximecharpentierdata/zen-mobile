@@ -13,6 +13,12 @@ struct EssentialsGrid: View {
         count: Theme.essentialsColumns
     )
 
+    /// Double-tapping an Essential goes back to its pinned URL (spec §3.2).
+    private func openPinnedPage(_ id: ZenModel.Tab.ID) {
+        menus.goToPinnedURL(id)
+        onOpen(id)
+    }
+
     /// The whole grid accepts drops, at the end, so a tab can join Essentials even when the grid is empty or full.
     var body: some View {
         Group {
@@ -32,18 +38,14 @@ struct EssentialsGrid: View {
     private var grid: some View {
         LazyVGrid(columns: columns, spacing: Theme.Spacing.grid) {
             ForEach(tabs) { tab in
-                Button {
-                    onOpen(tab.id)
-                } label: {
-                    FaviconBadge(tab: tab, accent: accent, size: Theme.Size.essentialIcon)
-                        .frame(maxWidth: .infinity, minHeight: Theme.Size.essentialTileHeight)
-                        .background(Theme.Palette.tileFill, in: .rect(cornerRadius: Theme.Radius.essentialTile))
-                        .reportsRowFrame(for: tab.id)
-                }
-                .buttonStyle(.plain)
-                .contextMenu { menus.tabMenu(for: tab) }
-                .reorderableTab(tab.id, state: menus.state)
-                .accessibilityLabel(tab.title.isEmpty ? (tab.url?.host() ?? "") : tab.title)
+                FaviconBadge(tab: tab, accent: accent, size: Theme.Size.essentialIcon)
+                    .frame(maxWidth: .infinity, minHeight: Theme.Size.essentialTileHeight)
+                    .background(Theme.Palette.tileFill, in: .rect(cornerRadius: Theme.Radius.essentialTile))
+                    .reportsRowFrame(for: tab.id)
+                    .onTap({ onOpen(tab.id) }, doubleTap: { openPinnedPage(tab.id) })
+                    .contextMenu { menus.tabMenu(for: tab) }
+                    .reorderableTab(tab.id, state: menus.state)
+                    .accessibilityLabel(tab.title.isEmpty ? (tab.url?.host() ?? "") : tab.title)
             }
         }
     }

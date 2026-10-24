@@ -18,15 +18,23 @@ struct RowMenus {
             spaceTabItems(for: tab, in: spaceID)
         case .pinned(let spaceID, _):
             Button("Unpin", systemImage: "pin.slash") { state.unpin(tab.id) }
+            pinnedURLItems(for: tab)
             // Rows don't swipe, because swiping changes space, so unloading a pinned tab lives here.
             Button("Unload", systemImage: "moon.zzz") { onUnload(tab.id) }
             spaceTabItems(for: tab, in: spaceID)
         case .essentials:
             Button("Remove from Essentials", systemImage: "star.slash") { state.removeFromEssentials(tab.id) }
+            pinnedURLItems(for: tab)
             commonItems(for: tab)
         case nil:
             EmptyView()
         }
+    }
+
+    /// Loads the tab's pinned URL again. Its page is freed first, so opening it shows the pinned page.
+    func goToPinnedURL(_ id: ZenModel.Tab.ID) {
+        onUnload(id)
+        state.resetToPinnedURL(id)
     }
 
     /// The menu of a folder.
@@ -44,6 +52,16 @@ struct RowMenus {
         moveToSpaceMenu(for: tab, from: spaceID)
         Button("Add to Essentials", systemImage: "star") { state.addToEssentials(tab.id) }
         commonItems(for: tab)
+    }
+
+    /// Also the alternative to double-tapping a pinned tab or an Essential (spec §5).
+    @ViewBuilder
+    private func pinnedURLItems(for tab: ZenModel.Tab) -> some View {
+        let isAway = tab.url != tab.pinnedURL
+        Button("Go back to pinned page", systemImage: "arrow.uturn.backward") { goToPinnedURL(tab.id) }
+            .disabled(!isAway)
+        Button("Replace pinned URL with current URL", systemImage: "pin.circle") { state.replacePinnedURL(tab.id) }
+            .disabled(!isAway || tab.url == nil)
     }
 
     @ViewBuilder

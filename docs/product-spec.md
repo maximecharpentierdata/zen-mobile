@@ -15,7 +15,7 @@ Zen for iPhone brings the Zen Browser way of working to the phone. Tabs are a ve
 |---|---|
 | **Space** | A named group of tabs with its own icon and colour. The user has 1 or more spaces, in an order they choose. |
 | **Essentials** | A grid of favourite sites shown at the top of the space screen as icons, without titles. Essentials are **shared by all spaces**, as in Zen desktop. |
-| **Pinned tab** | A tab kept above the divider. It remembers its *pinned URL*, so it can be reset to it. |
+| **Pinned tab** | A tab kept above the divider. It remembers its *pinned URL*, so it can be reset to it. Essentials remember a pinned URL too. |
 | **Folder** | A named, collapsible group in the pinned section. Folders can be nested. |
 | **Regular tab** | A tab below the divider. |
 | **Tab** | A web page with its URL, title, favicon, last-access date, saved navigation state and a snapshot image. |
@@ -52,6 +52,7 @@ From top to bottom:
 
 Actions on a tab row:
 - Tap: open the tab (3.4).
+- Double-tap a pinned tab or an Essential: open it on its pinned URL, wherever it had navigated to. A single tap on these waits a moment, to tell it from a double tap.
 - Rows don't swipe: a sideways swipe always changes space (3.3). Closing and unloading are in the long-press menu.
 - Long-press: context menu with Pin/Unpin, Move to folder, Move to space, Add to Essentials, Duplicate, Close.
   - A pinned tab's menu also has Unload: it frees the page and the tab stays in the list.
@@ -59,6 +60,7 @@ Actions on a tab row:
   - Move to space is hidden when there is only one space.
   - Duplicate puts the copy right after the original, in the same place. *(proposal)*
 - Long-press on an Essential: Remove from Essentials (the tab goes to the top of the current space's regular tabs), Duplicate, Close. *(proposal)*
+- Long-press on a pinned tab or an Essential also offers "Go back to pinned page" and "Replace pinned URL with current URL"; both are disabled while the tab shows its pinned URL. A tab that leaves the pinned section or Essentials forgets its pinned URL.
 - Long-press on a folder: Rename, Delete folder (its tabs and folders take its place). *(proposal)*
 - Long-press then drag: reorder, including into or out of folders and across the divider. Dragging across the divider pins or unpins the tab.
   - Dropping a tab on a row puts it right before that row, in the same list (Essentials, a folder, the pinned section or the regular tabs). Dropping it on a folder puts it at the end of that folder; on the divider, or anywhere else in the pinned section, at the end of the pinned section; anywhere else in the Essentials grid, at the end of Essentials; below the last regular tab, at the end of the regular tabs. *(proposal)*
@@ -85,6 +87,7 @@ Automatic clean-up of regular tabs:
 - The opened page is **full screen**. The only control is a **bottom bar** that shows the **tab title** with the **domain** under it.
 - Tapping the bar opens address editing (full URL, keyboard, suggestions).
   - On a regular tab, the new address loads in the same tab. On a pinned tab or an Essential, it opens in a new tab at the top of the current space's regular tabs, and the pinned tab or Essential keeps its page.
+- On a pinned tab or an Essential, double-tapping the bar goes back to the pinned URL.
 - When the page scrolls down, the bar shrinks to a slim title-only strip; scrolling up restores it. *(proposal)*
 - Swipe sideways anywhere on the page to move in its history: to the right goes back, to the left goes forward (asked for on 2026-10-24).
   - The page follows the finger when there is a page to go to that way, and doesn't move otherwise. Release past about 100 pt, or with a fast flick (about 800 pt/s), to go there; otherwise the page snaps back. *(tune)*
@@ -123,7 +126,7 @@ The upward drag starts **on the page's bottom bar**, never at the screen edge (t
 - A snapshot image is kept for each tab and used during transitions, so an animation never waits for a page to load.
 
 ## 5. Accessibility
-- Every gesture has a button or menu alternative: the bar has VoiceOver actions "Back to space" and "New tab"; changing space has previous/next actions. Going back and forward in a page's history will have buttons in the page's "…" menu.
+- Every gesture has a button or menu alternative: the bar has VoiceOver actions "Back to space" and "New tab"; changing space has previous/next actions; double-tapping a pinned tab or an Essential has "Go back to pinned page" in its menu. Going back and forward in a page's history will have buttons in the page's "…" menu.
 - With Reduce Motion on, the zoom and shrink transitions become crossfades.
 - Dynamic Type is supported on the space screen and the bar.
 

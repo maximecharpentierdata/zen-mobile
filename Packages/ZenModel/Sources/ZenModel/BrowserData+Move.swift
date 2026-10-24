@@ -1,7 +1,7 @@
 /// Drag to reorder: moving a tab anywhere, across the divider, into folders and Essentials (spec §3.2).
 extension BrowserData {
-    /// Moves a tab to `destination`. Dropping above the divider pins the tab (it remembers its URL), dropping
-    /// below it or into Essentials unpins it. The destination is checked before anything changes.
+    /// Moves a tab to `destination`. Dropping above the divider or into Essentials pins the tab (it remembers its
+    /// URL), dropping below the divider unpins it. The destination is checked before anything changes.
     public mutating func moveTab(_ id: Tab.ID, to destination: TabDestination) throws {
         guard let source = location(of: id) else { throw ModelError.tabNotFound(id) }
         try checkExists(destination)
@@ -9,9 +9,9 @@ extension BrowserData {
         var tab = try removeTab(id)
         switch destination {
         case .essentials:
-            essentials.insert(Self.unpinned(tab), at: Self.clamp(index, count: essentials.count))
+            essentials.insert(Self.keepingPinnedURL(tab), at: Self.clamp(index, count: essentials.count))
         case .pinned(let spaceID, let folderID, _):
-            tab.pinnedURL = tab.pinnedURL ?? tab.url
+            tab = Self.keepingPinnedURL(tab)
             try updateSpace(spaceID) { space in
                 _ = PinnedTree.insert(.tab(tab), into: folderID, at: index, in: &space.pinned)
             }

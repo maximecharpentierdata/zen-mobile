@@ -64,6 +64,7 @@ struct PageScreen: View {
             PageBar(
                 tab: tab,
                 onTap: { state.editAddress() },
+                onDoubleTap: tab.pinnedURL == nil ? nil : { state.resetToPinnedURL(tab.id) },
                 onShowSpace: onShowSpace,
                 onNewTab: { state.startNewTab() },
                 onDrag: onDrag,

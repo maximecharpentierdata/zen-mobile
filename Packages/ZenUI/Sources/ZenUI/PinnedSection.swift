@@ -11,6 +11,12 @@ struct PinnedSection: View {
     let onToggleFolder: @MainActor (Folder.ID) -> Void
     let onOpen: @MainActor (ZenModel.Tab.ID) -> Void
 
+    /// Double-tapping a pinned tab goes back to its pinned URL (spec §3.2).
+    private func openPinnedPage(_ id: ZenModel.Tab.ID) {
+        menus.goToPinnedURL(id)
+        onOpen(id)
+    }
+
     /// The whole section accepts drops, at its end, so a tab can be pinned even when nothing is pinned yet.
     var body: some View {
         Group {
@@ -38,14 +44,10 @@ struct PinnedSection: View {
                     .contextMenu { menus.folderMenu(for: folder) }
                     .dropsTab(state: menus.state) { .pinned(spaceID, folder: folder.id, index: .max) }
                 case .tab(let tab, let depth):
-                    Button {
-                        onOpen(tab.id)
-                    } label: {
-                        TabRow(tab: tab, accent: accent, depth: depth)
-                    }
-                    .buttonStyle(.plain)
-                    .contextMenu { menus.tabMenu(for: tab) }
-                    .reorderableTab(tab.id, state: menus.state)
+                    TabRow(tab: tab, accent: accent, depth: depth)
+                        .onTap({ onOpen(tab.id) }, doubleTap: { openPinnedPage(tab.id) })
+                        .contextMenu { menus.tabMenu(for: tab) }
+                        .reorderableTab(tab.id, state: menus.state)
                 }
             }
         }

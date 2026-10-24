@@ -39,8 +39,11 @@ struct ZenMobileApp: App {
     private static func makeState() -> BrowserState {
         #if DEBUG
             // Sample content without touching saved data, for CI screenshots and demos.
-            if ProcessInfo.processInfo.environment["ZEN_DEMO_DATA"] == "1" {
-                return BrowserState(data: DemoData.browserData(now: .now))
+            let environment = ProcessInfo.processInfo.environment
+            if environment["ZEN_DEMO_DATA"] == "1" {
+                let state = BrowserState(data: DemoData.browserData(now: .now))
+                DemoData.showScreen(environment["ZEN_DEMO_SCREEN"], in: state)
+                return state
             }
         #endif
         return BrowserState.load(

@@ -24,13 +24,15 @@ struct SpaceScreen: View {
                         .frame(height: 1)
                         .padding(.horizontal, Theme.Spacing.rowPadding)
                         .accessibilityHidden(true)
-                    ForEach(space.regular) { tab in
-                        Button {
-                            state.open(tab.id)
-                        } label: {
-                            TabRow(tab: tab, accent: space.accentColor)
+                    VStack(spacing: Theme.Spacing.rowGap) {
+                        ForEach(space.regular) { tab in
+                            Button {
+                                state.open(tab.id)
+                            } label: {
+                                TabRow(tab: tab, accent: space.accentColor)
+                            }
+                            .buttonStyle(.plain)
                         }
-                        .buttonStyle(.plain)
                     }
                 }
             }

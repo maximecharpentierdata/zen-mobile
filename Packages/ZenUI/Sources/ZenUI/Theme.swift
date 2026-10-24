@@ -22,6 +22,7 @@ enum Theme {
         static let screenMargin: CGFloat = 16
         static let section: CGFloat = 18
         static let rowPadding: CGFloat = 10
+        static let rowGap: CGFloat = 2
         static let rowContent: CGFloat = 12
         static let grid: CGFloat = 10
         static let indentPerLevel: CGFloat = 32

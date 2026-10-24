@@ -37,3 +37,21 @@ public enum DemoData {
         return id
     }
 }
+
+extension DemoData {
+    /// Puts a demo state on a given screen, for CI screenshots: `page` opens the first regular tab,
+    /// `newTab` starts a new tab; anything else stays on the space screen.
+    @MainActor
+    public static func showScreen(_ name: String?, in state: BrowserState) {
+        switch name {
+        case "page":
+            if let tab = state.data.currentSpace.regular.first {
+                state.open(tab.id)
+            }
+        case "newTab":
+            state.startNewTab()
+        default:
+            break
+        }
+    }
+}

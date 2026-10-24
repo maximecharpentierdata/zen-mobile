@@ -1,4 +1,5 @@
 import SwiftUI
+import ZenModel
 
 /// A new tab before any address is entered (spec §3.6): only the address field, centred over the dimmed
 /// space screen. There is no blank page and no bottom bar until an address loads. The field is the space
@@ -6,6 +7,9 @@ import SwiftUI
 ///
 /// Tapping anywhere outside the field closes the new tab, so it needs no Cancel button.
 struct NewTabOverlay: View {
+    /// The pages the address field completes and suggests from.
+    let candidates: [ZenModel.Tab]
+    let accent: UInt32
     /// Shared with the space screen's search field; `nil` with Reduce Motion.
     let fieldNamespace: Namespace.ID?
     let onSubmit: @MainActor (String) -> Void
@@ -18,7 +22,7 @@ struct NewTabOverlay: View {
                 .contentShape(.rect)
                 .onTapGesture { onDismiss() }
                 .accessibilityHidden(true)
-            AddressEditor(initialText: "", onSubmit: onSubmit)
+            AddressEditor(initialText: "", candidates: candidates, accent: accent, onSubmit: onSubmit)
                 .modifier(AddressFieldMatch(namespace: fieldNamespace))
                 .padding(.horizontal, Theme.Spacing.screenMargin)
         }

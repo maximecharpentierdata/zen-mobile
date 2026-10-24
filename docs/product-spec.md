@@ -90,7 +90,7 @@ Automatic clean-up of regular tabs:
 ### 3.4 Opening a tab (design 3A + validated change)
 - Tapping a tab row makes the row grow into the full-screen page (zoom transition, about 0.35 s spring). *(tune)*
 - The opened page is **full screen**. The only controls are a **bottom bar** that shows the **tab title** with the **domain** under it, and a **"…" button** to its right. *(position: proposal)*
-- Tapping the bar opens address editing (full URL, keyboard, suggestions). There is no Cancel button: tapping the page closes the field without loading anything (asked for on 2026-10-24).
+- Tapping the bar opens address editing (full URL, keyboard, suggestions as in §3.6). There is no Cancel button: tapping the page closes the field without loading anything (asked for on 2026-10-24).
   - On a regular tab, the new address loads in the same tab. On a pinned tab or an Essential, it opens in a new tab at the top of the current space's regular tabs, and the pinned tab or Essential keeps its page.
 - On a pinned tab or an Essential, double-tapping the bar goes back to the pinned URL.
 - The "…" button opens the page menu (decided 2026-10-24): **Back**, **Forward**, **Reload**, **Share**, **Copy link**, **Find on page** and **Request desktop site**.
@@ -127,7 +127,11 @@ The upward drag starts **on the page's bottom bar**, never at the screen edge (t
 - That address field is the space screen's search field itself: it leaves the bottom bar, moves up to the centre and takes focus, so there is never a second field at the bottom (asked for on 2026-10-24). Closing the new tab moves it back down into the bottom bar. With Reduce Motion it crossfades instead of moving (§5). The timing is *(tune)*.
 - There is no Cancel button: tapping anywhere outside the field closes the new tab, which leaves nothing behind, and shows the space again.
 - Entering an address loads it, and the page grows from the space screen's search field into the full-screen page (§3.4).
-- It will also show suggestions from history, open tabs and a search engine.
+- Autocomplete while typing, in the new tab and when editing a page's address (asked for on 2026-10-24):
+  - The field completes the first address that starts with what is typed, inline and selected, as in Safari: typing on replaces it, Delete removes it, and Go loads the completed address. It finishes the host first (`git` → `github.com`); once a `/` is typed, it finishes the whole address. Text with a space is never completed. *(proposal)*
+  - Up to 4 matching pages *(proposal)* are listed just above the field, with their icon, title and address. Tapping one loads its address. Pages whose address starts with the text come first, then those whose address contains it, then those whose title contains it. Case, `https://` and `www.` don't matter, and a URL is listed once. When editing a page's address, nothing is listed until the text changes.
+  - Pages come from Essentials, the current space's pinned and regular tabs, the other spaces' tabs, then recently closed tabs, in that order. *(proposal)*
+  - Not yet: browsing history (the app doesn't keep one yet) and search engine suggestions.
 - Text that isn't a web address is searched with **Google** (decided 2026-10-24). A setting to change the engine will come later.
 
 ### 3.7 Space management

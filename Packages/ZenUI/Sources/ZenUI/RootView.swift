@@ -36,12 +36,8 @@ public struct RootView: View {
                 .accessibilityHidden(state.openTab != nil)
             if let tab = state.openTab {
                 if isNewTabOpen {
-                    NewTabOverlay(
-                        fieldNamespace: fieldNamespace,
-                        onSubmit: { state.submitAddress($0) },
-                        onDismiss: dismissNewTab
-                    )
-                    .transition(.opacity)
+                    newTabOverlay
+                        .transition(.opacity)
                 } else {
                     page(for: tab)
                         .id(tab.id)
@@ -99,6 +95,16 @@ public struct RootView: View {
     /// How far the page is towards its row, from the animation or the finger, whichever is further.
     private var progress: CGFloat {
         max(collapse, CGFloat(gesture.shrink(upwardDistance: dragDistance)) * GestureMetrics.barMaxDragCollapse)
+    }
+
+    private var newTabOverlay: some View {
+        NewTabOverlay(
+            candidates: state.data.addressCandidates,
+            accent: state.data.currentSpace.accentColor,
+            fieldNamespace: fieldNamespace,
+            onSubmit: { state.submitAddress($0) },
+            onDismiss: dismissNewTab
+        )
     }
 
     private func page(for tab: ZenModel.Tab) -> some View {

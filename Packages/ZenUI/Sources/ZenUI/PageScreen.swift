@@ -89,6 +89,8 @@ struct PageScreen: View {
         if state.isEditingAddress {
             AddressEditor(
                 initialText: tab.url?.absoluteString ?? "",
+                candidates: state.data.addressCandidates,
+                accent: state.data.currentSpace.accentColor,
                 onSubmit: { state.submitAddress($0) }
             )
         } else {

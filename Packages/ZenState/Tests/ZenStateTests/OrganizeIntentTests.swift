@@ -20,6 +20,19 @@ import ZenModel
         #expect(state.data.location(of: tab) == .pinned(space, folder: folder.id))
     }
 
+    @Test func createEmptyFolderAtTheEndOfThePinnedSection() throws {
+        let state = makeState()
+        let space = state.data.currentSpaceID
+        let tab = try #require(state.newTab())
+        state.pin(tab)
+        state.createFolder(named: " Work ", in: space)
+        state.createFolder(named: " ", in: space)
+        #expect(state.data.currentSpace.pinned.count == 2)
+        let folder = try #require(state.data.currentSpace.pinned.last?.folder)
+        #expect(folder.name == "Work")
+        #expect(folder.children.isEmpty)
+    }
+
     @Test func blankFolderNameDoesNothing() throws {
         let state = makeState()
         let tab = try #require(state.newTab())

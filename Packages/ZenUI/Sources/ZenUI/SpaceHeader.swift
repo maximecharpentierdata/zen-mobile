@@ -49,11 +49,12 @@ struct SpaceHeader: View {
     private var options: some View {
         Menu {
             Button("Edit space", systemImage: "pencil") { onAction(.edit(space.id)) }
+            Button("New folder", systemImage: "folder.badge.plus") { onAction(.newFolder(space.id)) }
             Button("New space", systemImage: "plus") { onAction(.newSpace) }
             Section {
-                Button("Move left", systemImage: "arrow.left") { onAction(.moveLeft(space.id)) }
+                Button("Move left", systemImage: "arrow.left") { onAction(.move(space.id, step: -1)) }
                     .disabled(!canMoveLeft)
-                Button("Move right", systemImage: "arrow.right") { onAction(.moveRight(space.id)) }
+                Button("Move right", systemImage: "arrow.right") { onAction(.move(space.id, step: 1)) }
                     .disabled(!canMoveRight)
             }
             Button("Delete space", systemImage: "trash", role: .destructive) { onAction(.delete(space.id)) }

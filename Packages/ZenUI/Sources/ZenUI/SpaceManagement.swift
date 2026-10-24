@@ -78,10 +78,11 @@ extension SpaceManagement {
             editor = spaces.first { $0.id == id }.map { .edit($0) }
         case .newSpace:
             editor = .new(accent: Theme.Palette.newSpaceAccent(after: spaces.count))
-        case .moveLeft(let id):
-            state.moveSpace(id, step: -1)
-        case .moveRight(let id):
-            state.moveSpace(id, step: 1)
+        case .move(let id, let step):
+            state.moveSpace(id, step: step)
+        case .newFolder:
+            // The space screen asks for the folder's name, with the alert it already shows for folders.
+            break
         case .delete(let id):
             deleting = spaces.first { $0.id == id }
         case .recentlyClosed:

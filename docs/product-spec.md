@@ -42,7 +42,7 @@ Rules:
 
 ### 3.2 Space screen (design 1A)
 From top to bottom:
-1. Header: space icon, space name, and an options button (rename, icon, colour, delete, new space).
+1. Header: space icon, space name, and an options button (rename, icon, colour, delete, new space, new folder). New folder asks for a name and creates an empty folder at the end of the pinned section.
 2. Essentials grid: 4 columns of icon tiles.
 3. Pinned section: pinned tabs and folders. Tapping a folder expands or collapses it. A collapsed folder shows how many tabs it holds.
 4. Divider.

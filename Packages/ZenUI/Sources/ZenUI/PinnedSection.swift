@@ -4,6 +4,7 @@ import ZenState
 
 /// Pinned tabs and folders, above the divider (spec §3.2).
 struct PinnedSection: View {
+    let spaceID: Space.ID
     let items: [PinnedItem]
     let accent: UInt32
     let menus: RowMenus
@@ -19,6 +20,7 @@ struct PinnedSection: View {
                         onToggleFolder(folder.id)
                     }
                     .contextMenu { menus.folderMenu(for: folder) }
+                    .dropsTab(state: menus.state) { .pinned(spaceID, folder: folder.id, index: .max) }
                 case .tab(let tab, let depth):
                     Button {
                         onOpen(tab.id)
@@ -27,6 +29,7 @@ struct PinnedSection: View {
                     }
                     .buttonStyle(.plain)
                     .contextMenu { menus.tabMenu(for: tab) }
+                    .reorderableTab(tab.id, state: menus.state)
                 }
             }
         }

@@ -47,6 +47,11 @@ extension BrowserState {
         }
     }
 
+    /// Moves a dragged tab to where it was dropped (spec §3.2).
+    public func moveTab(_ id: Tab.ID, to destination: TabDestination) {
+        perform { try $0.moveTab(id, to: destination) }
+    }
+
     /// Moves a tab to another space, into the same kind of section.
     public func moveTab(_ id: Tab.ID, toSpace spaceID: Space.ID) {
         perform { try $0.moveTab(id, toSpace: spaceID) }

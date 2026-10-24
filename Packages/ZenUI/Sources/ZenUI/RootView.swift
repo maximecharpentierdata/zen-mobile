@@ -25,7 +25,8 @@ public struct RootView: View {
 
 #Preview {
     let state = BrowserState(data: DemoData.browserData(now: .now))
-    RootView(state: state, webViews: WebViewStore { id, url, title in
+    let webViews = WebViewStore { id, url, title in
         state.pageDidChange(id, url: url, title: title)
-    })
+    }
+    RootView(state: state, webViews: webViews)
 }

@@ -13,9 +13,10 @@ struct ZenMobileApp: App {
     init() {
         let state = Self.makeState()
         _state = State(initialValue: state)
-        _webViews = State(initialValue: WebViewStore { id, url, title in
+        let webViews = WebViewStore { id, url, title in
             state.pageDidChange(id, url: url, title: title)
-        })
+        }
+        _webViews = State(initialValue: webViews)
     }
 
     var body: some Scene {

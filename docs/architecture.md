@@ -55,6 +55,7 @@ How we copy pieces:
 - Remove what we don't use, and replace `Common` dependencies (logger, theming) with our own small equivalents.
 - Our own code is MPL-2.0 as well.
 - Zen desktop (Gecko, MPL-2.0) is used as a reference for behaviour and concepts only; no code is reused from it.
+- The app icon (`App/Assets.xcassets/AppIcon.appiconset`) is Zen desktop's `configs/branding/release/logo1024.png` at commit `2ad1945`, with its transparent corners filled with the icon's own background colour (`#202020`), since iOS requires an opaque square and rounds the corners itself.
 
 ## 4. State and data flow
 - One `@Observable` `BrowserState` on the main actor holds the spaces, the current space, the open tab and the gesture state. Views read it; changes go through methods on it, which call pure functions in `ZenModel`.

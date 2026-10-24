@@ -6,7 +6,7 @@ enum GestureMetrics {
     /// Upward drag on the page bar after which releasing goes back to the space (spec §3.5).
     static let barStopSpace: CGFloat = 120
     /// Upward drag on the page bar after which releasing opens a new tab (spec §3.5).
-    static let barStopNewTab: CGFloat = 280
+    static let barStopNewTab: CGFloat = 420
     /// Upward speed, in points per second, from which a release goes back to the space, at any distance (spec §3.5).
     static let barFlickVelocity: CGFloat = 800
     /// Movement before a touch on the page bar becomes a drag rather than a tap.

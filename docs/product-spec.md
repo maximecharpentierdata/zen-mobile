@@ -91,7 +91,7 @@ The upward drag starts **on the page's bottom bar**, never at the screen edge (t
 |---|---|---|
 | < stop 1 (≈ 120 pt) *(tune)* | The page shrinks and follows the finger | Snaps back to the page |
 | stop 1 → stop 2 | Light haptic at stop 1; the "Space" marker lights up | **Back to the space**: the page shrinks into its tab row (3A in reverse) |
-| ≥ stop 2 (≈ 280 pt) *(tune)* | Haptic at stop 2; the "New tab" marker lights up | **New tab**: an empty tab is created and the address field opens with the keyboard |
+| ≥ stop 2 (≈ 420 pt) *(tune)* | Haptic at stop 2; the "New tab" marker lights up | **New tab**: an empty tab is created and the address field opens with the keyboard |
 
 - The animation is interruptible and follows the finger the whole time.
 - A fast upward flick counts as "back to the space", however far it goes: a quick swipe easily passes stop 2, so a new tab needs the finger to slow down past stop 2 before letting go. *(tune)*

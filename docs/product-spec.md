@@ -63,9 +63,10 @@ Automatic clean-up of regular tabs:
 
 ### 3.3 Changing space (design 2A)
 - Swipe left or right anywhere on the space screen to go to the next or previous space.
-- The list follows the finger 1:1, like pages. Release past 50 % of the width, or with a fast flick, to change space; otherwise it snaps back. *(tune)*
-- The background colour blends between the two spaces' colours during the swipe.
-- Scrolling direction locks after the first ~10 pt of movement, so a vertical scroll never changes space by accident. *(tune)*
+- The list follows the finger 1:1, like pages. Release past about half the width, or with a fast flick, to change space; otherwise it snaps back.
+- The background colour blends between the two spaces' colours during the swipe. The dots and the bottom bar use the blended colour too.
+- Scrolling direction locks after the first few points of movement, so a vertical scroll never changes space by accident.
+- These three behaviours come from the system's paging scroll view, so their thresholds are the system's, not ours. If testing on a device shows they need tuning, we will replace it with our own gesture. *(tune)*
 - At the first space the swipe resists (rubber band). Swiping past the last space shows a "New space" page. *(proposal)*
 
 ### 3.4 Opening a tab (design 3A + validated change)

@@ -29,6 +29,16 @@ extension BrowserState {
         perform { try $0.selectSpace(id) }
     }
 
+    /// Shows the space `step` places after the current one, or before it when `step` is negative. Does nothing
+    /// past the first or last space. It is the non-gesture alternative to swiping (spec §3.3, §5).
+    public func selectSpace(step: Int) {
+        let spaces = data.spaces
+        guard let index = spaces.firstIndex(where: { $0.id == data.currentSpaceID }),
+            spaces.indices.contains(index + step)
+        else { return }
+        selectSpace(spaces[index + step].id)
+    }
+
     /// Records that a tab was opened, which resets its clean-up timer (spec §3.2).
     public func recordAccess(_ id: Tab.ID) {
         let time = now

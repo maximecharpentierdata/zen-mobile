@@ -2,52 +2,39 @@ import SwiftUI
 import ZenModel
 import ZenState
 
-/// The full-screen space the app opens on (spec §3.1, §3.2; design 1A).
+/// The full-screen space the app opens on (spec §3.1, §3.2; design 1A), with the pager that changes space
+/// (spec §3.3; design 2A).
 struct SpaceScreen: View {
     let state: BrowserState
     let onOpen: @MainActor (ZenModel.Tab.ID) -> Void
     let onNewTab: @MainActor () -> Void
 
+    @State private var paging = SpacePaging(offset: 0, pageWidth: 0, pageCount: 0)
+
     var body: some View {
-        let space = state.data.currentSpace
         VStack(spacing: Theme.Spacing.section) {
-            SpaceHeader(space: space)
-            ScrollView {
-                VStack(alignment: .leading, spacing: Theme.Spacing.section) {
-                    EssentialsGrid(tabs: state.data.essentials, accent: space.accentColor) { onOpen($0) }
-                    PinnedSection(
-                        items: space.pinned,
-                        accent: space.accentColor,
-                        onToggleFolder: { state.toggleFolder($0) },
-                        onOpen: { onOpen($0) }
-                    )
-                    Rectangle()
-                        .fill(Theme.Palette.divider)
-                        .frame(height: 1)
-                        .padding(.horizontal, Theme.Spacing.rowPadding)
-                        .accessibilityHidden(true)
-                    VStack(spacing: Theme.Spacing.rowGap) {
-                        ForEach(space.regular) { tab in
-                            Button {
-                                onOpen(tab.id)
-                            } label: {
-                                TabRow(tab: tab, accent: space.accentColor)
-                            }
-                            .buttonStyle(.plain)
-                        }
-                    }
-                }
+            SpacePager(state: state, onOpen: onOpen, paging: $paging)
+            Group {
+                SpaceDots(
+                    count: state.data.spaces.count,
+                    currentIndex: paging.nearestIndex,
+                    accent: accent,
+                    onStep: { state.selectSpace(step: $0) }
+                )
+                SpaceBottomBar(accent: accent) { onNewTab() }
             }
-            .scrollIndicators(.hidden)
-            SpaceDots(count: state.data.spaces.count, currentIndex: currentIndex, accent: space.accentColor)
-            SpaceBottomBar(accent: space.accentColor) { onNewTab() }
+            .padding(.horizontal, Theme.Spacing.screenMargin)
         }
-        .padding(.horizontal, Theme.Spacing.screenMargin)
         .padding(.vertical, Theme.Spacing.grid)
-        .background(Theme.spaceBackground(accent: space.accentColor).ignoresSafeArea())
+        .background(Theme.spaceBackground(accent: accent).ignoresSafeArea())
     }
 
-    private var currentIndex: Int {
-        state.data.spaces.firstIndex { $0.id == state.data.currentSpaceID } ?? 0
+    /// The accent colour, blended between the two spaces while swiping.
+    private var accent: UInt32 {
+        let spaces = state.data.spaces
+        guard spaces.indices.contains(paging.from), spaces.indices.contains(paging.to) else {
+            return state.data.currentSpace.accentColor
+        }
+        return Color.mix(spaces[paging.from].accentColor, spaces[paging.to].accentColor, amount: paging.fraction)
     }
 }

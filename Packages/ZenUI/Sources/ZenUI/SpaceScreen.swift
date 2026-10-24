@@ -32,7 +32,7 @@ struct SpaceScreen: View {
                     accent: accent,
                     onStep: { state.selectSpace(step: $0) }
                 )
-                SpaceBottomBar(accent: accent) { onNewTab() }
+                SpaceBottomBar { onNewTab() }
             }
             .padding(.horizontal, Theme.Spacing.screenMargin)
         }

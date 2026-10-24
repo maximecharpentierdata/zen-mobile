@@ -34,9 +34,14 @@ public struct RootView: View {
                 .allowsHitTesting(state.openTab == nil)
                 .accessibilityHidden(state.openTab != nil)
             if let tab = state.openTab {
-                page(for: tab)
-                    .id(tab.id)
-                    .transition(.opacity)
+                if tab.url == nil && state.isEditingAddress {
+                    NewTabOverlay(onSubmit: { state.submitAddress($0) }, onDismiss: dismissNewTab)
+                        .transition(.opacity)
+                } else {
+                    page(for: tab)
+                        .id(tab.id)
+                        .transition(.opacity)
+                }
             }
             if dragDistance > 0 {
                 StopMarkers(stage: stage, accent: state.data.currentSpace.accentColor)
@@ -112,8 +117,17 @@ public struct RootView: View {
         present { state.open(id) }
     }
 
+    /// Shows the new tab overlay over the space (spec §3.6). Once an address is entered, the page grows from
+    /// the search field.
     private func startNewTab() {
-        present { state.startNewTab() }
+        collapse = reduceMotion ? 0 : 1
+        withAnimation(Motion.crossfade) { state.startNewTab() }
+    }
+
+    /// Closes the new tab overlay; the empty tab is removed and the space screen shows again.
+    private func dismissNewTab() {
+        withAnimation(Motion.crossfade) { state.cancelAddressEditing() }
+        collapse = 0
     }
 
     /// Shows a page: it grows from its row, or crossfades in with Reduce Motion (spec §3.4, §5).

@@ -9,6 +9,10 @@ struct SpaceScreen: View {
     let onOpen: @MainActor (ZenModel.Tab.ID) -> Void
     let onNewTab: @MainActor () -> Void
     let onUnload: @MainActor (ZenModel.Tab.ID) -> Void
+    /// Shared with the new tab's address field; `nil` with Reduce Motion.
+    let fieldNamespace: Namespace.ID?
+    /// True while the search field sits in the middle of the screen as the new tab's address field (spec §3.6).
+    let isFieldLifted: Bool
 
     @State private var paging = SpacePaging(offset: 0, pageWidth: 0, pageCount: 0)
     @State private var editor: SpaceEditor.Target?
@@ -33,7 +37,13 @@ struct SpaceScreen: View {
                     accent: accent,
                     onStep: { state.selectSpace(step: $0) }
                 )
-                SpaceBottomBar { onNewTab() }
+                if isFieldLifted {
+                    // Keeps the bar's room so the space doesn't move while the field is up.
+                    Color.clear.frame(height: Theme.Size.bottomBarHeight)
+                } else {
+                    SpaceBottomBar { onNewTab() }
+                        .modifier(AddressFieldMatch(namespace: fieldNamespace))
+                }
             }
             .padding(.horizontal, Theme.Spacing.screenMargin)
         }

@@ -92,4 +92,17 @@ import Testing
         #expect(AutoCloseDelay.sevenDays.interval == 604_800)
         #expect(AutoCloseDelay.never.interval == nil)
     }
+
+    @Test func allTabIDsListsOpenTabsOnly() throws {
+        var data = BrowserData.firstLaunch()
+        let space = data.currentSpaceID
+        let essential = try data.newTab(in: space, now: Fixtures.now)
+        try data.addToEssentials(essential)
+        let pinned = try data.newTab(in: space, now: Fixtures.now)
+        try data.pin(pinned)
+        let regular = try data.newTab(in: space, now: Fixtures.now)
+        let closed = try data.newTab(in: space, now: Fixtures.now)
+        try data.closeTab(closed)
+        #expect(data.allTabIDs == [essential, pinned, regular])
+    }
 }

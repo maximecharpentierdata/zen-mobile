@@ -17,5 +17,5 @@ public struct RootView: View {
 }
 
 #Preview {
-    RootView(state: PreviewData.state())
+    RootView(state: BrowserState(data: DemoData.browserData(now: .now)))
 }

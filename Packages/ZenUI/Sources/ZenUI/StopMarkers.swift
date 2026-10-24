@@ -15,11 +15,15 @@ struct StopMarkers: View {
     }
 
     private func marker(_ title: Text, systemImage: String, isActive: Bool) -> some View {
-        Label { title } icon: { Image(systemName: systemImage) }
-            .font(.subheadline.weight(.semibold))
-            .foregroundStyle(isActive ? Theme.Palette.onAccent : Theme.Palette.primaryText)
-            .padding(.horizontal, Theme.Spacing.rowContent)
-            .frame(height: Theme.Size.stopMarkerHeight)
-            .background(isActive ? Color(hex: accent) : Theme.Palette.fieldFill, in: .capsule)
+        Label {
+            title
+        } icon: {
+            Image(systemName: systemImage)
+        }
+        .font(.subheadline.weight(.semibold))
+        .foregroundStyle(isActive ? Theme.Palette.onAccent : Theme.Palette.primaryText)
+        .padding(.horizontal, Theme.Spacing.rowContent)
+        .frame(height: Theme.Size.stopMarkerHeight)
+        .background(isActive ? Color(hex: accent) : Theme.Palette.fieldFill, in: .capsule)
     }
 }

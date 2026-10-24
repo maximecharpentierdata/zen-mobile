@@ -81,7 +81,7 @@ public struct RootView: View {
                 .frame(height: CGFloat(transform.maskHeight))
         }
         .scaleEffect(CGFloat(transform.scale))
-        .offset(transform.offset)
+        .offset(x: transform.offsetX, y: transform.offsetY)
         .opacity(transform.opacity)
         .onAppear(perform: animateOpen)
     }

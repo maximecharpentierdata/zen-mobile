@@ -20,7 +20,7 @@ final class RowFrames {
 
 extension EnvironmentValues {
     /// Where rows report their frames. `nil` outside ``RootView``, for example in previews of a single row.
-    @Entry var rowFrames: RowFrames? = nil
+    @Entry var rowFrames: RowFrames?
 }
 
 extension View {

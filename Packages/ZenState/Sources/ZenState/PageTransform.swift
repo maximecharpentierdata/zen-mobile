@@ -7,8 +7,10 @@ import Foundation
 public struct PageTransform: Equatable, Sendable {
     /// The uniform scale applied to the page.
     public let scale: Double
-    /// How far the page's centre moves.
-    public let offset: CGSize
+    /// How far the page's centre moves horizontally.
+    public let offsetX: Double
+    /// How far the page's centre moves vertically.
+    public let offsetY: Double
     /// The visible height, in the page's own (unscaled) points, centred.
     public let maskHeight: Double
     /// The mask's corner radius, in the page's own points.
@@ -22,10 +24,8 @@ public struct PageTransform: Equatable, Sendable {
         let progress = min(max(progress, 0), 1)
         let endScale = page.width > 0 ? row.width / page.width : 1
         scale = Self.lerp(1, endScale, progress)
-        offset = CGSize(
-            width: Self.lerp(0, row.midX - page.midX, progress),
-            height: Self.lerp(0, row.midY - page.midY, progress)
-        )
+        offsetX = Self.lerp(0, row.midX - page.midX, progress)
+        offsetY = Self.lerp(0, row.midY - page.midY, progress)
         maskHeight = Self.lerp(page.height, endScale > 0 ? row.height / endScale : page.height, progress)
         cornerRadius = Self.lerp(0, endScale > 0 ? rowCornerRadius / endScale : 0, progress)
         opacity = 1 - Self.smoothStep(from: 0.6, to: 1, progress)

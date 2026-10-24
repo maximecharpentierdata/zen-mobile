@@ -65,6 +65,7 @@ Automatic clean-up of regular tabs:
 - A regular tab that hasn't been opened for a set time is closed automatically. Pinned tabs, tabs in folders and Essentials are never closed this way.
 - The delay is a setting: 12 h, 24 h, 7 days or Never. The default is 24 h. *(proposal, tune)*
 - Closed tabs go to a "Recently closed" list, so they can be restored.
+- The header's options menu has "Recently closed" (a sheet listing them, most recent first; tapping one reopens it at the top of the current space) and "Close inactive tabs after" (12 hours, 24 hours, 7 days, Never). *(proposal)*
 
 ### 3.3 Changing space (design 2A)
 - Swipe left or right anywhere on the space screen to go to the next or previous space.

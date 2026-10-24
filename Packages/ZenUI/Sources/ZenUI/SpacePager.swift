@@ -70,6 +70,8 @@ struct SpacePager: View {
             canMoveLeft: state.canMoveSpace(space.id, step: -1),
             canMoveRight: state.canMoveSpace(space.id, step: 1),
             canDelete: state.data.spaces.count > 1,
+            hasRecentlyClosed: !state.data.recentlyClosed.isEmpty,
+            autoCloseDelay: state.data.autoCloseDelay,
             onAction: { onAction($0) }
         )
     }

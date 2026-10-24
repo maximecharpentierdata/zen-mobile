@@ -7,4 +7,6 @@ enum SpaceAction: Equatable {
     case moveRight(Space.ID)
     case delete(Space.ID)
     case newSpace
+    case recentlyClosed
+    case setAutoCloseDelay(AutoCloseDelay)
 }

@@ -97,6 +97,7 @@ Automatic clean-up of regular tabs:
   - Back and Forward are greyed out when the page has nothing to go back or forward to. A new tab with no address shows only Back, Forward and Reload, greyed out.
   - Find on page opens the system find bar. *(proposal)*
   - Request desktop site reloads the page as the desktop version; the item then reads **Request mobile site** and switches back. The choice holds for this tab's page until the page is freed (§4); it isn't saved. *(proposal)*
+- Pulling the page down when it is already at the top reloads it, with the system's refresh spinner, as in Safari (asked for on 2026-10-24). How far to pull is the system's.
 - When the page scrolls down, the bar shrinks to a slim title-only strip; scrolling up restores it. *(proposal)*
 - Swipe sideways anywhere on the page to move in its history: to the right goes back, to the left goes forward (asked for on 2026-10-24).
   - The page follows the finger when there is a page to go to that way, and doesn't move otherwise. Release past about 100 pt, or with a fast flick (about 800 pt/s), to go there; otherwise the page snaps back. *(tune)*

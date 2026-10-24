@@ -77,6 +77,7 @@ public final class WebViewStore {
         let webView = WKWebView(frame: .zero, configuration: Self.configuration())
         webView.allowsBackForwardNavigationGestures = true
         webView.isFindInteractionEnabled = true
+        webView.scrollView.refreshControl = PageRefreshControl(webView: webView)
         let navigation = PageNavigation(webView: webView)
         let observer = PageObserver(
             tabID: tab.id,

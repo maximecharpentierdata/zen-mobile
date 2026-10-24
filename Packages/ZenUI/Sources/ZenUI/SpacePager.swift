@@ -6,9 +6,11 @@ import ZenState
 ///
 /// It uses the system's paging scroll view, which follows the finger, commits past half the width or with a
 /// flick, rubber-bands at the ends, and keeps vertical scrolling inside a page from changing space.
+/// After the last space comes the "New space" page.
 struct SpacePager: View {
     let state: BrowserState
     let onOpen: @MainActor (ZenModel.Tab.ID) -> Void
+    let onAction: @MainActor (SpaceAction) -> Void
     /// Where the pager is between two spaces, for blending their colours.
     @Binding var paging: SpacePaging
 
@@ -21,12 +23,16 @@ struct SpacePager: View {
                     SpacePage(
                         space: space,
                         essentials: state.data.essentials,
+                        header: header(for: space),
                         onToggleFolder: { state.toggleFolder($0) },
                         onOpen: { onOpen($0) }
                     )
                     .containerRelativeFrame(.horizontal)
                     .accessibilityHidden(space.id != state.data.currentSpaceID)
                 }
+                NewSpacePage { onAction(.newSpace) }
+                    .containerRelativeFrame(.horizontal)
+                    .accessibilityHidden(true)
             }
             .scrollTargetLayout()
         }
@@ -52,7 +58,17 @@ struct SpacePager: View {
         SpacePaging(
             offset: Double(geometry.contentOffset.x),
             pageWidth: Double(geometry.containerSize.width),
-            pageCount: state.data.spaces.count
+            pageCount: state.data.spaces.count + 1
+        )
+    }
+
+    private func header(for space: Space) -> SpaceHeader {
+        SpaceHeader(
+            space: space,
+            canMoveLeft: state.canMoveSpace(space.id, step: -1),
+            canMoveRight: state.canMoveSpace(space.id, step: 1),
+            canDelete: state.data.spaces.count > 1,
+            onAction: { onAction($0) }
         )
     }
 }

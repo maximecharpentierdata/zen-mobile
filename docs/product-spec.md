@@ -95,6 +95,10 @@ The upward drag starts **on the page's bottom bar**, never at the screen edge (t
 
 ### 3.7 Space management
 - Create, rename, set the icon and colour, reorder, and delete a space. Deleting a space asks what to do with its tabs: close them, or move them to another space.
+- Everything is in the header's options menu: Edit space, New space, Move left, Move right, Delete space. Moving left or right is how spaces are reordered for now. *(proposal)*
+- Edit space and New space open a sheet with the name, the icon (an emoji or a letter) and the colour (system colour picker). A space needs a name. A blank icon becomes the name's first letter. *(proposal)*
+- A new space starts with the next of the mockups' colours (Personal, Work, Research), in turn. It goes after the existing spaces and is shown at once. *(proposal)*
+- The "New space" page after the last space (§3.3) opens the same sheet.
 
 ## 4. Web engine requirements
 - WebKit (`WKWebView`) is required by App Store rules outside the EU. The app uses it everywhere.

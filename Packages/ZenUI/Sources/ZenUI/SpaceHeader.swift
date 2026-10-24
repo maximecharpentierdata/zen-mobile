@@ -1,11 +1,23 @@
 import SwiftUI
 import ZenModel
 
-/// The space's icon and name at the top of the space screen (spec §3.2).
+/// The space's icon and name at the top of the space screen, with its options menu (spec §3.2, §3.7).
 struct SpaceHeader: View {
     let space: Space
+    let canMoveLeft: Bool
+    let canMoveRight: Bool
+    let canDelete: Bool
+    let onAction: @MainActor (SpaceAction) -> Void
 
     var body: some View {
+        HStack(spacing: Theme.Spacing.rowPadding) {
+            title
+            Spacer(minLength: 0)
+            options
+        }
+    }
+
+    private var title: some View {
         HStack(spacing: Theme.Spacing.rowPadding) {
             Text(space.icon)
                 .font(.subheadline.weight(.bold))
@@ -17,9 +29,30 @@ struct SpaceHeader: View {
                 .font(.title2.bold())
                 .foregroundStyle(Theme.Palette.primaryText)
                 .lineLimit(1)
-            Spacer(minLength: 0)
         }
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isHeader)
+    }
+
+    private var options: some View {
+        Menu {
+            Button("Edit space", systemImage: "pencil") { onAction(.edit(space.id)) }
+            Button("New space", systemImage: "plus") { onAction(.newSpace) }
+            Section {
+                Button("Move left", systemImage: "arrow.left") { onAction(.moveLeft(space.id)) }
+                    .disabled(!canMoveLeft)
+                Button("Move right", systemImage: "arrow.right") { onAction(.moveRight(space.id)) }
+                    .disabled(!canMoveRight)
+            }
+            Button("Delete space", systemImage: "trash", role: .destructive) { onAction(.delete(space.id)) }
+                .disabled(!canDelete)
+        } label: {
+            Image(systemName: "ellipsis")
+                .font(.body.weight(.semibold))
+                .foregroundStyle(Theme.Palette.secondaryText)
+                .frame(width: Theme.Size.headerIcon, height: Theme.Size.headerIcon)
+                .contentShape(.rect)
+        }
+        .accessibilityLabel(Text("Space options"))
     }
 }

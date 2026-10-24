@@ -59,6 +59,7 @@ enum Theme {
         static let essentialIcon: CGFloat = 28
         static let dot: CGFloat = 6
         static let currentDotWidth: CGFloat = 18
+        static let placeholderDash: CGFloat = 4
     }
 
     /// The share of the accent colour mixed into a space's background (design.md: dark, tinted backgrounds).

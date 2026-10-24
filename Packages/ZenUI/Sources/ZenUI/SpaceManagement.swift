@@ -8,6 +8,7 @@ struct SpaceManagement: ViewModifier {
     let state: BrowserState
     @Binding var editor: SpaceEditor.Target?
     @Binding var deleting: Space?
+    @Binding var showsRecentlyClosed: Bool
 
     func body(content: Content) -> some View {
         content
@@ -15,6 +16,9 @@ struct SpaceManagement: ViewModifier {
                 SpaceEditor(target: target) { name, icon, accent in
                     save(target, name: name, icon: icon, accent: accent)
                 }
+            }
+            .sheet(isPresented: $showsRecentlyClosed) {
+                RecentlyClosedList(state: state)
             }
             .confirmationDialog(
                 deleteTitle,
@@ -65,12 +69,13 @@ extension SpaceManagement {
         _ action: SpaceAction,
         state: BrowserState,
         editor: inout SpaceEditor.Target?,
-        deleting: inout Space?
+        deleting: inout Space?,
+        showsRecentlyClosed: inout Bool
     ) {
         let spaces = state.data.spaces
         switch action {
         case .edit(let id):
-            if let space = spaces.first(where: { $0.id == id }) { editor = .edit(space) }
+            editor = spaces.first { $0.id == id }.map { .edit($0) }
         case .newSpace:
             editor = .new(accent: Theme.Palette.newSpaceAccent(after: spaces.count))
         case .moveLeft(let id):
@@ -79,6 +84,10 @@ extension SpaceManagement {
             state.moveSpace(id, step: 1)
         case .delete(let id):
             deleting = spaces.first { $0.id == id }
+        case .recentlyClosed:
+            showsRecentlyClosed = true
+        case .setAutoCloseDelay(let delay):
+            state.setAutoCloseDelay(delay)
         }
     }
 }

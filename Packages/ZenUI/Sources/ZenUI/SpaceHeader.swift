@@ -7,6 +7,8 @@ struct SpaceHeader: View {
     let canMoveLeft: Bool
     let canMoveRight: Bool
     let canDelete: Bool
+    let hasRecentlyClosed: Bool
+    let autoCloseDelay: AutoCloseDelay
     let onAction: @MainActor (SpaceAction) -> Void
 
     var body: some View {
@@ -34,6 +36,16 @@ struct SpaceHeader: View {
         .accessibilityAddTraits(.isHeader)
     }
 
+    private var autoClosePicker: some View {
+        let selection = Binding(get: { autoCloseDelay }, set: { onAction(.setAutoCloseDelay($0)) })
+        return Picker("Close inactive tabs after", systemImage: "clock.badge.xmark", selection: selection) {
+            ForEach(AutoCloseDelay.allCases, id: \.self) { delay in
+                Text(delay.label)
+            }
+        }
+        .pickerStyle(.menu)
+    }
+
     private var options: some View {
         Menu {
             Button("Edit space", systemImage: "pencil") { onAction(.edit(space.id)) }
@@ -46,6 +58,11 @@ struct SpaceHeader: View {
             }
             Button("Delete space", systemImage: "trash", role: .destructive) { onAction(.delete(space.id)) }
                 .disabled(!canDelete)
+            Section {
+                Button("Recently closed", systemImage: "clock.arrow.circlepath") { onAction(.recentlyClosed) }
+                    .disabled(!hasRecentlyClosed)
+                autoClosePicker
+            }
         } label: {
             Image(systemName: "ellipsis")
                 .font(.body.weight(.semibold))

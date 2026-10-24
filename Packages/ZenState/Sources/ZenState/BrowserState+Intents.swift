@@ -52,3 +52,17 @@ extension BrowserState {
         perform { _ = $0.closeStaleTabs(now: time) }
     }
 }
+
+/// Recently closed tabs and the automatic clean-up setting (spec §3.2).
+extension BrowserState {
+    /// Reopens a recently closed tab at the top of the current space's regular tabs.
+    public func restoreClosedTab(_ id: Tab.ID) {
+        let time = now
+        perform { try $0.restoreClosedTab(id, now: time) }
+    }
+
+    /// Changes how long a regular tab can stay unopened before it is closed automatically.
+    public func setAutoCloseDelay(_ delay: AutoCloseDelay) {
+        perform { $0.autoCloseDelay = delay }
+    }
+}

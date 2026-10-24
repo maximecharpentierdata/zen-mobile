@@ -13,6 +13,7 @@ struct SpaceScreen: View {
     @State private var editor: SpaceEditor.Target?
     @State private var deleting: Space?
     @State private var namePrompt: NamePrompt?
+    @State private var showsRecentlyClosed = false
 
     var body: some View {
         VStack(spacing: Theme.Spacing.section) {
@@ -36,12 +37,25 @@ struct SpaceScreen: View {
         }
         .padding(.vertical, Theme.Spacing.grid)
         .background(Theme.spaceBackground(accent: accent).ignoresSafeArea())
-        .modifier(SpaceManagement(state: state, editor: $editor, deleting: $deleting))
+        .modifier(
+            SpaceManagement(
+                state: state,
+                editor: $editor,
+                deleting: $deleting,
+                showsRecentlyClosed: $showsRecentlyClosed
+            )
+        )
         .modifier(NamePromptAlert(state: state, prompt: $namePrompt))
     }
 
     private func handle(_ action: SpaceAction) {
-        SpaceManagement.handle(action, state: state, editor: &editor, deleting: &deleting)
+        SpaceManagement.handle(
+            action,
+            state: state,
+            editor: &editor,
+            deleting: &deleting,
+            showsRecentlyClosed: &showsRecentlyClosed
+        )
     }
 
     /// The accent colour, blended between the two spaces while swiping. The "New space" page keeps the last

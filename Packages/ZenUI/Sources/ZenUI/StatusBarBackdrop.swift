@@ -1,13 +1,14 @@
 import SwiftUI
 
-/// The blur behind the status bar, so an open page can run under it as in Safari (spec §3.4).
-///
-/// It has no height of its own: it sits at the top of the safe area and only its background reaches up into it.
+/// The blur behind the status bar once the page scrolls down, so the page runs under it as in Safari (spec §3.4).
 struct StatusBarBackdrop: View {
+    /// The status bar's height: the top of the screen's safe area.
+    let height: CGFloat
+
     var body: some View {
-        Color.clear
-            .frame(height: 0)
-            .background(Theme.barMaterial, ignoresSafeAreaEdges: .top)
+        Rectangle()
+            .fill(Theme.barMaterial)
+            .frame(height: height)
             .allowsHitTesting(false)
             .accessibilityHidden(true)
     }

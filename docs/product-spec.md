@@ -99,9 +99,10 @@ Automatic clean-up of regular tabs:
   - Request desktop site reloads the page as the desktop version; the item then reads **Request mobile site** and switches back. The choice holds for this tab's page until the page is freed (§4); it isn't saved. *(proposal)*
 - Pulling the page down when it is already at the top reloads it, with the system's refresh spinner, as in Safari (asked for on 2026-10-24). How far to pull is the system's.
 - The page uses the whole screen, as in Safari (asked for on 2026-10-24):
-  - It runs up under the status bar, which is blurred over it.
-  - The expanded bar sits below the page, so it never hides part of it. There is no other band at the bottom.
-  - When the finger scrolls the page down (about 24 pt) *(tune)*, the bar minimizes to a slim, translucent, title-only strip without the "…" button, and the page runs under it to the bottom edge of the screen. Scrolling back up (about 24 pt) *(tune)*, reaching the top of the page, loading a new page or tapping the strip expands the bar again. A page that fits on the screen keeps the bar expanded, and so does address editing.
+  - The page fills the screen from the top edge to the bottom edge, with no band above or below it, and the bar floats over it.
+  - At the top of the page, its start is fully visible below the status bar, and the status bar area shows the page's own background colour (asked for on 2026-10-24). Once the page scrolls down, it runs under the status bar, which is blurred over it.
+  - The page can always scroll far enough that its end clears the bar, so the bar never hides part of it for good.
+  - When the finger scrolls the page down (about 24 pt) *(tune)*, the bar minimizes to a slim, translucent, title-only strip without the "…" button. Scrolling back up (about 24 pt) *(tune)*, reaching the top of the page, loading a new page or tapping the strip expands the bar again. A page that fits on the screen keeps the bar expanded, and so does address editing.
   - The bar gesture (§3.5) works on the minimized strip too.
 - Swipe sideways anywhere on the page to move in its history: to the right goes back, to the left goes forward (asked for on 2026-10-24).
   - The page follows the finger when there is a page to go to that way, and doesn't move otherwise. Release past about 100 pt, or with a fast flick (about 800 pt/s), to go there; otherwise the page snaps back. *(tune)*

@@ -15,6 +15,8 @@ public struct RootView: View {
 
     @State private var rowFrames = RowFrames()
     @State private var screenFrame = CGRect.zero
+    /// The status bar and Home indicator areas around `screenFrame`. The open page covers them too.
+    @State private var safeArea = EdgeInsets()
     /// 0 when the page is full screen, 1 when it sits on its row. Animated when opening and closing.
     @State private var collapse: CGFloat = 0
     /// How far the page bar is dragged up, in points.
@@ -68,6 +70,11 @@ public struct RootView: View {
         } action: { frame in
             screenFrame = frame
         }
+        .onGeometryChange(for: EdgeInsets.self) { proxy in
+            proxy.safeAreaInsets
+        } action: { insets in
+            safeArea = insets
+        }
         .sensoryFeedback(.impact(weight: .light), trigger: stage) { _, newStage in newStage != .stay }
     }
 
@@ -105,7 +112,7 @@ public struct RootView: View {
         let row = rowFrames.frame(for: tab.id) ?? fallbackRow
         let transform = PageTransform(
             progress: progress,
-            page: screenFrame,
+            page: fullScreenFrame,
             row: row,
             rowCornerRadius: Theme.Radius.tabRow
         )
@@ -113,10 +120,13 @@ public struct RootView: View {
             state: state,
             tab: tab,
             webViews: webViews,
+            safeArea: safeArea,
             onDrag: { dragDistance = max($0, 0) },
             onRelease: release,
             onShowSpace: closePage
         )
+        // Edge to edge, as in Safari: the page lays out its bar and status bar backdrop from `safeArea` itself.
+        .ignoresSafeArea(.container)
         .mask {
             RoundedRectangle(cornerRadius: CGFloat(transform.cornerRadius))
                 .frame(height: CGFloat(transform.maskHeight))
@@ -125,6 +135,16 @@ public struct RootView: View {
         .offset(x: transform.offsetX, y: transform.offsetY)
         .opacity(transform.opacity)
         .onAppear(perform: animateOpen)
+    }
+
+    /// The whole screen, status bar and Home indicator areas included: where the open page sits.
+    private var fullScreenFrame: CGRect {
+        CGRect(
+            x: screenFrame.minX - safeArea.leading,
+            y: screenFrame.minY - safeArea.top,
+            width: screenFrame.width + safeArea.leading + safeArea.trailing,
+            height: screenFrame.height + safeArea.top + safeArea.bottom
+        )
     }
 
     /// Where a page without a visible row (a brand-new tab) grows from and shrinks to: the search field.

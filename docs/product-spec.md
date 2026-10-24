@@ -52,7 +52,7 @@ From top to bottom:
 
 Site icons:
 - Essentials and tab rows show the page's icon. When a page finishes loading, the app takes the largest icon the page declares (an Apple touch icon or an icon link; SVG icons are skipped), or the site's `/favicon.ico` if it declares none. *(proposal)*
-- The icon is saved with the tab, so it shows again after a relaunch without opening the page. It is kept while the tab stays on the same site, and dropped when the tab goes to another site until that site's icon is found.
+- The icon is saved with the tab, so it shows again after a relaunch without opening the page. It is kept while the tab stays on the same site, and dropped when the tab goes to another site until that site's icon is found. A pinned tab or an Essential keeps the icon of its pinned site wherever it navigates; "Replace pinned URL with current URL" on another site drops it until the new site's icon is found.
 - Until the icon is known and loaded, or if it can't be loaded, the tile shows the first letter of the title or site on the space colour.
 
 Actions on a tab row:

@@ -57,16 +57,20 @@ extension BrowserState {
     }
 
     /// Records what a page shows after a navigation, as reported by the web view. The icon is kept while
-    /// the page stays on the same site, so it doesn't flicker back to a letter between pages.
+    /// the page stays on the same site, so it doesn't flicker back to a letter between pages. A pinned tab or an
+    /// Essential always keeps its icon.
     public func pageDidChange(_ id: Tab.ID, url: URL?, title: String) {
         guard let tab = data.tab(id), tab.url != url || tab.title != title else { return }
-        let favicon = tab.url?.host() == url?.host() ? tab.faviconURL : nil
+        let keepsIcon = tab.pinnedURL != nil || tab.url?.host() == url?.host()
+        let favicon = keepsIcon ? tab.faviconURL : nil
         perform { try $0.updatePage(id, url: url, title: title, faviconURL: favicon) }
     }
 
-    /// Records the icon a loaded page declares, as found by the web view.
+    /// Records the icon a loaded page declares, as found by the web view. A pinned tab or an Essential only takes
+    /// the icons of its pinned site, so it keeps showing that site wherever it navigates (spec §3.2).
     public func faviconDidChange(_ id: Tab.ID, url: URL?) {
         guard let tab = data.tab(id), tab.faviconURL != url else { return }
+        if let pinnedURL = tab.pinnedURL, tab.url?.host() != pinnedURL.host() { return }
         perform { try $0.updatePage(id, url: tab.url, title: tab.title, faviconURL: url) }
     }
 }

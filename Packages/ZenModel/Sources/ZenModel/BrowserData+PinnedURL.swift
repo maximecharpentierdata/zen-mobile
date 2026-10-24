@@ -10,11 +10,15 @@ extension BrowserData {
         }
     }
 
-    /// Makes the page the tab shows now its pinned URL.
+    /// Makes the page the tab shows now its pinned URL. On another site, the icon of the old pinned site is
+    /// dropped until the new site's icon is found.
     public mutating func replacePinnedURL(_ id: Tab.ID) throws {
         let url = try pinnedTab(id).url
         guard let url else { return }
-        try updateTab(id) { $0.pinnedURL = url }
+        try updateTab(id) { tab in
+            if tab.pinnedURL?.host() != url.host() { tab.faviconURL = nil }
+            tab.pinnedURL = url
+        }
     }
 
     /// Gives every pinned tab and Essential that has no pinned URL its current URL as pinned URL. Data saved before

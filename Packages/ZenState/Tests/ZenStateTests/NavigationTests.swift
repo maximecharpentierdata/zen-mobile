@@ -99,4 +99,19 @@ import ZenModel
         state.pageDidChange(tab.id, url: URL(string: "https://example.org"), title: "Other")
         #expect(state.data.tab(tab.id)?.faviconURL == nil)
     }
+
+    /// Browsing from an Essential to another site used to swap its icon, so it looked like its URL was replaced.
+    @Test func essentialKeepsThePinnedSiteIconWhileBrowsing() throws {
+        let state = makeState()
+        let tab = try #require(state.data.essentials.first)
+        let icon = URL(string: "https://example.com/favicon.ico")
+        state.faviconDidChange(tab.id, url: icon)
+        state.pageDidChange(tab.id, url: URL(string: "https://example.org"), title: "Other")
+        state.faviconDidChange(tab.id, url: URL(string: "https://example.org/favicon.ico"))
+        #expect(state.data.tab(tab.id)?.faviconURL == icon)
+        state.pageDidChange(tab.id, url: URL(string: "https://example.com/inbox"), title: "Inbox")
+        let newIcon = URL(string: "https://example.com/apple-touch-icon.png")
+        state.faviconDidChange(tab.id, url: newIcon)
+        #expect(state.data.tab(tab.id)?.faviconURL == newIcon)
+    }
 }

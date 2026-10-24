@@ -41,6 +41,19 @@ import Testing
         #expect(data.tab(tab)?.url == Fixtures.url("calendar"))
     }
 
+    @Test func replacingWithAnotherSiteDropsTheOldSiteIcon() throws {
+        var data = BrowserData.firstLaunch()
+        let icon = URL(string: "https://mail.example/icon.png")
+        let tab = try data.newTab(url: URL(string: "https://mail.example"), in: data.currentSpaceID, now: Fixtures.now)
+        try data.addToEssentials(tab)
+        try data.updatePage(tab, url: URL(string: "https://mail.example/inbox"), title: "", faviconURL: icon)
+        try data.replacePinnedURL(tab)
+        #expect(data.tab(tab)?.faviconURL == icon)
+        try data.updatePage(tab, url: URL(string: "https://news.example"), title: "", faviconURL: icon)
+        try data.replacePinnedURL(tab)
+        #expect(data.tab(tab)?.faviconURL == nil)
+    }
+
     @Test func regularTabsHaveNoPinnedURL() throws {
         var data = BrowserData.firstLaunch()
         let tab = try data.newTab(url: Fixtures.url("mail"), in: data.currentSpaceID, now: Fixtures.now)

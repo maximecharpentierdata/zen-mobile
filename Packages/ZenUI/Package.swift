@@ -8,9 +8,10 @@ let package = Package(
         .library(name: "ZenUI", targets: ["ZenUI"])
     ],
     dependencies: [
-        .package(path: "../ZenModel")
+        .package(path: "../ZenModel"),
+        .package(path: "../ZenState"),
     ],
     targets: [
-        .target(name: "ZenUI", dependencies: ["ZenModel"])
+        .target(name: "ZenUI", dependencies: ["ZenModel", "ZenState"])
     ]
 )

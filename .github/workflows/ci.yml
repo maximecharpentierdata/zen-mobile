@@ -16,7 +16,7 @@ jobs:
     container: swift:6.2
     strategy:
       matrix:
-        package: [ZenModel, ZenStore]
+        package: [ZenModel, ZenStore, ZenState]
     steps:
       - uses: actions/checkout@v5
       - name: Test ${{ matrix.package }}

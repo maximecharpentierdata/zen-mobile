@@ -13,7 +13,7 @@ Status: living document. Reuse strategy decided on 2026-10-24: our own app, with
 | Dependencies | Swift Package Manager only | One tool |
 | Web engine | WebKit `WKWebView`, through our own `ZenWeb` layer | Required on iOS outside the EU |
 
-Building and running the app needs **macOS with Xcode**. The pure-Swift packages (`ZenModel`, `ZenStore`) are written to also build and test on Linux with `swift test`, so they can be tested without a Mac.
+Building and running the app needs **macOS with Xcode**. The pure-Swift packages (`ZenModel`, `ZenStore`, `ZenState`) are written to also build and test on Linux with `swift test`, so they can be tested without a Mac.
 
 ## 2. Modules
 
@@ -24,6 +24,8 @@ zen-mobile/
 │  ├─ ZenModel/            Pure Swift. Space, Tab, Folder, Essentials and tree operations
 │  │                       (move, pin, unpin, reorder). No UIKit/SwiftUI. Fully unit-tested.
 │  ├─ ZenStore/            Persistence of ZenModel (Codable JSON, atomic file writes), migrations.
+│  ├─ ZenState/            The live `BrowserState` (@Observable, main actor), user intents, debounced
+│  │                       saving, list presentation helpers. No UIKit/SwiftUI, so tested on Linux.
 │  ├─ ZenWeb/              Our thin WKWebView layer: tab ↔ web view lifecycle, snapshots, unloading.
 │  └─ ZenUI/               SwiftUI screens and components: space screen, pager, page + bar,
 │                          gesture controller, transitions.
@@ -31,7 +33,7 @@ zen-mobile/
 └─ project.yml
 ```
 
-Dependency direction: `App → ZenUI → ZenWeb`, and `ZenUI → ZenStore → ZenModel`. `ZenModel` depends on nothing.
+Dependency direction: `App → ZenUI → ZenWeb`, and `ZenUI → ZenState → ZenStore → ZenModel`. `ZenModel` depends on nothing.
 
 ## 3. Reusing Mozilla code
 
@@ -64,6 +66,6 @@ How we copy pieces:
 - **Bar gesture (4A):** a UIKit pan recognizer on the bar, bridged into SwiftUI. It produces a single `progress` value (0 to stop 2). The page scale, the stop markers and the haptics are all driven from that one value, so the animation is interruptible and stays in sync with the finger. Release logic uses distance plus velocity (spec §3.5).
 
 ## 6. Testing
-- `ZenModel` and `ZenStore`: unit tests with `swift test`, which run on Linux and macOS.
+- `ZenModel`, `ZenStore` and `ZenState`: unit tests with `swift test`, which run on Linux and macOS.
 - `ZenUI`: snapshot or preview tests for the screens; UI tests for the main flows (open tab, back to space, new tab, change space) on macOS CI.
 - CI: GitHub Actions. Linux runs `swift test` on the pure packages; macOS runs the full app build and UI tests. The macOS runners and their minutes need checking on this repo.

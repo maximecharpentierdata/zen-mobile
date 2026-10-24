@@ -26,8 +26,7 @@ These rules apply to every contributor, human or AI.
 
 ## Dependencies
 - No new third-party dependency without the owner's agreement in the PR.
-- Vendored Mozilla code is only updated with `scripts/vendor-browserkit.sh`, never edited by hand (architecture §3).
-- Files copied from MPL-2.0 sources keep their licence header.
+- Files copied from Mozilla (MPL-2.0) keep their licence header and get a `// Copied from mozilla-mobile/firefox-ios <path> at <commit>` line (architecture §3).
 
 ## Tests
 - Every change to `ZenModel` or `ZenStore` comes with unit tests.

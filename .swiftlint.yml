@@ -4,7 +4,6 @@ included:
   - Packages
 excluded:
   - Packages/*/.build
-  - Vendor
 
 disabled_rules:
   - trailing_comma

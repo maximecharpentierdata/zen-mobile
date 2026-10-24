@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Test ${{ matrix.package }}
-        run: swift test --package-path Packages/${{ matrix.package }}
+        run: scripts/ci-run.sh swift test --package-path Packages/${{ matrix.package }}
 
   format:
     name: Format (swift-format)
@@ -29,7 +29,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Lint formatting
-        run: swift format lint --strict --recursive App/Sources Packages/*/Sources Packages/*/Tests
+        run: scripts/ci-run.sh swift format lint --strict --recursive App/Sources Packages/*/Sources Packages/*/Tests
 
   app:
     name: App (macOS)
@@ -41,12 +41,12 @@ jobs:
       - name: Install tools
         run: brew install xcodegen swiftlint
       - name: SwiftLint
-        run: swiftlint lint --strict
+        run: scripts/ci-run.sh swiftlint lint --strict
       - name: Generate project
         run: xcodegen generate
       - name: Build for iOS Simulator
         run: >-
-          xcodebuild build
+          scripts/ci-run.sh xcodebuild build
           -project ZenMobile.xcodeproj
           -scheme ZenMobile
           -destination 'generic/platform=iOS Simulator'

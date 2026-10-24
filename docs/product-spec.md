@@ -90,6 +90,7 @@ The upward drag starts **on the page's bottom bar**, never at the screen edge (t
 ### 3.6 New tab
 - It is reachable from the **+** button on the space screen, from the search field on the space screen, and from stop 2 of the bar gesture.
 - It shows an address field with focus, then suggestions from history, open tabs and a search engine.
+- Text that isn't a web address is searched with **Google** (decided 2026-10-24). A setting to change the engine will come later.
 
 ### 3.7 Space management
 - Create, rename, set the icon and colour, reorder, and delete a space. Deleting a space asks what to do with its tabs: close them, or move them to another space.

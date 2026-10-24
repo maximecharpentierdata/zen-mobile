@@ -7,9 +7,10 @@ struct PinnedSection: View {
     let items: [PinnedItem]
     let accent: UInt32
     let onToggleFolder: @MainActor (Folder.ID) -> Void
+    let onOpen: @MainActor (ZenModel.Tab.ID) -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 2) {
+        VStack(alignment: .leading, spacing: Theme.Spacing.rowGap) {
             ForEach(PinnedRow.rows(for: items)) { row in
                 switch row {
                 case .folder(let folder, let depth, let tabCount):
@@ -17,7 +18,12 @@ struct PinnedSection: View {
                         onToggleFolder(folder.id)
                     }
                 case .tab(let tab, let depth):
-                    TabRow(tab: tab, accent: accent, depth: depth)
+                    Button {
+                        onOpen(tab.id)
+                    } label: {
+                        TabRow(tab: tab, accent: accent, depth: depth)
+                    }
+                    .buttonStyle(.plain)
                 }
             }
         }

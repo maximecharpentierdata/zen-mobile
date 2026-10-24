@@ -12,21 +12,33 @@ struct SpaceScreen: View {
             SpaceHeader(space: space)
             ScrollView {
                 VStack(alignment: .leading, spacing: Theme.Spacing.section) {
-                    EssentialsGrid(tabs: state.data.essentials, accent: space.accentColor)
-                    PinnedSection(items: space.pinned, accent: space.accentColor) { state.toggleFolder($0) }
+                    EssentialsGrid(tabs: state.data.essentials, accent: space.accentColor) { state.open($0) }
+                    PinnedSection(
+                        items: space.pinned,
+                        accent: space.accentColor,
+                        onToggleFolder: { state.toggleFolder($0) },
+                        onOpen: { state.open($0) }
+                    )
                     Rectangle()
                         .fill(Theme.Palette.divider)
                         .frame(height: 1)
                         .padding(.horizontal, Theme.Spacing.rowPadding)
                         .accessibilityHidden(true)
-                    ForEach(space.regular) { tab in
-                        TabRow(tab: tab, accent: space.accentColor)
+                    VStack(spacing: Theme.Spacing.rowGap) {
+                        ForEach(space.regular) { tab in
+                            Button {
+                                state.open(tab.id)
+                            } label: {
+                                TabRow(tab: tab, accent: space.accentColor)
+                            }
+                            .buttonStyle(.plain)
+                        }
                     }
                 }
             }
             .scrollIndicators(.hidden)
             SpaceDots(count: state.data.spaces.count, currentIndex: currentIndex, accent: space.accentColor)
-            SpaceBottomBar(accent: space.accentColor) { _ = state.newTab() }
+            SpaceBottomBar(accent: space.accentColor) { state.startNewTab() }
         }
         .padding(.horizontal, Theme.Spacing.screenMargin)
         .padding(.vertical, Theme.Spacing.grid)

@@ -1,7 +1,7 @@
 /// Decides when the page bar minimizes while the page scrolls (spec §3.4). Pure, so the thresholds can be tested.
 ///
 /// It follows the finger rather than the page's scroll position, because the scroll position can also move without
-/// the finger, for example when the page is resized as the bar changes, and that must not flip the bar back.
+/// the finger, for example when the page's insets change with the bar, and that must not flip the bar back.
 public struct BarScroll: Sendable, Equatable {
     /// Upward finger travel, in points, after which the bar minimizes.
     public let minimizeDistance: Double

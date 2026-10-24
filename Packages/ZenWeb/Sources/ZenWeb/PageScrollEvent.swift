@@ -7,4 +7,7 @@ public enum PageScrollEvent: Sendable {
     /// The finger moved. `translation` is its travel since the drag began, in points, positive downwards.
     /// `isAtTop` tells whether the page shows its top; `canScroll` whether it is taller than the screen.
     case moved(translation: CGFloat, isAtTop: Bool, canScroll: Bool)
+    /// The page reached its top, or left it, however it scrolled: by the finger, by momentum or by a tap on the
+    /// status bar.
+    case topChanged(isAtTop: Bool)
 }

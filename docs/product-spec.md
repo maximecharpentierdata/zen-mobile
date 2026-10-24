@@ -83,6 +83,10 @@ Automatic clean-up of regular tabs:
 - The opened page is **full screen**. The only control is a **bottom bar** that shows the **tab title** with the **domain** under it.
 - Tapping the bar opens address editing (full URL, keyboard, suggestions).
 - When the page scrolls down, the bar shrinks to a slim title-only strip; scrolling up restores it. *(proposal)*
+- Swipe sideways anywhere on the page to move in its history: to the right goes back, to the left goes forward (asked for on 2026-10-24).
+  - The page follows the finger when there is a page to go to that way, and doesn't move otherwise. Release past about 100 pt, or with a fast flick (about 800 pt/s), to go there; otherwise the page snaps back. *(tune)*
+  - The swipe doesn't start when the page itself can still scroll sideways in that direction (a page wider than the screen, or zoomed in). When there is history that way, a website's own sideways swipes, such as photo carousels or maps, are taken over by this swipe.
+  - WebKit's own swipe from the left or right screen edge, as in Safari, stays on.
 
 ### 3.5 The bar gesture: back to the space, or a new tab (design 4A)
 The upward drag starts **on the page's bottom bar**, never at the screen edge (the bottom edge belongs to the iOS Home gesture).
@@ -116,7 +120,7 @@ The upward drag starts **on the page's bottom bar**, never at the screen edge (t
 - A snapshot image is kept for each tab and used during transitions, so an animation never waits for a page to load.
 
 ## 5. Accessibility
-- Every gesture has a button or menu alternative: the bar has VoiceOver actions "Back to space" and "New tab"; changing space has previous/next actions.
+- Every gesture has a button or menu alternative: the bar has VoiceOver actions "Back to space" and "New tab"; changing space has previous/next actions. Going back and forward in a page's history will have buttons in the page's "…" menu.
 - With Reduce Motion on, the zoom and shrink transitions become crossfades.
 - Dynamic Type is supported on the space screen and the bar.
 

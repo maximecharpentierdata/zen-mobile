@@ -17,6 +17,18 @@ extension BrowserData {
         try updateTab(id) { $0.pinnedURL = url }
     }
 
+    /// Gives every pinned tab and Essential that has no pinned URL its current URL as pinned URL. Data saved before
+    /// pinned URLs existed has none, so these tabs could never go back to a page and kept wherever they navigated.
+    public mutating func rememberMissingPinnedURLs() {
+        essentials = essentials.map(Self.keepingPinnedURL)
+        let repaired = spaces.map { space in
+            var space = space
+            space.pinned = PinnedTree.mapTabs(space.pinned, Self.keepingPinnedURL)
+            return space
+        }
+        setSpaces(repaired, current: currentSpaceID)
+    }
+
     /// The tab, when it is pinned or an Essential.
     private func pinnedTab(_ id: Tab.ID) throws -> Tab {
         guard let tab = tab(id) else { throw ModelError.tabNotFound(id) }

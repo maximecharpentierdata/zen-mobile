@@ -115,6 +115,19 @@ enum PinnedTree {
         return nil
     }
 
+    /// The tree with `transform` applied to every tab, inside folders too.
+    static func mapTabs(_ items: [PinnedItem], _ transform: (Tab) -> Tab) -> [PinnedItem] {
+        items.map { item in
+            switch item {
+            case .tab(let tab):
+                return .tab(transform(tab))
+            case .folder(var folder):
+                folder.children = mapTabs(folder.children, transform)
+                return .folder(folder)
+            }
+        }
+    }
+
     /// Whether a folder with this id exists in the tree.
     static func containsFolder(_ id: Folder.ID, in items: [PinnedItem]) -> Bool {
         items.contains { item in

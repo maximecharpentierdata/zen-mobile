@@ -48,7 +48,7 @@ From top to bottom:
 4. Divider.
 5. Regular tabs. The active tab is highlighted.
 6. Space page indicator (one dot per space, the current one wider).
-7. Bottom bar: a "Search or enter address" field and a **+** (new tab) button.
+7. Bottom bar: a "Search or enter address" field, which opens a new tab. There is no **+** button: the field and the bar gesture already open a new tab.
 
 Actions on a tab row:
 - Tap: open the tab (3.4).
@@ -98,7 +98,7 @@ The upward drag starts **on the page's bottom bar**, never at the screen edge (t
 - New tabs go at the top of the current space's regular tabs. *(proposal)*
 
 ### 3.6 New tab
-- It is reachable from the **+** button on the space screen, from the search field on the space screen, and from stop 2 of the bar gesture.
+- It is reachable from the search field on the space screen and from stop 2 of the bar gesture.
 - It shows an address field with focus, then suggestions from history, open tabs and a search engine.
 - Text that isn't a web address is searched with **Google** (decided 2026-10-24). A setting to change the engine will come later.
 

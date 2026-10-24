@@ -40,7 +40,7 @@ public enum DemoData {
 
 extension DemoData {
     /// Puts a demo state on a given screen, for CI screenshots: `page` opens the first regular tab,
-    /// `newTab` starts a new tab; anything else stays on the space screen.
+    /// `newTab` starts a new tab, `secondSpace` shows the second space; anything else stays on the space screen.
     @MainActor
     public static func showScreen(_ name: String?, in state: BrowserState) {
         switch name {
@@ -50,6 +50,8 @@ extension DemoData {
             }
         case "newTab":
             state.startNewTab()
+        case "secondSpace":
+            state.selectSpace(step: 1)
         default:
             break
         }

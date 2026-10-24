@@ -12,4 +12,11 @@ import ZenModel
         #expect(data.currentSpace.pinned.first?.folder?.children.count == 2)
         #expect(data.currentSpace.regular.first?.title == "Weekend weather")
     }
+
+    @MainActor
+    @Test func secondSpaceScreenShowsWork() {
+        let state = BrowserState(data: DemoData.browserData(now: Date(timeIntervalSince1970: 0)))
+        DemoData.showScreen("secondSpace", in: state)
+        #expect(state.data.currentSpace.name == "Work")
+    }
 }

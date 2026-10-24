@@ -6,16 +6,19 @@ import ZenState
 ///
 /// It uses the system's paging scroll view, which follows the finger, commits past half the width or with a
 /// flick, rubber-bands at the ends, and keeps vertical scrolling inside a page from changing space.
-/// After the last space comes the "New space" page.
+/// After the last space comes the "New space" page: settling on it opens the new space sheet, and closing the
+/// sheet without creating the space swipes back.
 struct SpacePager: View {
     let state: BrowserState
     let onOpen: @MainActor (ZenModel.Tab.ID) -> Void
     let onAction: @MainActor (SpaceAction) -> Void
     let menus: RowMenus
+    /// Whether the space sheet is open. When it closes on the "New space" page, the pager goes back.
+    let isEditing: Bool
     /// Where the pager is between two spaces, for blending their colours.
     @Binding var paging: SpacePaging
 
-    @State private var visibleID: Space.ID?
+    @State private var position = ScrollPosition(idType: Space.ID.self)
 
     var body: some View {
         ScrollView(.horizontal) {
@@ -39,21 +42,32 @@ struct SpacePager: View {
             .scrollTargetLayout()
         }
         .scrollTargetBehavior(.paging)
-        .scrollPosition(id: $visibleID)
+        .scrollPosition($position)
         .scrollIndicators(.hidden)
         .onScrollGeometryChange(for: SpacePaging.self) { geometry in
             pagingState(geometry)
         } action: { _, newPaging in
             paging = newPaging
         }
-        .onAppear { visibleID = state.data.currentSpaceID }
-        .onChange(of: visibleID) { _, id in
+        .onScrollPhaseChange { _, phase in
+            if phase == .idle, isOnNewSpacePage { onAction(.newSpace) }
+        }
+        .onAppear { position.scrollTo(id: state.data.currentSpaceID) }
+        .onChange(of: position.viewID(type: Space.ID.self)) { _, id in
             if let id, id != state.data.currentSpaceID { state.selectSpace(id) }
         }
         .onChange(of: state.data.currentSpaceID) { _, id in
-            guard visibleID != id else { return }
-            withAnimation(Motion.changeSpace) { visibleID = id }
+            guard position.viewID(type: Space.ID.self) != id else { return }
+            withAnimation(Motion.changeSpace) { position.scrollTo(id: id) }
         }
+        .onChange(of: isEditing) { _, editing in
+            guard !editing, isOnNewSpacePage else { return }
+            withAnimation(Motion.changeSpace) { position.scrollTo(id: state.data.currentSpaceID) }
+        }
+    }
+
+    private var isOnNewSpacePage: Bool {
+        paging.nearestIndex >= state.data.spaces.count
     }
 
     private func pagingState(_ geometry: ScrollGeometry) -> SpacePaging {

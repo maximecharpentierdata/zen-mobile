@@ -22,6 +22,7 @@ struct SpaceScreen: View {
                 state: state,
                 onOpen: onOpen,
                 onAction: handle,
+                isEditing: editor != nil,
                 menus: RowMenus(state: state, onPrompt: { namePrompt = $0 }, onUnload: onUnload),
                 paging: $paging
             )

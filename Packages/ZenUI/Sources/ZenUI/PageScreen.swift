@@ -3,7 +3,7 @@ import ZenModel
 import ZenState
 import ZenWeb
 
-/// An open tab: the page full screen with only the bottom bar (spec §3.4).
+/// An open tab: the page full screen with only the bottom bar and its page menu (spec §3.4).
 /// A sideways swipe on the page goes back or forward in its history.
 struct PageScreen: View {
     let state: BrowserState
@@ -61,15 +61,18 @@ struct PageScreen: View {
                 onCancel: { state.cancelAddressEditing() }
             )
         } else {
-            PageBar(
-                tab: tab,
-                onTap: { state.editAddress() },
-                onDoubleTap: resetToPinnedURL,
-                onShowSpace: onShowSpace,
-                onNewTab: { state.startNewTab() },
-                onDrag: onDrag,
-                onRelease: onRelease
-            )
+            HStack(spacing: Theme.Spacing.grid) {
+                PageBar(
+                    tab: tab,
+                    onTap: { state.editAddress() },
+                    onDoubleTap: resetToPinnedURL,
+                    onShowSpace: onShowSpace,
+                    onNewTab: { state.startNewTab() },
+                    onDrag: onDrag,
+                    onRelease: onRelease
+                )
+                PageMenu(url: tab.url, navigation: webViews.navigation(for: tab))
+            }
         }
     }
 

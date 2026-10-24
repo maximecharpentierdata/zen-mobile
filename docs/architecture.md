@@ -60,6 +60,7 @@ How we copy pieces:
 - One `@Observable` `BrowserState` on the main actor holds the spaces, the current space, the open tab and the gesture state. Views read it; changes go through methods on it, which call pure functions in `ZenModel`.
 - `ZenStore` saves after changes (debounced, about 0.5 s) and on going to the background.
 - Web views live in `ZenWeb`'s `WebViewPool`, keyed by tab id. They are created when needed, can be unloaded under memory pressure, and are restored from saved navigation state.
+- Each page also has an `@Observable` `PageNavigation` in `ZenWeb`: it follows the web view's back/forward state through key-value observation and carries the page menu's actions (back, forward, reload, find, desktop site). The page menu reads it directly, since this state belongs to the web view, not to the model.
 
 ## 5. Key UI mechanics
 - **Space pager (2A):** a horizontal paging scroll view over the spaces, with the background colour blended from the scroll offset. Vertical lists are inside each page and lock their direction.

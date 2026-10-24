@@ -89,10 +89,14 @@ Automatic clean-up of regular tabs:
 
 ### 3.4 Opening a tab (design 3A + validated change)
 - Tapping a tab row makes the row grow into the full-screen page (zoom transition, about 0.35 s spring). *(tune)*
-- The opened page is **full screen**. The only control is a **bottom bar** that shows the **tab title** with the **domain** under it.
+- The opened page is **full screen**. The only controls are a **bottom bar** that shows the **tab title** with the **domain** under it, and a **"…" button** to its right. *(position: proposal)*
 - Tapping the bar opens address editing (full URL, keyboard, suggestions).
   - On a regular tab, the new address loads in the same tab. On a pinned tab or an Essential, it opens in a new tab at the top of the current space's regular tabs, and the pinned tab or Essential keeps its page.
 - On a pinned tab or an Essential, double-tapping the bar goes back to the pinned URL.
+- The "…" button opens the page menu (decided 2026-10-24): **Back**, **Forward**, **Reload**, **Share**, **Copy link**, **Find on page** and **Request desktop site**.
+  - Back and Forward are greyed out when the page has nothing to go back or forward to. A new tab with no address shows only Back, Forward and Reload, greyed out.
+  - Find on page opens the system find bar. *(proposal)*
+  - Request desktop site reloads the page as the desktop version; the item then reads **Request mobile site** and switches back. The choice holds for this tab's page until the page is freed (§4); it isn't saved. *(proposal)*
 - When the page scrolls down, the bar shrinks to a slim title-only strip; scrolling up restores it. *(proposal)*
 - Swipe sideways anywhere on the page to move in its history: to the right goes back, to the left goes forward (asked for on 2026-10-24).
   - The page follows the finger when there is a page to go to that way, and doesn't move otherwise. Release past about 100 pt, or with a fast flick (about 800 pt/s), to go there; otherwise the page snaps back. *(tune)*

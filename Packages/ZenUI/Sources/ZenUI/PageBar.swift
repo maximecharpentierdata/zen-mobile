@@ -1,7 +1,7 @@
 import SwiftUI
 import ZenModel
 
-/// The only control on an open page: the tab's title with its domain underneath (spec §3.4).
+/// The main control on an open page: the tab's title with its domain underneath (spec §3.4).
 /// Tapping it edits the address; dragging it up is the bar gesture (spec §3.5).
 struct PageBar: View {
     let tab: ZenModel.Tab

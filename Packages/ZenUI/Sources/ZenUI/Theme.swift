@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 /// Colours, spacing and radii from `docs/design.md`. Views take visual constants from here only.
 enum Theme {
@@ -15,6 +16,13 @@ enum Theme {
         static var pageBarFill: Color { Color(hex: 0x1D1A2B) }
         /// The near-black that space backgrounds are tinted from.
         static var backgroundBase: UInt32 { 0x121216 }
+        /// Starting colours for new spaces, taken in turn: the mockups' Personal, Work and Research colours.
+        static let spaceAccents: [UInt32] = [0x9B8CFF, 0xF0A060, 0x5CC8BE]
+
+        /// The starting colour for a space created after `count` existing ones.
+        static func newSpaceAccent(after count: Int) -> UInt32 {
+            spaceAccents[count % spaceAccents.count]
+        }
     }
 
     /// Spacing in points.
@@ -79,6 +87,17 @@ extension Color {
             let to = Double((other >> shift) & 0xFF)
             let channel = UInt32((from + (to - from) * amount).rounded())
             return result | (channel << shift)
+        }
+    }
+
+    /// The colour as a 24-bit RGB value, the inverse of ``init(hex:)``. Channels outside sRGB are clamped.
+    var hexValue: UInt32 {
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        UIColor(self).getRed(&red, green: &green, blue: &blue, alpha: nil)
+        return [red, green, blue].reduce(UInt32(0)) { result, channel in
+            (result << 8) | UInt32((min(max(channel, 0), 1) * 255).rounded())
         }
     }
 }

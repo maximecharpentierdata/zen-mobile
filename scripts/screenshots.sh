@@ -33,7 +33,7 @@ xcrun simctl status_bar "$udid" override --time 9:41 --batteryState charged --ba
 xcrun simctl install "$udid" "$app"
 
 # One launch per screen: the name is passed to the app as ZEN_DEMO_SCREEN.
-for screen in space page newTab; do
+for screen in space secondSpace page newTab; do
     xcrun simctl terminate "$udid" "$bundle_id" 2> /dev/null || true
     SIMCTL_CHILD_ZEN_DEMO_DATA=1 SIMCTL_CHILD_ZEN_DEMO_SCREEN="$screen" xcrun simctl launch "$udid" "$bundle_id"
     sleep 6

@@ -63,9 +63,10 @@ Automatic clean-up of regular tabs:
 
 ### 3.3 Changing space (design 2A)
 - Swipe left or right anywhere on the space screen to go to the next or previous space.
-- The list follows the finger 1:1, like pages. Release past 50 % of the width, or with a fast flick, to change space; otherwise it snaps back. *(tune)*
-- The background colour blends between the two spaces' colours during the swipe.
-- Scrolling direction locks after the first ~10 pt of movement, so a vertical scroll never changes space by accident. *(tune)*
+- The list follows the finger 1:1, like pages. Release past about half the width, or with a fast flick, to change space; otherwise it snaps back.
+- The background colour blends between the two spaces' colours during the swipe. The dots and the bottom bar use the blended colour too.
+- Scrolling direction locks after the first few points of movement, so a vertical scroll never changes space by accident.
+- These three behaviours come from the system's paging scroll view, so their thresholds are the system's, not ours. If testing on a device shows they need tuning, we will replace it with our own gesture. *(tune)*
 - At the first space the swipe resists (rubber band). Swiping past the last space shows a "New space" page. *(proposal)*
 
 ### 3.4 Opening a tab (design 3A + validated change)
@@ -94,6 +95,10 @@ The upward drag starts **on the page's bottom bar**, never at the screen edge (t
 
 ### 3.7 Space management
 - Create, rename, set the icon and colour, reorder, and delete a space. Deleting a space asks what to do with its tabs: close them, or move them to another space.
+- Everything is in the header's options menu: Edit space, New space, Move left, Move right, Delete space. Moving left or right is how spaces are reordered for now. *(proposal)*
+- Edit space and New space open a sheet with the name, the icon (an emoji or a letter) and the colour (system colour picker). A space needs a name. A blank icon becomes the name's first letter. *(proposal)*
+- A new space starts with the next of the mockups' colours (Personal, Work, Research), in turn. It goes after the existing spaces and is shown at once. *(proposal)*
+- The "New space" page after the last space (§3.3) opens the same sheet.
 
 ## 4. Web engine requirements
 - WebKit (`WKWebView`) is required by App Store rules outside the EU. The app uses it everywhere.

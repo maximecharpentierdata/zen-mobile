@@ -13,11 +13,6 @@ enum GestureMetrics {
     static let barDragMinimumDistance: CGFloat = 10
     /// How far towards its row the page shrinks while dragging, at stop 2 (0 = not at all, 1 = onto the row).
     static let barMaxDragCollapse: CGFloat = 0.6
-
-    /// Share of the screen width past which releasing a horizontal swipe changes space (spec §3.3).
-    static let spaceSwipeCommitFraction: CGFloat = 0.5
-    /// Movement after which a drag locks to horizontal or vertical (spec §3.3).
-    static let directionLockDistance: CGFloat = 10
 }
 
 extension GestureMetrics {

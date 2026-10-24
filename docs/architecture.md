@@ -1,6 +1,6 @@
 # Architecture
 
-Status: draft for review. Reuse strategy decided on 2026-10-24: our own app plus selected BrowserKit modules, vendored (§3).
+Status: living document. Reuse strategy decided on 2026-10-24: our own app, reusing selected Mozilla BrowserKit code. How the web layer is taken is still open (§3).
 
 ## 1. Platform and toolchain
 
@@ -41,6 +41,12 @@ What I checked on GitHub (2026-10-24):
 - `BrowserKit` is a Swift package (`swift-tools-version: 6.2`, iOS 15+) with 23 products, including `WebEngine`, `Common`, `SiteImageView`, `TabDataStore`, `ContentBlockingGenerator`, `ToolbarKit` and `ComponentLibrary`.
 - `WebEngine` depends on `Common` and `GCDWebServers`. Mozilla's `SampleBrowser` is "a web browser reference implementation using the WebEngine package".
 - `BrowserKit/Package.swift` sits in a subfolder of the repo. As far as I know, SwiftPM can't add a package from a subfolder of a remote repo, so we vendor it.
+
+What it would bring in (checked in `BrowserKit/Package.swift` and `Sources/WebEngine` at commit `783d862`):
+- `WebEngine` is about 5,000 lines in 70 Swift files, and its README says it is "under development". 23 of its files import `Common`, mostly for `Logger` and theming. It uses `GCDWebServers` for a local web server that serves internal pages.
+- `Common` depends on three third-party packages: `Dip`, `SwiftyBeaver` and `Sentry-Dynamic` (crash reporting).
+
+So how to take the web layer (vendor as-is, vendor with a shim for `Common`, or write our own thin layer and copy pieces) is still to decide before M3. The plan below is for the vendoring options.
 
 Plan:
 - `scripts/vendor-browserkit.sh <commit>` copies only the needed targets (`WebEngine`, `Common`, then `SiteImageView` when favicons come in) into `Vendor/BrowserKit/`, with a cut-down `Package.swift`. It records the source commit in `Vendor/BrowserKit/VENDORED_FROM`.

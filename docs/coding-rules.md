@@ -15,7 +15,7 @@ These rules apply to every contributor, human or AI.
 - Use `async`/`await`, not completion handlers, in new code.
 - Naming follows the [Swift API Design Guidelines](https://www.swift.org/documentation/api-design-guidelines/). Use spec vocabulary in code: `Space`, `Essentials`, `PinnedItem`, `Folder`, `Tab`.
 - Access control: everything is `internal` by default. Only a package's API is `public`.
-- Formatting: `swift-format`, using the repo config. Linting: SwiftLint, using the repo config. Both run in CI and must pass.
+- Formatting: `swift-format` (`.swift-format`). Linting: SwiftLint (`.swiftlint.yml`), which also enforces the size limits: files ≤ 300 lines, types ≤ 200, functions ≤ 40, cyclomatic complexity ≤ 8. Both run in CI and must pass. Never raise a limit or disable a rule to get a change through.
 
 ## SwiftUI and UIKit
 - Views stay small. Logic lives in `BrowserState` or `ZenModel`, not in view bodies.

@@ -27,6 +27,11 @@ import Testing
         #expect(gesture.outcome(upwardDistance: 300, upwardVelocity: 0) == .newTab)
     }
 
+    @Test func flickPastStopTwoGoesToSpace() {
+        #expect(gesture.outcome(upwardDistance: 400, upwardVelocity: 900) == .showSpace)
+        #expect(gesture.outcome(upwardDistance: 400, upwardVelocity: 799) == .newTab)
+    }
+
     @Test func shrinkIsClamped() {
         #expect(gesture.shrink(upwardDistance: -10) == 0)
         #expect(gesture.shrink(upwardDistance: 140) == 0.5)

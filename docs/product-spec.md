@@ -83,12 +83,18 @@ Automatic clean-up of regular tabs:
 - Scrolling direction locks after the first few points of movement, so a vertical scroll never changes space by accident.
 - These three behaviours come from the system's paging scroll view, so their thresholds are the system's, not ours. If testing on a device shows they need tuning, we will replace it with our own gesture. *(tune)*
 - At the first space the swipe resists (rubber band). Swiping past the last space shows a "New space" page. *(proposal)*
+- Settling on the "New space" page opens the new space sheet at once (name, icon, colour). Creating the space shows it; cancelling or swiping the sheet away creates nothing and swipes back to the last space.
 
 ### 3.4 Opening a tab (design 3A + validated change)
 - Tapping a tab row makes the row grow into the full-screen page (zoom transition, about 0.35 s spring). *(tune)*
 - The opened page is **full screen**. The only control is a **bottom bar** that shows the **tab title** with the **domain** under it.
 - Tapping the bar opens address editing (full URL, keyboard, suggestions).
+  - On a regular tab, the new address loads in the same tab. On a pinned tab or an Essential, it opens in a new tab at the top of the current space's regular tabs, and the pinned tab or Essential keeps its page.
 - When the page scrolls down, the bar shrinks to a slim title-only strip; scrolling up restores it. *(proposal)*
+- Swipe sideways anywhere on the page to move in its history: to the right goes back, to the left goes forward (asked for on 2026-10-24).
+  - The page follows the finger when there is a page to go to that way, and doesn't move otherwise. Release past about 100 pt, or with a fast flick (about 800 pt/s), to go there; otherwise the page snaps back. *(tune)*
+  - The swipe doesn't start when the page itself can still scroll sideways in that direction (a page wider than the screen, or zoomed in). When there is history that way, a website's own sideways swipes, such as photo carousels or maps, are taken over by this swipe.
+  - WebKit's own swipe from the left or right screen edge, as in Safari, stays on.
 
 ### 3.5 The bar gesture: back to the space, or a new tab (design 4A)
 The upward drag starts **on the page's bottom bar**, never at the screen edge (the bottom edge belongs to the iOS Home gesture).
@@ -97,10 +103,10 @@ The upward drag starts **on the page's bottom bar**, never at the screen edge (t
 |---|---|---|
 | < stop 1 (≈ 120 pt) *(tune)* | The page shrinks and follows the finger | Snaps back to the page |
 | stop 1 → stop 2 | Light haptic at stop 1; the "Space" marker lights up | **Back to the space**: the page shrinks into its tab row (3A in reverse) |
-| ≥ stop 2 (≈ 280 pt) *(tune)* | Haptic at stop 2; the "New tab" marker lights up | **New tab**: an empty tab is created and the address field opens with the keyboard |
+| ≥ stop 2 (≈ 420 pt) *(tune)* | Haptic at stop 2; the "New tab" marker lights up | **New tab**: an empty tab is created and the address field opens with the keyboard |
 
 - The animation is interruptible and follows the finger the whole time.
-- A fast upward flick that ends before stop 2 counts as "back to the space". *(tune)*
+- A fast upward flick counts as "back to the space", however far it goes: a quick swipe easily passes stop 2, so a new tab needs the finger to slow down past stop 2 before letting go. *(tune)*
 - New tabs go at the top of the current space's regular tabs. *(proposal)*
 
 ### 3.6 New tab
@@ -113,7 +119,7 @@ The upward drag starts **on the page's bottom bar**, never at the screen edge (t
 - Everything is in the header's options menu: Edit space, New space, Move left, Move right, Delete space. Moving left or right is how spaces are reordered for now. *(proposal)*
 - Edit space and New space open a sheet with the name, the icon (an emoji or a letter) and the colour (system colour picker). A space needs a name. A blank icon becomes the name's first letter. *(proposal)*
 - A new space starts with the next of the mockups' colours (Personal, Work, Research), in turn. It goes after the existing spaces and is shown at once. *(proposal)*
-- The "New space" page after the last space (§3.3) opens the same sheet.
+- The "New space" page after the last space (§3.3) opens the same sheet as soon as the swipe settles on it.
 
 ## 4. Web engine requirements
 - WebKit (`WKWebView`) is required by App Store rules outside the EU. The app uses it everywhere.
@@ -122,7 +128,7 @@ The upward drag starts **on the page's bottom bar**, never at the screen edge (t
 - A snapshot image is kept for each tab and used during transitions, so an animation never waits for a page to load.
 
 ## 5. Accessibility
-- Every gesture has a button or menu alternative: the bar has VoiceOver actions "Back to space" and "New tab"; changing space has previous/next actions.
+- Every gesture has a button or menu alternative: the bar has VoiceOver actions "Back to space" and "New tab"; changing space has previous/next actions. Going back and forward in a page's history will have buttons in the page's "…" menu.
 - With Reduce Motion on, the zoom and shrink transitions become crossfades.
 - Dynamic Type is supported on the space screen and the bar.
 

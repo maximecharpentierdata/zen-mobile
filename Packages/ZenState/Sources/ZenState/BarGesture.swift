@@ -14,7 +14,7 @@ public struct BarGesture: Sendable {
     public let stopSpace: Double
     /// Upward distance, in points, of stop 2.
     public let stopNewTab: Double
-    /// Upward speed, in points per second, from which a release before stop 2 counts as stop 1.
+    /// Upward speed, in points per second, from which a release counts as stop 1, however far it went.
     public let flickVelocity: Double
 
     /// Creates a gesture with its thresholds, which come from the UI's gesture metrics.
@@ -31,11 +31,11 @@ public struct BarGesture: Sendable {
         return .stay
     }
 
-    /// What a release does: the stage, except that a fast upward flick before stop 2 goes back to the space.
+    /// What a release does: the stage, except that a fast upward flick always goes back to the space. A quick
+    /// swipe easily travels past stop 2, so a new tab needs the finger to slow down there before letting go.
     public func outcome(upwardDistance distance: Double, upwardVelocity velocity: Double) -> Outcome {
-        let stage = stage(upwardDistance: distance)
-        if stage == .stay, velocity >= flickVelocity { return .showSpace }
-        return stage
+        if distance > 0, velocity >= flickVelocity { return .showSpace }
+        return stage(upwardDistance: distance)
     }
 
     /// How far the page has shrunk, from 0 (full screen) to 1 (at stop 2), following the finger.

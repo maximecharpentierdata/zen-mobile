@@ -56,9 +56,17 @@ extension BrowserState {
         isEditingAddress = false
     }
 
-    /// Records what a page shows after a navigation, as reported by the web view.
+    /// Records what a page shows after a navigation, as reported by the web view. The icon is kept while
+    /// the page stays on the same site, so it doesn't flicker back to a letter between pages.
     public func pageDidChange(_ id: Tab.ID, url: URL?, title: String) {
         guard let tab = data.tab(id), tab.url != url || tab.title != title else { return }
-        perform { try $0.updatePage(id, url: url, title: title, faviconURL: tab.faviconURL) }
+        let favicon = tab.url?.host() == url?.host() ? tab.faviconURL : nil
+        perform { try $0.updatePage(id, url: url, title: title, faviconURL: favicon) }
+    }
+
+    /// Records the icon a loaded page declares, as found by the web view.
+    public func faviconDidChange(_ id: Tab.ID, url: URL?) {
+        guard let tab = data.tab(id), tab.faviconURL != url else { return }
+        perform { try $0.updatePage(id, url: tab.url, title: tab.title, faviconURL: url) }
     }
 }

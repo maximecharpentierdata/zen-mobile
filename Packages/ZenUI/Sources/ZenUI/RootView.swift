@@ -162,8 +162,9 @@ public struct RootView: View {
 
 #Preview {
     let state = BrowserState(data: DemoData.browserData(now: .now))
-    let webViews = WebViewStore { id, url, title in
-        state.pageDidChange(id, url: url, title: title)
-    }
+    let webViews = WebViewStore(
+        onPageChange: { id, url, title in state.pageDidChange(id, url: url, title: title) },
+        onFaviconChange: { id, url in state.faviconDidChange(id, url: url) }
+    )
     RootView(state: state, webViews: webViews)
 }

@@ -21,6 +21,7 @@ struct EssentialsGrid: View {
                     FaviconBadge(tab: tab, accent: accent, size: Theme.Size.essentialIcon)
                         .frame(maxWidth: .infinity, minHeight: Theme.Size.essentialTileHeight)
                         .background(Theme.Palette.tileFill, in: .rect(cornerRadius: Theme.Radius.essentialTile))
+                        .reportsRowFrame(for: tab.id)
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel(tab.title.isEmpty ? (tab.url?.host() ?? "") : tab.title)

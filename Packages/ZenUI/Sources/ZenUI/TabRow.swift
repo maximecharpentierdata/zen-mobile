@@ -20,6 +20,7 @@ struct TabRow: View {
         .padding(.trailing, Theme.Spacing.rowPadding)
         .frame(minHeight: Theme.Size.tabRowHeight)
         .contentShape(.rect(cornerRadius: Theme.Radius.tabRow))
+        .reportsRowFrame(for: tab.id)
     }
 
     private var title: String {

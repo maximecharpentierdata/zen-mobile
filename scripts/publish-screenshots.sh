@@ -9,7 +9,7 @@ folder="$2"
 remote="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
 work="$(mktemp -d)"
 
-if git ls-remote --exit-code --heads "$remote" ci-screenshots > /dev/null; then
+if git ls-remote --exit-code "$remote" refs/heads/ci-screenshots > /dev/null; then
     git clone --quiet --depth 1 --branch ci-screenshots "$remote" "$work"
 else
     git init --quiet -b ci-screenshots "$work"

@@ -84,6 +84,7 @@ Automatic clean-up of regular tabs:
 - Tapping a tab row makes the row grow into the full-screen page (zoom transition, about 0.35 s spring). *(tune)*
 - The opened page is **full screen**. The only control is a **bottom bar** that shows the **tab title** with the **domain** under it.
 - Tapping the bar opens address editing (full URL, keyboard, suggestions).
+  - On a regular tab, the new address loads in the same tab. On a pinned tab or an Essential, it opens in a new tab at the top of the current space's regular tabs, and the pinned tab or Essential keeps its page.
 - When the page scrolls down, the bar shrinks to a slim title-only strip; scrolling up restores it. *(proposal)*
 
 ### 3.5 The bar gesture: back to the space, or a new tab (design 4A)

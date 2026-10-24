@@ -153,6 +153,7 @@ Sync (including with Zen desktop), private browsing, extensions, split view, Gla
 - **Private browsing:** not in v1.
 - **Licence:** MPL-2.0 for our own code (see `LICENSE`).
 - **Name:** "Zen" stays the working name for now. Before any App Store release, we need to check with the Zen project.
+- **Icon:** the app uses Zen desktop's icon for now. Its repository is MPL-2.0 and publishes no separate trademark or logo policy that we found (2026-10-24). Before any App Store release, the icon needs the same check with the Zen project as the name.
 
 ## 8. Open questions
 None at the moment.

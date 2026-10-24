@@ -18,7 +18,7 @@ jobs:
       matrix:
         package: [ZenModel, ZenStore]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Test ${{ matrix.package }}
         run: scripts/ci-run.sh swift test --package-path Packages/${{ matrix.package }}
 
@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     container: swift:6.2
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Lint formatting
         run: scripts/ci-run.sh swift format lint --strict --recursive App/Sources Packages/*/Sources Packages/*/Tests
 
@@ -35,7 +35,7 @@ jobs:
     name: App (macOS)
     runs-on: macos-26
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Show Xcode version
         run: xcodebuild -version
       - name: Install tools

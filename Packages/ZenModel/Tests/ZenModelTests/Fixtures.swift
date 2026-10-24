@@ -10,10 +10,16 @@ enum Fixtures {
     }
 
     /// First-launch data plus a second space called "Work".
-    static func twoSpaces() -> (data: BrowserData, personal: Space.ID, work: Space.ID) {
+    struct TwoSpaces {
+        var data: BrowserData
+        let personal: Space.ID
+        let work: Space.ID
+    }
+
+    static func twoSpaces() -> TwoSpaces {
         var data = BrowserData.firstLaunch()
         let personal = data.currentSpaceID
         let work = data.addSpace(name: "Work", icon: "W", accentColor: 0xF0A060)
-        return (data, personal, work)
+        return TwoSpaces(data: data, personal: personal, work: work)
     }
 }

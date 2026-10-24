@@ -13,13 +13,18 @@ import Testing
     }
 
     @Test func addSpaceAppendsWithoutChangingCurrent() {
-        let (data, personal, work) = Fixtures.twoSpaces()
+        let fixture = Fixtures.twoSpaces()
+        let data = fixture.data
+        let personal = fixture.personal
+        let work = fixture.work
         #expect(data.spaces.map(\.id) == [personal, work])
         #expect(data.currentSpaceID == personal)
     }
 
     @Test func selectSpaceChangesCurrent() throws {
-        var (data, _, work) = Fixtures.twoSpaces()
+        let fixture = Fixtures.twoSpaces()
+        var data = fixture.data
+        let work = fixture.work
         try data.selectSpace(work)
         #expect(data.currentSpaceID == work)
     }
@@ -39,7 +44,10 @@ import Testing
     }
 
     @Test func moveSpaceReordersAndClampsIndex() throws {
-        var (data, personal, work) = Fixtures.twoSpaces()
+        let fixture = Fixtures.twoSpaces()
+        var data = fixture.data
+        let personal = fixture.personal
+        let work = fixture.work
         try data.moveSpace(work, to: -5)
         #expect(data.spaces.map(\.id) == [work, personal])
         try data.moveSpace(work, to: 99)
@@ -54,7 +62,10 @@ import Testing
     }
 
     @Test func deletingSpaceWithCloseSendsTabsToRecentlyClosed() throws {
-        var (data, personal, work) = Fixtures.twoSpaces()
+        let fixture = Fixtures.twoSpaces()
+        var data = fixture.data
+        let personal = fixture.personal
+        let work = fixture.work
         let tab = try data.newTab(url: Fixtures.url("a"), in: work, now: Fixtures.now)
         try data.deleteSpace(work, tabs: .close)
         #expect(data.spaces.map(\.id) == [personal])
@@ -62,7 +73,10 @@ import Testing
     }
 
     @Test func deletingSpaceWithMoveKeepsTabs() throws {
-        var (data, personal, work) = Fixtures.twoSpaces()
+        let fixture = Fixtures.twoSpaces()
+        var data = fixture.data
+        let personal = fixture.personal
+        let work = fixture.work
         let tab = try data.newTab(in: work, now: Fixtures.now)
         try data.deleteSpace(work, tabs: .moveTo(personal))
         #expect(data.space(personal)?.regular.map(\.id) == [tab])
@@ -70,14 +84,19 @@ import Testing
     }
 
     @Test func deletingCurrentSpaceSelectsThePreviousOne() throws {
-        var (data, personal, work) = Fixtures.twoSpaces()
+        let fixture = Fixtures.twoSpaces()
+        var data = fixture.data
+        let personal = fixture.personal
+        let work = fixture.work
         try data.selectSpace(work)
         try data.deleteSpace(work, tabs: .close)
         #expect(data.currentSpaceID == personal)
     }
 
     @Test func deletingSpaceIntoItselfThrowsAndChangesNothing() throws {
-        var (data, _, work) = Fixtures.twoSpaces()
+        let fixture = Fixtures.twoSpaces()
+        var data = fixture.data
+        let work = fixture.work
         let before = data
         #expect(throws: ModelError.spaceNotFound(work)) { try data.deleteSpace(work, tabs: .moveTo(work)) }
         #expect(data == before)

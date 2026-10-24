@@ -49,7 +49,10 @@ import Testing
     }
 
     @Test func essentialsAreSharedAndReorderable() throws {
-        var (data, personal, work) = Fixtures.twoSpaces()
+        let fixture = Fixtures.twoSpaces()
+        var data = fixture.data
+        let personal = fixture.personal
+        let work = fixture.work
         let first = try data.newTab(in: personal, now: Fixtures.now)
         let second = try data.newTab(in: work, now: Fixtures.now)
         try data.addToEssentials(first)
@@ -83,7 +86,10 @@ import Testing
     }
 
     @Test func moveTabToSpaceKeepsSectionKind() throws {
-        var (data, personal, work) = Fixtures.twoSpaces()
+        let fixture = Fixtures.twoSpaces()
+        var data = fixture.data
+        let personal = fixture.personal
+        let work = fixture.work
         let regular = try data.newTab(in: personal, now: Fixtures.now)
         let pinned = try data.newTab(in: personal, now: Fixtures.now)
         try data.pin(pinned)

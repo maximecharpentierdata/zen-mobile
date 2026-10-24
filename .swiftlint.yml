@@ -35,6 +35,9 @@ cyclomatic_complexity:
   error: 12
 nesting:
   type_level: 2
+type_name:
+  excluded:
+    - ID
 identifier_name:
   min_length: 2
   excluded:

@@ -14,6 +14,8 @@ enum Theme {
         static var divider: Color { .white.opacity(0.12) }
         static var inactiveDot: Color { .white.opacity(0.30) }
         static var pageBarFill: Color { Color(hex: 0x1D1A2B) }
+        /// Dims the space screen behind the new tab's address field (spec §3.6). *(tune)*
+        static var scrim: Color { .black.opacity(0.5) }
         /// The near-black that space backgrounds are tinted from.
         static var backgroundBase: UInt32 { 0x121216 }
         /// Starting colours for new spaces, taken in turn: the mockups' Personal, Work and Research colours.

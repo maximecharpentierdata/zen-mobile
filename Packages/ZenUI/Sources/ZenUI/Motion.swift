@@ -4,6 +4,9 @@ import SwiftUI
 enum Motion {
     /// Tab row growing into the full-screen page, and back (spec §3.4).
     static var openTab: Animation { .spring(duration: 0.35, bounce: 0.1) }
+    /// The search field moving up into the new tab's address field, and back down (spec §3.6). It reuses the
+    /// tab opening spring so both new tab motions feel the same.
+    static var moveAddressField: Animation { openTab }
     /// The pager moving to a space chosen without a swipe, for example with VoiceOver (spec §3.3, §5).
     static var changeSpace: Animation { .spring(duration: 0.35, bounce: 0) }
     /// Opening and closing a page when Reduce Motion is on: a crossfade instead of the zoom (spec §5).

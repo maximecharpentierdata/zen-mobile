@@ -124,6 +124,7 @@ The upward drag starts **on the page's bottom bar**, never at the screen edge (t
 ### 3.6 New tab
 - It is reachable from the search field on the space screen and from stop 2 of the bar gesture.
 - Until an address is entered, it shows only the address field, with focus, centred on the screen as an overlay over the dimmed space screen (asked for on 2026-10-24). There is no blank page and no bottom bar. How much the space is dimmed is *(tune)*.
+- That address field is the space screen's search field itself: it leaves the bottom bar, moves up to the centre and takes focus, so there is never a second field at the bottom (asked for on 2026-10-24). Closing the new tab moves it back down into the bottom bar. With Reduce Motion it crossfades instead of moving (§5). The timing is *(tune)*.
 - There is no Cancel button: tapping anywhere outside the field closes the new tab, which leaves nothing behind, and shows the space again.
 - Entering an address loads it, and the page grows from the space screen's search field into the full-screen page (§3.4).
 - It will also show suggestions from history, open tabs and a search engine.

@@ -20,6 +20,7 @@ public struct RootView: View {
     /// How far the page bar is dragged up, in points.
     @State private var dragDistance: CGFloat = 0
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Namespace private var addressField
 
     /// Creates the root view for this state. `webViews` keeps the pages loaded between visits.
     public init(state: BrowserState, webViews: WebViewStore) {
@@ -30,13 +31,17 @@ public struct RootView: View {
     /// The view's content.
     public var body: some View {
         ZStack {
-            SpaceScreen(state: state, onOpen: open, onNewTab: startNewTab, onUnload: { webViews.unload($0) })
+            spaceScreen
                 .allowsHitTesting(state.openTab == nil)
                 .accessibilityHidden(state.openTab != nil)
             if let tab = state.openTab {
-                if tab.url == nil && state.isEditingAddress {
-                    NewTabOverlay(onSubmit: { state.submitAddress($0) }, onDismiss: dismissNewTab)
-                        .transition(.opacity)
+                if isNewTabOpen {
+                    NewTabOverlay(
+                        fieldNamespace: fieldNamespace,
+                        onSubmit: { state.submitAddress($0) },
+                        onDismiss: dismissNewTab
+                    )
+                    .transition(.opacity)
                 } else {
                     page(for: tab)
                         .id(tab.id)
@@ -64,6 +69,27 @@ public struct RootView: View {
             screenFrame = frame
         }
         .sensoryFeedback(.impact(weight: .light), trigger: stage) { _, newStage in newStage != .stay }
+    }
+
+    private var spaceScreen: some View {
+        SpaceScreen(
+            state: state,
+            onOpen: open,
+            onNewTab: startNewTab,
+            onUnload: { webViews.unload($0) },
+            fieldNamespace: fieldNamespace,
+            isFieldLifted: isNewTabOpen
+        )
+    }
+
+    /// A new tab with no address yet shows only its address field (spec §3.6).
+    private var isNewTabOpen: Bool {
+        state.openTab?.url == nil && state.isEditingAddress
+    }
+
+    /// With Reduce Motion the search field crossfades instead of moving (spec §5).
+    private var fieldNamespace: Namespace.ID? {
+        reduceMotion ? nil : addressField
     }
 
     private var stage: BarGesture.Outcome {
@@ -117,17 +143,21 @@ public struct RootView: View {
         present { state.open(id) }
     }
 
-    /// Shows the new tab overlay over the space (spec §3.6). Once an address is entered, the page grows from
-    /// the search field.
+    /// Moves the search field up into the new tab overlay (spec §3.6). Once an address is entered, the page
+    /// grows from the search field.
     private func startNewTab() {
         collapse = reduceMotion ? 0 : 1
-        withAnimation(Motion.crossfade) { state.startNewTab() }
+        withAnimation(fieldAnimation) { state.startNewTab() }
     }
 
-    /// Closes the new tab overlay; the empty tab is removed and the space screen shows again.
+    /// Closes the new tab overlay; the empty tab is removed and the field moves back to the bottom bar.
     private func dismissNewTab() {
-        withAnimation(Motion.crossfade) { state.cancelAddressEditing() }
+        withAnimation(fieldAnimation) { state.cancelAddressEditing() }
         collapse = 0
+    }
+
+    private var fieldAnimation: Animation {
+        reduceMotion ? Motion.crossfade : Motion.moveAddressField
     }
 
     /// Shows a page: it grows from its row, or crossfades in with Reduce Motion (spec §3.4, §5).

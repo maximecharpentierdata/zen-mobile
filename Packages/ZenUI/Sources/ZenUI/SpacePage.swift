@@ -4,20 +4,28 @@ import ZenState
 
 /// One space in the pager: its header, the shared Essentials, its pinned section and its regular tabs
 /// (spec §3.2; design 1A).
+///
+/// Essentials sit outside the scrolling list and stay still while the pager slides, because they belong to
+/// no space (spec §3.3). The margin is set on each part so the Essentials' slide is measured from the page edge.
 struct SpacePage: View {
     let space: Space
     let essentials: [ZenModel.Tab]
     let header: SpaceHeader
     let menus: RowMenus
+    /// Whether this is the last space, so the next page is the "New space" page, which has no Essentials.
+    let isLast: Bool
     let onToggleFolder: @MainActor (Folder.ID) -> Void
     let onOpen: @MainActor (ZenModel.Tab.ID) -> Void
 
     var body: some View {
         VStack(spacing: Theme.Spacing.section) {
             header
+                .padding(.horizontal, Theme.Spacing.screenMargin)
+            EssentialsGrid(tabs: essentials, accent: space.accentColor, menus: menus) { onOpen($0) }
+                .padding(.horizontal, Theme.Spacing.screenMargin)
+                .staysStillWhilePaging(fadesTowardsEnd: isLast)
             ScrollView {
                 VStack(alignment: .leading, spacing: Theme.Spacing.section) {
-                    EssentialsGrid(tabs: essentials, accent: space.accentColor, menus: menus) { onOpen($0) }
                     PinnedSection(
                         spaceID: space.id,
                         items: space.pinned,
@@ -31,8 +39,8 @@ struct SpacePage: View {
                 }
             }
             .scrollIndicators(.hidden)
+            .padding(.horizontal, Theme.Spacing.screenMargin)
         }
-        .padding(.horizontal, Theme.Spacing.screenMargin)
     }
 
     /// Dropping a tab on the divider pins it at the end of the pinned section. The drop area is taller than

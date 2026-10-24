@@ -21,7 +21,10 @@ struct ZenMobileApp: App {
 
     var body: some Scene {
         WindowGroup {
+            // Only the dark appearance is designed (design.md), so system controls, menus and the keyboard
+            // follow it too.
             RootView(state: state, webViews: webViews)
+                .preferredColorScheme(.dark)
         }
         .onChange(of: scenePhase) { _, phase in
             switch phase {

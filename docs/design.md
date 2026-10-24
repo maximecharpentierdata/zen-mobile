@@ -18,4 +18,4 @@ The B and C options stay on the canvas for reference only.
 - Each space has its own accent colour and a dark background tinted with it. The mockups use Personal `#9B8CFF` on `#1D1A2B`, Work `#F0A060` on `#2A1F17`, and Research `#5CC8BE` on `#142528`.
 - Type is the system font (SF Pro). Space name 22 pt bold, tab rows 16 pt, section labels 12 pt uppercase.
 - Tab rows are 44 pt tall with 12 pt corner radius. Essentials tiles are 60 pt with 16 pt radius. The bottom bar is a 50–56 pt pill.
-- Light mode is not designed yet.
+- Light mode is not designed yet, so the app always uses the dark appearance (system controls, menus and the keyboard included).

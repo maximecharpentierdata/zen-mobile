@@ -1,7 +1,7 @@
 import Foundation
 import ZenModel
 
-/// Sample content for previews, CI screenshots and demos. The app uses it only in debug builds, when the
+/// Sample content for previews and demos. The app uses it only in debug builds, when the
 /// `ZEN_DEMO_DATA` environment variable is `1`.
 public enum DemoData {
     /// Two spaces; the first has Essentials, a folder with pinned tabs, and regular tabs (design 1A).
@@ -39,7 +39,7 @@ public enum DemoData {
 }
 
 extension DemoData {
-    /// Puts a demo state on a given screen, for CI screenshots: `page` opens the first regular tab,
+    /// Puts a demo state on a given screen, chosen with `ZEN_DEMO_SCREEN`: `page` opens the first regular tab,
     /// `newTab` starts a new tab, `secondSpace` shows the second space; anything else stays on the space screen.
     @MainActor
     public static func showScreen(_ name: String?, in state: BrowserState) {

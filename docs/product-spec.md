@@ -98,7 +98,11 @@ Automatic clean-up of regular tabs:
   - Find on page opens the system find bar. *(proposal)*
   - Request desktop site reloads the page as the desktop version; the item then reads **Request mobile site** and switches back. The choice holds for this tab's page until the page is freed (§4); it isn't saved. *(proposal)*
 - Pulling the page down when it is already at the top reloads it, with the system's refresh spinner, as in Safari (asked for on 2026-10-24). How far to pull is the system's.
-- When the page scrolls down, the bar shrinks to a slim title-only strip; scrolling up restores it. *(proposal)*
+- The page uses the whole screen, as in Safari (asked for on 2026-10-24):
+  - It runs up under the status bar, which is blurred over it.
+  - The expanded bar sits below the page, so it never hides part of it. There is no other band at the bottom.
+  - When the finger scrolls the page down (about 24 pt) *(tune)*, the bar minimizes to a slim, translucent, title-only strip without the "…" button, and the page runs under it to the bottom edge of the screen. Scrolling back up (about 24 pt) *(tune)*, reaching the top of the page, loading a new page or tapping the strip expands the bar again. A page that fits on the screen keeps the bar expanded, and so does address editing.
+  - The bar gesture (§3.5) works on the minimized strip too.
 - Swipe sideways anywhere on the page to move in its history: to the right goes back, to the left goes forward (asked for on 2026-10-24).
   - The page follows the finger when there is a page to go to that way, and doesn't move otherwise. Release past about 100 pt, or with a fast flick (about 800 pt/s), to go there; otherwise the page snaps back. *(tune)*
   - The swipe doesn't start when the page itself can still scroll sideways in that direction (a page wider than the screen, or zoomed in). When there is history that way, a website's own sideways swipes, such as photo carousels or maps, are taken over by this swipe.

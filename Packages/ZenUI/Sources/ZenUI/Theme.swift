@@ -55,6 +55,8 @@ enum Theme {
         static let essentialTileHeight: CGFloat = 60
         static let bottomBarHeight: CGFloat = 50
         static let pageBarHeight: CGFloat = 56
+        /// The page bar once the page has scrolled down (spec §3.4).
+        static let minimizedPageBarHeight: CGFloat = 32
         static let stopMarkerHeight: CGFloat = 40
         static let headerIcon: CGFloat = 32
         static let favicon: CGFloat = 20
@@ -66,6 +68,8 @@ enum Theme {
 
     /// The share of the accent colour mixed into a space's background (design.md: dark, tinted backgrounds).
     static let backgroundTint = 0.10
+    /// The translucent blur behind the status bar and the minimized page bar, as in Safari (spec §3.4).
+    static var barMaterial: Material { .ultraThinMaterial }
     /// Columns in the Essentials grid (spec §3.2).
     static let essentialsColumns = 4
 

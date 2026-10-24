@@ -5,6 +5,9 @@ import ZenWeb
 
 /// An open tab: the page full screen with only the bottom bar and its page menu (spec §3.4).
 /// A sideways swipe on the page goes back or forward in its history.
+///
+/// As in Safari, the page runs under the blurred status bar. The expanded bar sits below the page so it hides
+/// nothing; once the page scrolls down the bar minimizes and the page runs under it to the bottom edge.
 struct PageScreen: View {
     let state: BrowserState
     let tab: ZenModel.Tab
@@ -14,24 +17,52 @@ struct PageScreen: View {
     let onShowSpace: @MainActor () -> Void
 
     @State private var swipeOffset: CGFloat = 0
+    @State private var barScroll = GestureMetrics.barScroll
     private let swipe = GestureMetrics.pageSwipe
 
     var body: some View {
         let accent = state.data.currentSpace.accentColor
-        WebPage(webView: webViews.webView(for: tab), onSwipe: handleSwipe)
+        WebPage(webView: webViews.webView(for: tab), onSwipe: handleSwipe, onScroll: handleScroll)
             .offset(x: swipeOffset)
             .id(tab.id)
             .overlay { if state.isEditingAddress { dismissArea } }
-            .ignoresSafeArea(.container, edges: .bottom)
-            .safeAreaInset(edge: .bottom) {
+            .ignoresSafeArea(.container, edges: isBarMinimized ? .vertical : .top)
+            .safeAreaInset(edge: .bottom, spacing: 0) {
                 bottomControl
                     .padding(.horizontal, Theme.Spacing.screenMargin)
-                    .padding(.bottom, Theme.Spacing.grid)
+                    .padding(.vertical, isBarMinimized ? 0 : Theme.Spacing.grid)
             }
+            .overlay(alignment: .top) { StatusBarBackdrop() }
             .background(Theme.spaceBackground(accent: accent).ignoresSafeArea())
             .onChange(of: tab.url) { _, url in
                 if let url { webViews.load(url, in: tab) }
+                expandBar()
             }
+    }
+
+    /// Address editing always shows the full bar.
+    private var isBarMinimized: Bool {
+        barScroll.isMinimized && !state.isEditingAddress
+    }
+
+    /// The bar minimizes as the finger scrolls the page down and expands as it scrolls back up.
+    private func handleScroll(_ event: PageScrollEvent) {
+        var next = barScroll
+        switch event {
+        case .began:
+            next.dragBegan()
+        case .moved(let translation, let isAtTop, let canScroll):
+            next.dragMoved(translation: translation, isAtTop: isAtTop, canScroll: canScroll)
+        }
+        guard next.isMinimized != barScroll.isMinimized else {
+            barScroll = next
+            return
+        }
+        withAnimation(Motion.barResize) { barScroll = next }
+    }
+
+    private func expandBar() {
+        withAnimation(Motion.barResize) { barScroll.expand() }
     }
 
     /// The page follows the finger towards a page it can go to, then navigates or snaps back on release.
@@ -64,14 +95,17 @@ struct PageScreen: View {
             HStack(spacing: Theme.Spacing.grid) {
                 PageBar(
                     tab: tab,
-                    onTap: { state.editAddress() },
-                    onDoubleTap: resetToPinnedURL,
+                    isMinimized: isBarMinimized,
+                    onTap: { isBarMinimized ? expandBar() : state.editAddress() },
+                    onDoubleTap: isBarMinimized ? nil : resetToPinnedURL,
                     onShowSpace: onShowSpace,
                     onNewTab: { state.startNewTab() },
                     onDrag: onDrag,
                     onRelease: onRelease
                 )
-                PageMenu(url: tab.url, navigation: webViews.navigation(for: tab))
+                if !isBarMinimized {
+                    PageMenu(url: tab.url, navigation: webViews.navigation(for: tab))
+                }
             }
         }
     }

@@ -8,6 +8,8 @@ enum Motion {
     static var changeSpace: Animation { .spring(duration: 0.35, bounce: 0) }
     /// Opening and closing a page when Reduce Motion is on: a crossfade instead of the zoom (spec §5).
     static var crossfade: Animation { .easeInOut(duration: 0.25) }
+    /// The page bar minimizing as the page scrolls down, and expanding again (spec §3.4).
+    static var barResize: Animation { .spring(duration: 0.25, bounce: 0) }
     /// A gesture released before its first threshold returns to rest.
     static var snapBack: Animation { .spring(duration: 0.3, bounce: 0) }
 }

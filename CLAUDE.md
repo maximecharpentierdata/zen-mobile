@@ -1,6 +1,6 @@
 # Zen for iPhone
 
-An iOS browser that brings Zen Browser's vertical tabs, Spaces, folders and Essentials to the iPhone. It uses WebKit, reuses Mozilla code from firefox-ios (MPL-2.0) where it fits, and is written in SwiftUI. The licence is MPL-2.0.
+An iOS browser that brings Zen Browser's vertical tabs, Spaces, folders and Essentials to the iPhone. It uses WebKit, copies pieces of Mozilla's firefox-ios (MPL-2.0) where they fit, and is written in SwiftUI. The licence is MPL-2.0.
 
 ## Read first
 - `docs/product-spec.md`: what the app does. It is the source of truth for behaviour.
@@ -40,7 +40,7 @@ Without a Swift toolchain (for example on a Linux sandbox), you can't run these.
 7. **PR description:** what changes, which spec section it implements, how it was checked, and what was not checked (for example "not run on a device").
 
 ## Never
-- Edit vendored Mozilla code by hand, or remove an MPL-2.0 header.
+- Remove an MPL-2.0 header or the "Copied from" line from a file taken from Mozilla.
 - Add a third-party dependency without the owner's agreement.
 - Skip, disable or delete a test to make CI pass.
 - Commit generated files (`*.xcodeproj`, `.build/`).

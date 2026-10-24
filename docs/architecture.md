@@ -1,6 +1,6 @@
 # Architecture
 
-Status: living document. Reuse strategy decided on 2026-10-24: our own app, reusing selected Mozilla BrowserKit code. How the web layer is taken is still open (§3).
+Status: living document. Reuse strategy decided on 2026-10-24: our own app, with our own thin web layer that copies Mozilla pieces where useful (§3).
 
 ## 1. Platform and toolchain
 
@@ -11,7 +11,7 @@ Status: living document. Reuse strategy decided on 2026-10-24: our own app, reus
 | Minimum iOS | 18.0 *(proposal)* | Gives the recent SwiftUI APIs, including `UIGestureRecognizerRepresentable`. BrowserKit itself only needs iOS 15 |
 | Project | XcodeGen (`project.yml`); the `.xcodeproj` is generated and not committed | Avoids merge conflicts in `project.pbxproj` |
 | Dependencies | Swift Package Manager only | One tool |
-| Web engine | WebKit `WKWebView`, through Mozilla's `WebEngine` module | Required on iOS outside the EU |
+| Web engine | WebKit `WKWebView`, through our own `ZenWeb` layer | Required on iOS outside the EU |
 
 Building and running the app needs **macOS with Xcode**. The pure-Swift packages (`ZenModel`, `ZenStore`) are written to also build and test on Linux with `swift test`, so they can be tested without a Mac.
 
@@ -24,15 +24,14 @@ zen-mobile/
 │  ├─ ZenModel/            Pure Swift. Space, Tab, Folder, Essentials and tree operations
 │  │                       (move, pin, unpin, reorder). No UIKit/SwiftUI. Fully unit-tested.
 │  ├─ ZenStore/            Persistence of ZenModel (Codable JSON, atomic file writes), migrations.
-│  ├─ ZenWeb/              Tab ↔ web view lifecycle, snapshots, unloading, over WebEngine.
+│  ├─ ZenWeb/              Our thin WKWebView layer: tab ↔ web view lifecycle, snapshots, unloading.
 │  └─ ZenUI/               SwiftUI screens and components: space screen, pager, page + bar,
 │                          gesture controller, transitions.
-├─ Vendor/BrowserKit/      Selected Mozilla BrowserKit modules (MPL-2.0), pinned to a commit.
 ├─ docs/
 └─ project.yml
 ```
 
-Dependency direction: `App → ZenUI → ZenWeb → (Vendor) WebEngine`, and `ZenUI → ZenStore → ZenModel`. `ZenModel` depends on nothing.
+Dependency direction: `App → ZenUI → ZenWeb`, and `ZenUI → ZenStore → ZenModel`. `ZenModel` depends on nothing.
 
 ## 3. Reusing Mozilla code
 
@@ -40,18 +39,18 @@ What I checked on GitHub (2026-10-24):
 - `mozilla-mobile/firefox-ios` is MPL-2.0. It is a monorepo with the Firefox and Focus apps plus `BrowserKit`.
 - `BrowserKit` is a Swift package (`swift-tools-version: 6.2`, iOS 15+) with 23 products, including `WebEngine`, `Common`, `SiteImageView`, `TabDataStore`, `ContentBlockingGenerator`, `ToolbarKit` and `ComponentLibrary`.
 - `WebEngine` depends on `Common` and `GCDWebServers`. Mozilla's `SampleBrowser` is "a web browser reference implementation using the WebEngine package".
-- `BrowserKit/Package.swift` sits in a subfolder of the repo. As far as I know, SwiftPM can't add a package from a subfolder of a remote repo, so we vendor it.
+- `BrowserKit/Package.swift` sits in a subfolder of the repo. As far as I know, SwiftPM can't add a package from a subfolder of a remote repo, so a package could only be taken by copying it.
 
 What it would bring in (checked in `BrowserKit/Package.swift` and `Sources/WebEngine` at commit `783d862`):
 - `WebEngine` is about 5,000 lines in 70 Swift files, and its README says it is "under development". 23 of its files import `Common`, mostly for `Logger` and theming. It uses `GCDWebServers` for a local web server that serves internal pages.
 - `Common` depends on three third-party packages: `Dip`, `SwiftyBeaver` and `Sentry-Dynamic` (crash reporting).
 
-So how to take the web layer (vendor as-is, vendor with a shim for `Common`, or write our own thin layer and copy pieces) is still to decide before M3. The plan below is for the vendoring options.
+**Decision (2026-10-24): we write our own thin web layer.** `ZenWeb` is a small `WKWebView` layer sized to what we need (tabs, navigation state, snapshots, unloading). Mozilla's `WebEngine` and `SampleBrowser` are the reference for how to do it. No Mozilla package is vendored as a whole, and no third-party dependency is added.
 
-Plan:
-- `scripts/vendor-browserkit.sh <commit>` copies only the needed targets (`WebEngine`, `Common`, then `SiteImageView` when favicons come in) into `Vendor/BrowserKit/`, with a cut-down `Package.swift`. It records the source commit in `Vendor/BrowserKit/VENDORED_FROM`.
-- Our own code is MPL-2.0 as well. Vendored files keep their MPL-2.0 headers and stay unmodified. Any change we need is a small patch in `Vendor/BrowserKit/patches/`, applied by the script, so updates stay possible.
-- Mozilla's `SampleBrowser` is the reference for how to use `WebEngine`.
+How we copy pieces:
+- When a Mozilla file is worth taking (for example a user script or a URL helper), copy it into the package that needs it. Keep its MPL-2.0 header and add a line under it: `// Copied from mozilla-mobile/firefox-ios <path> at <commit>`.
+- Remove what we don't use, and replace `Common` dependencies (logger, theming) with our own small equivalents.
+- Our own code is MPL-2.0 as well.
 - Zen desktop (Gecko, MPL-2.0) is used as a reference for behaviour and concepts only; no code is reused from it.
 
 ## 4. State and data flow

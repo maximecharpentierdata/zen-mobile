@@ -7,7 +7,7 @@ Each milestone ends with a PR that builds, passes CI and can be tried.
 | M0 | Skeleton | `project.yml`, empty app, packages, swift-format/SwiftLint configs, CI (Linux `swift test` + macOS build), Claude rules | architecture §1–2, §6 |
 | M1 | Model and store | `ZenModel` types and tree operations; `ZenStore` JSON persistence; full unit tests | spec §2 |
 | M2 | Space screen | Static 1A screen from the model: Essentials, pinned tabs, folders, divider, tabs, bottom bar | spec §3.2 |
-| M3 | Web pages | Mozilla code reuse for the web layer (architecture §3); `ZenWeb`; open a tab full screen with the title/domain bar; address editing; new tab | spec §3.4, §3.6, §4 |
+| M3 | Web pages | Our thin `ZenWeb` layer (architecture §3); open a tab full screen with the title/domain bar; address editing; new tab | spec §3.4, §3.6, §4 |
 | M4 | Bar gesture | Drag up with two stops, haptics, the shrink-into-row transition (3A both ways) | spec §3.4, §3.5 |
 | M5 | Spaces | Paged swipe between spaces with colour blending; create/rename/delete spaces | spec §3.3, §3.7 |
 | M6 | Tab management | Swipe to close, context menu, drag to reorder, folders, pin/unpin, Essentials | spec §3.2 |

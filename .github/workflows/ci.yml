@@ -18,35 +18,35 @@ jobs:
       matrix:
         package: [ZenModel, ZenStore]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Test ${{ matrix.package }}
-        run: swift test --package-path Packages/${{ matrix.package }}
+        run: scripts/ci-run.sh swift test --package-path Packages/${{ matrix.package }}
 
   format:
     name: Format (swift-format)
     runs-on: ubuntu-latest
     container: swift:6.2
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Lint formatting
-        run: swift format lint --strict --recursive App/Sources Packages/*/Sources Packages/*/Tests
+        run: scripts/ci-run.sh swift format lint --strict --recursive App/Sources Packages/*/Sources Packages/*/Tests
 
   app:
     name: App (macOS)
     runs-on: macos-26
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Show Xcode version
         run: xcodebuild -version
       - name: Install tools
         run: brew install xcodegen swiftlint
       - name: SwiftLint
-        run: swiftlint lint --strict
+        run: scripts/ci-run.sh swiftlint lint --strict
       - name: Generate project
         run: xcodegen generate
       - name: Build for iOS Simulator
         run: >-
-          xcodebuild build
+          scripts/ci-run.sh xcodebuild build
           -project ZenMobile.xcodeproj
           -scheme ZenMobile
           -destination 'generic/platform=iOS Simulator'

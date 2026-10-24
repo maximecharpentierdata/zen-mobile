@@ -2,14 +2,16 @@ import SwiftUI
 import ZenModel
 import ZenState
 
-/// A request to type a name: a new folder for a tab, or a folder's new name (spec §3.2).
+/// A request to type a name: a new folder for a tab, an empty new folder, or a folder's new name (spec §3.2).
 enum NamePrompt: Identifiable {
     case newFolder(for: ZenModel.Tab.ID)
+    case emptyFolder(in: Space.ID)
     case renameFolder(Folder)
 
     var id: String {
         switch self {
         case .newFolder(let tabID): "new-\(tabID)"
+        case .emptyFolder(let spaceID): "empty-\(spaceID)"
         case .renameFolder(let folder): "rename-\(folder.id)"
         }
     }
@@ -52,6 +54,8 @@ struct NamePromptAlert: ViewModifier {
         switch prompt {
         case .newFolder(let tabID):
             state.moveTabToNewFolder(tabID, named: name)
+        case .emptyFolder(let spaceID):
+            state.createFolder(named: name, in: spaceID)
         case .renameFolder(let folder):
             state.renameFolder(folder.id, to: name)
         }

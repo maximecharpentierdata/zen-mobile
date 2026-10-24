@@ -50,6 +50,10 @@ struct SpaceScreen: View {
     }
 
     private func handle(_ action: SpaceAction) {
+        if case .newFolder(let spaceID) = action {
+            namePrompt = .emptyFolder(in: spaceID)
+            return
+        }
         SpaceManagement.handle(
             action,
             state: state,

@@ -73,6 +73,13 @@ extension BrowserState {
         perform { try $0.duplicateTab(id, now: time) }
     }
 
+    /// Creates an empty folder at the end of a space's pinned section. Does nothing when `name` is blank.
+    public func createFolder(named name: String, in spaceID: Space.ID) {
+        let name = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !name.isEmpty else { return }
+        perform { try $0.createFolder(named: name, in: spaceID) }
+    }
+
     /// Renames a folder. Does nothing when `name` is blank.
     public func renameFolder(_ id: Folder.ID, to name: String) {
         let name = name.trimmingCharacters(in: .whitespacesAndNewlines)

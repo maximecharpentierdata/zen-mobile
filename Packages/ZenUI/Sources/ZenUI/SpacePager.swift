@@ -29,6 +29,7 @@ struct SpacePager: View {
                         essentials: state.data.essentials,
                         header: header(for: space),
                         menus: menus,
+                        isLast: space.id == state.data.spaces.last?.id,
                         onToggleFolder: { state.toggleFolder($0) },
                         onOpen: { onOpen($0) }
                     )

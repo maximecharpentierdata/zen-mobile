@@ -43,7 +43,7 @@ Rules:
 ### 3.2 Space screen (design 1A)
 From top to bottom:
 1. Header: space icon, space name, and an options button (rename, icon, colour, delete, new space, new folder). New folder asks for a name and creates an empty folder at the end of the pinned section.
-2. Essentials grid: 4 columns of icon tiles.
+2. Essentials grid: 4 columns of icon tiles. It stays in place under the header: only the pinned section and the tabs below it scroll. *(proposal)*
 3. Pinned section: pinned tabs and folders. Tapping a folder expands or collapses it. A collapsed folder shows how many tabs it holds.
 4. Divider.
 5. Regular tabs. The active tab is highlighted.
@@ -84,6 +84,7 @@ Automatic clean-up of regular tabs:
 - The background colour blends between the two spaces' colours during the swipe. The dots use the blended colour too.
 - Scrolling direction locks after the first few points of movement, so a vertical scroll never changes space by accident.
 - These three behaviours come from the system's paging scroll view, so their thresholds are the system's, not ours. If testing on a device shows they need tuning, we will replace it with our own gesture. *(tune)*
+- The Essentials grid doesn't move during the swipe, since it is shared by all spaces: only the header, pinned section and tabs slide (asked for on 2026-10-24). Swiping to the "New space" page fades the grid out. *(proposal)*
 - At the first space the swipe resists (rubber band). Swiping past the last space shows a "New space" page. *(proposal)*
 - Settling on the "New space" page opens the new space sheet at once (name, icon, colour). Creating the space shows it; cancelling or swiping the sheet away creates nothing and swipes back to the last space.
 

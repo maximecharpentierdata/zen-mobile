@@ -5,6 +5,7 @@ import ZenModel
 struct EssentialsGrid: View {
     let tabs: [ZenModel.Tab]
     let accent: UInt32
+    let menus: RowMenus
     let onOpen: @MainActor (ZenModel.Tab.ID) -> Void
 
     private let columns = Array(
@@ -24,6 +25,7 @@ struct EssentialsGrid: View {
                         .reportsRowFrame(for: tab.id)
                 }
                 .buttonStyle(.plain)
+                .contextMenu { menus.tabMenu(for: tab) }
                 .accessibilityLabel(tab.title.isEmpty ? (tab.url?.host() ?? "") : tab.title)
             }
         }

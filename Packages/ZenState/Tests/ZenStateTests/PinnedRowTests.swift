@@ -26,4 +26,13 @@ import ZenModel
         let outer = Folder(name: "Outer", isExpanded: false, children: [.folder(deep), .tab(Tab(lastAccessed: now))])
         #expect(PinnedRow.rows(for: [.folder(outer)]) == [.folder(outer, depth: 0, tabCount: 3)])
     }
+
+    @Test func listsAllFoldersIncludingCollapsedOnes() {
+        let deep = Folder(name: "Deep")
+        let outer = Folder(name: "Outer", isExpanded: false, children: [.folder(deep)])
+        let other = Folder(name: "Other")
+        let tab = Tab(lastAccessed: now)
+        let folders = PinnedRow.allFolders(in: [.folder(outer), .tab(tab), .folder(other)])
+        #expect(folders.map(\.name) == ["Outer", "Deep", "Other"])
+    }
 }

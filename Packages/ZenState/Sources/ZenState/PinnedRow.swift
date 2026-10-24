@@ -31,4 +31,12 @@ public enum PinnedRow: Hashable, Identifiable, Sendable {
             }
         }
     }
+
+    /// Every folder of a pinned tree, collapsed or not, in display order. Used by "Move to folder".
+    public static func allFolders(in items: [PinnedItem]) -> [Folder] {
+        items.flatMap { item -> [Folder] in
+            guard let folder = item.folder else { return [] }
+            return [folder] + allFolders(in: folder.children)
+        }
+    }
 }

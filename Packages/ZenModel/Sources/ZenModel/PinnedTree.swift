@@ -86,6 +86,23 @@ enum PinnedTree {
         }
     }
 
+    /// Inserts `item` right after the tab with id `tabID`, in the same folder. Returns `false` if that tab
+    /// isn't in the tree.
+    static func insert(_ item: PinnedItem, after tabID: Tab.ID, in items: inout [PinnedItem]) -> Bool {
+        if let index = items.firstIndex(where: { $0.tab?.id == tabID }) {
+            items.insert(item, at: index + 1)
+            return true
+        }
+        for index in items.indices {
+            guard case .folder(var folder) = items[index] else { continue }
+            if insert(item, after: tabID, in: &folder.children) {
+                items[index] = .folder(folder)
+                return true
+            }
+        }
+        return false
+    }
+
     /// Whether a folder with this id exists in the tree.
     static func containsFolder(_ id: Folder.ID, in items: [PinnedItem]) -> Bool {
         items.contains { item in
